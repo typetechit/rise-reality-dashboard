@@ -13,7 +13,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::query()->latest()->paginate(25);
+        $posts = Post::query()
+            ->with('user:id,name')
+            ->latest()
+            ->paginate(25);
 
         return inertia('Blog/Posts/Index', [
             'posts' => $posts

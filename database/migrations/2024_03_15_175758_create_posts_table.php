@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('short_description')->nullable();
             $table->longText('body')->nullable();
             $table->text('featured_image')->nullable();
+            $table->boolean('is_published')->default(false);
 
             $table->timestamps();
             $table->softDeletes();

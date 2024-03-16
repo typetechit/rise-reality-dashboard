@@ -13,6 +13,8 @@ import {User} from "@/types";
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import {Link} from "@inertiajs/react";
 import {LogOutIcon} from "lucide-react";
+import {Card, CardContent, CardHeader, CardTitle} from "@/Components/ui/card";
+import GoBack from "@/Components/GoBack";
 
 const navigations = [
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, current: true },
@@ -34,12 +36,33 @@ export default function DashboardLayout({ user, header, children }: PropsWithChi
 
             <Navbar setSidebarOpen={setSidebarOpen} />
 
-            <main className="py-10 lg:pl-72">
-                <div className="px-4 sm:px-6 lg:px-8">{children}</div>
+            <main className="py-10 lg:pl-72 lg:pt-0">
+                <div className="">
+                    {header}
+                    {children}
+                </div>
             </main>
         </div>
     )
 }
+
+export function PageHeader({ title, action }: { title: any, action?: any }) {
+    return (
+        <Card className={`rounded-none border-none`}>
+            <CardHeader>
+                <div className={`flex items-center justify-between`}>
+                    <div className={`flex items-center gap-4`}>
+                        <GoBack />
+
+                        <CardTitle>{title}</CardTitle>
+                    </div>
+                    {action}
+                </div>
+            </CardHeader>
+        </Card>
+    )
+}
+
 
 export function Navbar({ setSidebarOpen }: { setSidebarOpen: (value: boolean) => void}) {
     return (

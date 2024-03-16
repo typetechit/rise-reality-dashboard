@@ -15,10 +15,9 @@ class PropertyController extends Controller
     {
         $properties = Property::query()->latest()->paginate(25);
 
-        return response()->json($properties);
-//        return inertia('Properties/Index', [
-//			'properties' => $properties
-//        ]);
+        return inertia('Properties/Index', [
+			'properties' => $properties
+        ]);
     }
 
     /**
@@ -26,7 +25,7 @@ class PropertyController extends Controller
      */
     public function create()
     {
-        //
+        return inertia('Properties/Create');
     }
 
     /**
