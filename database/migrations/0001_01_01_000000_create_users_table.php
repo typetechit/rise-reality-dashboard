@@ -11,12 +11,27 @@ return new class extends Migration
      */
     public function up(): void
     {
+
         Schema::create('users', function (Blueprint $table) {
+            $availableRoles = [
+                'ADMIN',
+                'PROPERTY_AGENT',
+                'EDITOR'
+            ];
+
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('role', $availableRoles);
+            $table->string('designation')->nullable();
+            $table->text('description')->nullable();
+            $table->json('social_links')->nullable();
+            $table->text('experience')->nullable();
+            $table->text('location')->nullable();
+            $table->text('practice_area')->nullable();
+            $table->text('phone')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
