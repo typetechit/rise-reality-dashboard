@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Blog;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Blog\PostCreateRequest;
+use App\Http\Requests\Blog\PostUpdateRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -28,15 +30,24 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return inertia('Blog/Posts/Create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PostCreateRequest $request)
     {
-        //
+        $postData = $request->validationData();
+
+        if($request->hasFile('featured_image')){
+            $featuredImagePath = $request->featured_image->store('posts_images');
+            $postData['featured_image'] = $featuredImagePath;
+        }
+
+        $newPost = $request->user()->posts()->create($postData);
+
+        return to_route('posts.edit', ['post' => $newPost]);
     }
 
     /**
@@ -50,17 +61,23 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Post $post)
     {
-        //
+        return inertia('Blog/Posts/Edit', [
+            'post' => $post
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(PostUpdateRequest $request, Post $post)
     {
-        //
+        $postData = $request->only('title', 'description', 'is_published');
+
+        $post->update($postData);
+
+        return back();
     }
 
     /**

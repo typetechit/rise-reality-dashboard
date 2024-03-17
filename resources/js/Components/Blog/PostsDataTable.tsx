@@ -178,7 +178,9 @@ export default function PostsDataTable({ posts }: {posts: any}) {
                         </DropdownMenuContent>
                     </DropdownMenu>
 
-                    <Button>Add New Post</Button>
+                    <Button>
+                        <Link href={route('posts.create')}>Add New Post</Link>
+                    </Button>
                 </div>
 
                 <div className="rounded-md border">

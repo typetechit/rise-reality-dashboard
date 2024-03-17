@@ -36,7 +36,7 @@ export default function DashboardLayout({ user, header, children }: PropsWithChi
 
             <Navbar setSidebarOpen={setSidebarOpen} />
 
-            <main className="py-10 lg:pl-72 lg:pt-0">
+            <main className="lg:pl-72 lg:pt-0">
                 <div className="">
                     {header}
                     {children}
@@ -131,6 +131,7 @@ function SidebarAuthUserContent({ user }: {user: any}) {
                 <Link
                     href={route('logout')} method="post"
                     className={'bg-gray-50 hover:bg-red-100 p-2 rounded'}
+                    as={'button'}
                 >
                     <LogOutIcon />
                 </Link>
@@ -263,4 +264,15 @@ export function SidebarDesktop({ user }: {user: any}) {
             </div>
         </div>
     )
+}
+
+export function DashboardContainer({ children, className }: { children: ReactNode, className?: string }){
+    return (
+        <div className={cn(
+            `mx-auto max-w-7xl sm:px-6 lg:px-8`,
+            className
+        )}>
+            {children}
+        </div>
+    );
 }

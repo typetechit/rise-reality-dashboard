@@ -1,4 +1,4 @@
-import { useEffect, FormEventHandler } from 'react';
+import {useEffect, FormEventHandler, useState, useRef} from 'react';
 import Checkbox from '@/Components/Checkbox';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
@@ -6,13 +6,22 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 import {Card, CardContent, CardHeader, CardTitle} from "@/Components/ui/card";
+import ContentEditor from "@/Components/ContentEditor";
+import Dump from "@/Components/Dump";
+import HTMLDisplay from "@/Components/HTMLDisplay";
+import '@mdxeditor/editor/style.css'
+import {MDXEditor, headingsPlugin, MDXEditorMethods} from "@mdxeditor/editor";
+import Markdown from "react-markdown";
 
 export default function PropertyCreateForm() {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
         remember: false,
+        content: ''
     });
+
+    const [editorContent, setEditorContent] = useState("")
 
     useEffect(() => {
         return () => {
@@ -34,7 +43,12 @@ export default function PropertyCreateForm() {
                 </CardHeader>
 
                 <CardContent>
+
+                    <Markdown>{editorContent}</Markdown>
+
                     <form onSubmit={submit}>
+
+                        <ContentEditor onChange={setEditorContent} />
                         <div>
                             <InputLabel htmlFor="email" value="Email"/>
 
