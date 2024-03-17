@@ -12,27 +12,35 @@ import HTMLDisplay from "@/Components/HTMLDisplay";
 import '@mdxeditor/editor/style.css'
 import {MDXEditor, headingsPlugin, MDXEditorMethods} from "@mdxeditor/editor";
 import Markdown from "react-markdown";
+import {Input} from "@/Components/ui/input";
+import {Label} from "@/Components/ui/label";
+import {Textarea} from "@/Components/ui/textarea";
+import {Button} from "@/Components/ui/button";
+import {Switch} from "@/Components/ui/switch";
 
 export default function PropertyCreateForm() {
     const { data, setData, post, processing, errors, reset } = useForm({
-        email: '',
-        password: '',
-        remember: false,
-        content: ''
+        title: '',
+        description: '',
+        content: '',
+        featured_image: null,
+        is_published: false,
+        price: 0,
+        location: '',
+        mls_code: '',
+        build_year: '',
+        property_size: '',
+        is_featured: false,
+        listing_type: '',
+        amenities: []
     });
 
     const [editorContent, setEditorContent] = useState("")
 
-    useEffect(() => {
-        return () => {
-            reset('password');
-        };
-    }, []);
-
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(route('login'));
+        post(route('properties.store'));
     };
 
     return (
@@ -44,59 +52,84 @@ export default function PropertyCreateForm() {
 
                 <CardContent>
 
-                    <Markdown>{editorContent}</Markdown>
-
-                    <form onSubmit={submit}>
-
-                        <ContentEditor onChange={setEditorContent} />
+                    <form onSubmit={submit} className={`flex flex-col gap-4`}>
+                        {/* Input: Title */}
                         <div>
-                            <InputLabel htmlFor="email" value="Email"/>
+                            <Label htmlFor="title">Title</Label>
 
-                            <TextInput
-                                id="email"
-                                type="email"
-                                name="email"
-                                value={data.email}
+                            <Input
+                                id="title"
+                                name="title"
+                                value={data.title}
                                 className="mt-1 block w-full"
                                 autoComplete="username"
-                                isFocused={true}
-                                onChange={(e) => setData('email', e.target.value)}
+                                onChange={(e) => setData('title', e.target.value)}
                             />
 
-                            <InputError message={errors.email} className="mt-2"/>
+                            <InputError message={errors.title} className="mt-2"/>
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel htmlFor="password" value="Password"/>
+                        {/* Input: Description */}
+                        <div>
+                            <Label htmlFor="description">Description</Label>
 
-                            <TextInput
-                                id="password"
-                                type="password"
-                                name="password"
-                                value={data.password}
+                            <Textarea
+                                id="description"
+                                name="description"
+                                value={data.description}
                                 className="mt-1 block w-full"
                                 autoComplete="current-password"
-                                onChange={(e) => setData('password', e.target.value)}
+                                onChange={(e) => setData('description', e.target.value)}
                             />
 
-                            <InputError message={errors.password} className="mt-2"/>
+                            <InputError message={errors.description} className="mt-2"/>
                         </div>
 
-                        <div className="block mt-4">
-                            <label className="flex items-center">
-                                <Checkbox
-                                    name="remember"
-                                    checked={data.remember}
-                                    onChange={(e) => setData('remember', e.target.checked)}
-                                />
-                                <span className="ms-2 text-sm text-gray-600 dark:text-gray-400">Remember me</span>
-                            </label>
+                        {/* Input: Content */}
+                        <div>
+                            <Label htmlFor="content">Content</Label>
+
+                            <Textarea
+                                id="content"
+                                name="content"
+                                value={data.content}
+                                className="mt-1 block w-full"
+                                autoComplete="current-password"
+                                onChange={(e) => setData('content', e.target.value)}
+                            />
+
+                            <InputError message={errors.content} className="mt-2"/>
                         </div>
 
-                        <div className="flex items-center justify-end mt-4">
-                            <PrimaryButton className="ms-4" disabled={processing}>
-                                Log in
-                            </PrimaryButton>
+                        {/* Input: Featured Image */}
+                        <div>
+                            <Label htmlFor="featured_image">Featured Image</Label>
+
+                            <Input
+                                id="featured_image"
+                                type="file"
+                                name="featured_image"
+                                accept={`image/png, image/gif, image/jpeg`}
+                                onChange={(e: any) => setData('featured_image', e.target.files[0])}
+                            />
+
+                            <InputError message={errors.title} className="mt-2"/>
+                        </div>
+
+                        {/* Input: Is Published */}
+                        <div>
+                            <div className="flex items-center gap-5">
+                                <Label htmlFor="is_published" className={`flex-grow cursor-pointer`}>Published</Label>
+                                <Switch
+                                    id="is_published"
+                                    onCheckedChange={(value) => setData('is_published', value)} />
+                            </div>
+                        </div>
+
+                        <div className="flex items-center mt-4">
+                            <Button disabled={processing}>
+                                {processing ? "Adding Property ..." : "Add Property"}
+                            </Button>
                         </div>
                     </form>
                 </CardContent>

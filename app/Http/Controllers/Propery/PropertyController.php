@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Propery;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Property\PropertyCreateRequest;
 use App\Models\Property;
 use Illuminate\Http\Request;
 
@@ -31,9 +32,9 @@ class PropertyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PropertyCreateRequest $request)
     {
-        //
+        dd($request->validationData());
     }
 
     /**

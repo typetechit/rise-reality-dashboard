@@ -20,9 +20,10 @@ return new class extends Migration
             $table->foreignIdFor(PropertyCategory::class)->constrained();
 
             $table->string('title');
+            $table->text('description')->nullable();
+            $table->longText('content')->nullable();
             $table->text('featured_image')->nullable();
-            $table->text('short_description')->nullable();
-            $table->text('full_description')->nullable();
+            $table->boolean('is_published')->default(false);
             $table->decimal('price')->nullable();
             $table->text('location')->nullable();
             $table->string('mls_code')->unique();
