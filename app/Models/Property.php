@@ -9,6 +9,27 @@ class Property extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'country_id',
+        'category_id',
+
+        'title',
+        'description',
+        'content',
+        'featured_image',
+        'is_published',
+        'price',
+        'location',
+        'mls_code',
+        'build_year',
+        'property_size',
+        'is_featured',
+        'listing_type',
+        'amenities',
+        'category_attributes',
+    ];
+
     /**
      * Get the attributes that should be cast.
      *
@@ -18,6 +39,7 @@ class Property extends Model
     {
         return [
             'amenities' => 'array',
+            'category_attributes' => 'array'
         ];
     }
 
@@ -26,8 +48,8 @@ class Property extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function propertyInfo()
+    public function category()
     {
-        return $this->hasMany(PropertyInfo::class);
+        return $this->belongsTo(Category::class);
     }
 }

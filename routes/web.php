@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Blog\PostController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Propery\PropertyController;
+use App\Http\Controllers\Property\PropertyController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;

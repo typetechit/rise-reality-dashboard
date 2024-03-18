@@ -4,7 +4,12 @@ import DashboardLayout, {PageHeader} from "@/Layouts/DashboardLayout";
 import PropertiesDataTable from "@/Components/Properties/PropertiesDataTable";
 import PropertyCreateForm from "@/Components/Properties/PropertyCreateForm";
 
-export default function PropertiesIndexPage({ auth, properties }: PageProps<{properties: any}>) {
+export default function PropertyCreatePage({
+                                               auth,
+                                               listingTypes,
+                                               amenities,
+                                               categories
+}: PageProps<{properties: any, listingTypes: any[], amenities: any[], categories: any[]}>) {
     return (
         <DashboardLayout
             user={auth.user}
@@ -13,7 +18,11 @@ export default function PropertiesIndexPage({ auth, properties }: PageProps<{pro
             <Head title="Add new Property"/>
 
             <div className={`p-5`}>
-                <PropertyCreateForm />
+                <PropertyCreateForm
+                    listingTypes={listingTypes.map(item => ({...item, value: item, label: item}))}
+                    amenityTypes={amenities.map(item => ({...item, value: item.name, label: item.name}))}
+                    categories={categories.map(item => ({...item, value: item.name, label: item.name}))}
+                />
             </div>
         </DashboardLayout>
     );

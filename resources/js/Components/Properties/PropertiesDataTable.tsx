@@ -43,11 +43,12 @@ import Dump from "@/Components/Dump";
 export type Property = {
     id: number
     title: string
-    slug: string
-    short_description: string
-    long_description: string
-    is_published: boolean
-    author: {
+    featured_image: string
+    is_published: string
+    price: string
+    location: string
+    mls_code: string
+    user: {
         id: number,
         name: string
     }
@@ -84,22 +85,34 @@ export const columns: ColumnDef<Property>[] = [
         ),
     },
     {
+        accessorKey: "mls_code",
+        header: 'MLS Code',
+    },
+    {
         accessorKey: "title",
         header: 'Title',
     },
     {
+        accessorKey: "price",
+        header: 'Price',
+    },
+    {
+        accessorKey: "location",
+        header: 'Location',
+    },
+    {
         accessorKey: "user.name",
-        header: 'Author',
+        header: 'Agent',
     },
     {
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
-            const post = row.original
+            const property = row.original
 
             return (
                 <div className={`flex gap-4`}>
-                    <Link href={route('posts.edit', {'post': post.id})}>
+                    <Link href={route('properties.edit', {'property': property.id})}>
                         <PencilIcon className={`w-5 h-5`} />
                     </Link>
                 </div>
@@ -140,6 +153,7 @@ export default function PropertiesDataTable({ properties }: {properties: any}) {
 
     return (
         <Card>
+
             <CardContent className={`p-5`}>
                 <div className="flex items-center gap-4 pb-4">
                     <Input

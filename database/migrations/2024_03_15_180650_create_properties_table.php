@@ -16,8 +16,8 @@ return new class extends Migration
             $table->id();
 
             $table->foreignIdFor(\App\Models\User::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(\App\Models\Country::class)->constrained();
-            $table->foreignIdFor(PropertyCategory::class)->constrained();
+            $table->foreignIdFor(\App\Models\Country::class)->nullable()->constrained();
+            $table->foreignIdFor(\App\Models\Category::class)->nullable()->constrained();
 
             $table->string('title');
             $table->text('description')->nullable();
@@ -27,11 +27,12 @@ return new class extends Migration
             $table->decimal('price')->nullable();
             $table->text('location')->nullable();
             $table->string('mls_code')->unique();
-            $table->year('build_year')->nullable();
+            $table->string('build_year')->nullable();
             $table->integer('property_size')->nullable();
             $table->boolean('is_featured')->default(false);
             $table->enum('listing_type', ['Exclusive Listing', 'Lease', 'Rental', 'Sale'])->nullable();
             $table->json('amenities')->nullable();
+            $table->json('category_attributes')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

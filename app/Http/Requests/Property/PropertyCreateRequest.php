@@ -27,15 +27,17 @@ class PropertyCreateRequest extends FormRequest
             'title' => 'required',
             'description' => 'required',
             'content' => 'nullable',
-            'price' => 'nullable|integer',
+            'price' => 'required|numeric|gte:1',
             'is_published' => 'required|boolean',
             'location' => 'required',
             'mls_code' => 'required',
-            'build_year' => 'required|numeric',
-            'property_size' => 'required|numeric',
+            'build_year' => 'required|numeric|gte:1',
+            'property_size' => 'required|numeric|gte:1',
             'is_featured' => 'required|boolean',
             'listing_type' => ["required", "in:$availableListingTypes"],
-            'amenities' => ["nullable", 'array']
+            'amenities' => ["nullable", 'array'],
+            'category' => ["nullable"],
+            'category_attributes' => ["nullable", "array"],
         ];
     }
 }
