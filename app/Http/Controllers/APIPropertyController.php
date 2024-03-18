@@ -31,9 +31,11 @@ class APIPropertyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Property $property)
     {
-        //
+        $property->load(['user', 'category:id,name']);
+
+        return response()->json($property);
     }
 
     /**

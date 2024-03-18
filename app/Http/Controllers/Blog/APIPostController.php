@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Blog;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Models\Property;
 use Illuminate\Http\Request;
 
 class APIPostController extends Controller
@@ -40,9 +41,10 @@ class APIPostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Post $post)
     {
-        //
+        $post->load(['user']);
+        return response()->json($post);
     }
 
     /**

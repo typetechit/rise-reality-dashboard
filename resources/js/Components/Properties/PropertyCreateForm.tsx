@@ -387,7 +387,6 @@ export default function PropertyCreateForm({ listingTypes, amenityTypes, categor
                     </form>
                 </CardContent>
             </Card>
-            <Dump data={data.category_attributes} />
         </>
 );
 }
