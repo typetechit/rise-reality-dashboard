@@ -13,10 +13,9 @@ class APIPropertyController extends Controller
     public function index()
     {
         $properties = Property::query()
-            ->with('propertyInfo')
-            ->with('user')
+            ->with(['user:id,name,email,phone', 'category:id,name'])
             ->latest()
-            ->paginate();
+            ->paginate(25);
 
         return response()->json($properties);
     }
