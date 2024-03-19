@@ -40,6 +40,7 @@
         "@tinymce/tinymce-react": "^4.3.2",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.0",
+        "jotai": "^2.7.1",
         "lucide-react": "^0.358.0",
         "react-hook-form": "^7.51.1",
         "react-html-parser": "^2.0.2",

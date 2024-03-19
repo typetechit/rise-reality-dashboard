@@ -8,9 +8,9 @@ export default function FaqCreatePage({ auth }: PageProps){
         <DashboardLayout user={auth.user} header={<PageHeader title={'Add FAQ'} /> }>
             <Head title="Add FAQ" />
 
-            <DashboardContainer className={`mt-10`}>
-                <FaqCreateForm />
-            </DashboardContainer>
+            <div className={`p-5`}>
+                <FaqCreateForm/>
+            </div>
         </DashboardLayout>
     );
 }

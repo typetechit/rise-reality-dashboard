@@ -11,9 +11,9 @@ export default function FaqsIndexPage({ auth, faqs }: PageProps<{faqs: any}>){
         >
             <Head title={'Faq'} />
 
-            <DashboardContainer className={`mt-10`}>
+            <div className={`p-5`}>
                 <FaqsDataTable faqs={faqs} />
-            </DashboardContainer>
+            </div>
         </DashboardLayout>
     )
 }

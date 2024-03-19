@@ -1,10 +1,9 @@
-import {Fragment, PropsWithChildren, ReactNode, useState} from 'react'
+import {Fragment, PropsWithChildren, ReactNode, useEffect, useState} from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import {
     Bars3Icon,
-    CalendarIcon,
     FolderIcon,
-    HomeIcon, QuestionMarkCircleIcon,
+    HomeIcon, InboxIcon, QuestionMarkCircleIcon,
     UsersIcon,
     XMarkIcon,
 } from '@heroicons/react/24/outline'
@@ -15,33 +14,56 @@ import {Link} from "@inertiajs/react";
 import {LogOutIcon, MessageCircleIcon} from "lucide-react";
 import {Card, CardContent, CardHeader, CardTitle} from "@/Components/ui/card";
 import GoBack from "@/Components/GoBack";
-import {QuestionMarkIcon} from "@radix-ui/react-icons";
+import {animeAtom, authUser, sidebarOpenState} from "@/store/DashboardLayoutState";
+import {useAtom, useAtomValue, useSetAtom} from 'jotai'
+import Dump from "@/Components/Dump";
 
-const navigations = [
+const adminNavigations = [
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, current: true },
     { name: 'Blog Posts', href: '/posts', icon: UsersIcon, current: false },
     { name: 'Properties', href: '/properties', icon: FolderIcon, current: false },
     { name: "Faqs", href: "/faqs", icon: QuestionMarkCircleIcon, current: false },
     { name: "Testimonials", href: "/testimonials", icon: MessageCircleIcon, current: false },
     { name: "Contacts Messages", href: "/contact-messages", icon: MessageCircleIcon, current: false },
+    { name: "Inbox", href: "/inbox", icon: InboxIcon, current: false },
+]
+
+const propertyAgentNavigations = [
+    { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, current: true },
+    { name: 'Properties', href: '/properties', icon: FolderIcon, current: false },
+    { name: "Inbox", href: "/inbox", icon: InboxIcon, current: false },
+]
+
+const editorNavigations = [
+    { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, current: true },
+    { name: 'Blog Posts', href: '/posts', icon: UsersIcon, current: false },
 ]
 
 export default function DashboardLayout({ user, header, children }: PropsWithChildren<{ user: User, header?: ReactNode }>) {
-    const [sidebarOpen, setSidebarOpen] = useState(false)
+    const [anime, setAnime] = useAtom(animeAtom)
+    const [open, setOpen] = useAtom(sidebarOpenState)
+    const setAuthUser = useSetAtom(authUser)
+
+
+    useEffect(() => {
+        if(user){
+            setAuthUser(user)
+        }
+    }, [user]);
 
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
+
             <Sidebar
-                sidebarOpen={sidebarOpen}
-                setSidebarOpen={setSidebarOpen}
-                user={user}
+                sidebarOpen={open}
+                setSidebarOpen={setOpen}
             />
 
-            <Navbar setSidebarOpen={setSidebarOpen} />
+            <Navbar setSidebarOpen={setOpen} />
 
             <main className="lg:pl-72 lg:pt-0">
                 <div className="">
-                    {header}
+                    {header || null}
                     {children}
                 </div>
             </main>
@@ -96,17 +118,16 @@ export function NavbarMobile({ setSidebarOpen }: { setSidebarOpen: (value: boole
     )
 }
 
-export function Sidebar({sidebarOpen, setSidebarOpen, user}: {
+export function Sidebar({sidebarOpen, setSidebarOpen}: {
     sidebarOpen: boolean,
     setSidebarOpen: (value: boolean) => void,
-    user: any
 }) {
     return (
         <>
-            <SidebarMobile sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} user={user}/>
+            <SidebarMobile/>
 
             {/* Static sidebar for desktop */}
-            <SidebarDesktop user={user}/>
+            <SidebarDesktop/>
         </>
     )
 }
@@ -126,8 +147,8 @@ function SidebarAuthUserContent({ user }: {user: any}) {
                     />
                     <span className="sr-only">Your profile</span>
                     <span aria-hidden="true" className={`flex flex-col`}>
-                        <span>{user.name}</span>
-                        <span className={`text-xs text-gray-500`}>{user.email}</span>
+                        <span>{user?.name}</span>
+                        <span className={`text-xs text-gray-500`}>{user?.email}</span>
                     </span>
                 </Link>
 
@@ -143,11 +164,19 @@ function SidebarAuthUserContent({ user }: {user: any}) {
     );
 }
 
-export function SidebarMobile({sidebarOpen, setSidebarOpen, user}: {
-    sidebarOpen: boolean,
-    setSidebarOpen: (value: boolean) => void,
-    user: any
-}) {
+export function SidebarMobile() {
+    const [sidebarOpen, setSidebarOpen] = useAtom(sidebarOpenState)
+    const user = useAtomValue(authUser)
+    let navigations: any[] = []
+
+    if(user?.role === 'ADMIN'){
+        navigations = adminNavigations
+    }else if(user?.role === 'EDITOR'){
+        navigations = editorNavigations
+    }else if(user?.role === 'PROPERTY_AGENT'){
+        navigations = propertyAgentNavigations
+    }
+
     return (
         <Transition.Root show={sidebarOpen} as={Fragment}>
             <Dialog as="div" className="relative z-50 lg:hidden" onClose={setSidebarOpen}>
@@ -220,6 +249,9 @@ export function SidebarNavigations({navigations}: { navigations: any[] }) {
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
                 <li>
                     <ul role="list" className="-mx-2 space-y-1">
+
+                        {  }
+
                         {navigations.map((item) => (
                             <li key={item.name}>
                                 <a
@@ -249,9 +281,21 @@ export function SidebarNavigations({navigations}: { navigations: any[] }) {
     )
 }
 
-export function SidebarDesktop({ user }: {user: any}) {
+export function SidebarDesktop() {
+    const user = useAtomValue(authUser)
+    let navigations: any[] = []
+
+    if(user?.role === 'ADMIN'){
+        navigations = adminNavigations
+    }else if(user?.role === 'EDITOR'){
+        navigations = editorNavigations
+    }else if(user?.role === 'PROPERTY_AGENT'){
+        navigations = propertyAgentNavigations
+    }
+
     return (
         <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+            {/*<Dump data={user} />*/}
             {/* Sidebar component, swap this element with another sidebar if you like */}
             <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
                 <div className="flex h-16 shrink-0 items-center">

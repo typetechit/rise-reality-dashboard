@@ -9,9 +9,9 @@ export default function FaqEditPage({ auth, faq }: PageProps<{faq: any}>){
         <DashboardLayout user={auth.user} header={<PageHeader title={'Edit FAQ'} /> }>
             <Head title="Edit FAQ" />
 
-            <DashboardContainer className={`mt-10`}>
-                <FaqEditForm faq={faq} />
-            </DashboardContainer>
+            <div className={`p-5`}>
+                <FaqEditForm faq={faq}/>
+            </div>
         </DashboardLayout>
     );
 }

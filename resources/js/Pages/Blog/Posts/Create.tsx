@@ -8,9 +8,9 @@ export default function PostCreatePage({ auth }: PageProps){
         <DashboardLayout user={auth.user} header={<PageHeader title={'Add Post'} /> }>
             <Head title="Add Post" />
 
-            <DashboardContainer className={`mt-10`}>
-                <PostCreateForm />
-            </DashboardContainer>
+            <div className={`p-5`}>
+                <PostCreateForm/>
+            </div>
         </DashboardLayout>
     );
 }

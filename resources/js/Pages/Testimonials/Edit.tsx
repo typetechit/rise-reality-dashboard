@@ -8,9 +8,9 @@ export default function FaqEditPage({ auth, testimonial }: PageProps<{testimonia
         <DashboardLayout user={auth.user} header={<PageHeader title={'Edit Testimonial'} /> }>
             <Head title="Edit Testimonial" />
 
-            <DashboardContainer className={`mt-10`}>
-                <TestimonialEditForm testimonial={testimonial} />
-            </DashboardContainer>
+            <div className={`p-5`}>
+                <TestimonialEditForm testimonial={testimonial}/>
+            </div>
         </DashboardLayout>
     );
 }

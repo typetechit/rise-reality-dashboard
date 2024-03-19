@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Blog\PostController;
+use App\Http\Controllers\ContactMessage\ContactMessageController;
 use App\Http\Controllers\Faq\FaqController;
+use App\Http\Controllers\Inbox\InboxController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Property\PropertyController;
 use App\Http\Controllers\Testimonial\TestimonialController;
@@ -31,6 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('properties', PropertyController::class);
     Route::resource('faqs', FaqController::class);
     Route::resource('testimonials', TestimonialController::class);
+    Route::resource('contact-messages', ContactMessageController::class);
+    Route::get('inbox', [InboxController::class, 'index'])->name('inbox.index');
 });
 
 require __DIR__.'/auth.php';

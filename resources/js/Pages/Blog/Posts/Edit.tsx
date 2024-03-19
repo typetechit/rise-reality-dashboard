@@ -9,9 +9,9 @@ export default function PostEditPage({ auth, post }: PageProps<{post: any}>){
         <DashboardLayout user={auth.user} header={<PageHeader title={'Edit Post'} /> }>
             <Head title={`Edit Post`} />
 
-            <DashboardContainer className={`mt-10`}>
-                <PostEditForm post={post} />
-            </DashboardContainer>
+            <div className={`p-5`}>
+                <PostEditForm post={post}/>
+            </div>
         </DashboardLayout>
     );
 }

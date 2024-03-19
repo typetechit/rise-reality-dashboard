@@ -15,15 +15,25 @@ class PropertyController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $properties = Property::query()
-            ->with(['user:id,name,email,phone', 'category:id,name'])
-            ->latest()
-            ->paginate(25);
-//        return response()->json($properties);
+        $properties = [];
+
+        if($request->user()->role === 'ADMIN'){
+            $properties = Property::query()
+                ->with(['user:id,name,email,phone', 'category:id,name'])
+                ->latest()
+                ->paginate(25);
+        }else if($request->user()->role === 'PROPERTY_AGENT'){
+            $properties = Property::query()
+                ->with(['user:id,name,email,phone', 'category:id,name'])
+//                ->where('user_id', auth()->id())
+                ->latest()
+                ->paginate(25);
+        }
+
         return inertia('Properties/Index', [
-			'properties' => $properties
+            'properties' => $properties
         ]);
     }
 
