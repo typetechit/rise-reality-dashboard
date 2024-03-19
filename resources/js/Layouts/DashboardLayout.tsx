@@ -22,7 +22,7 @@ const navigations = [
     { name: 'Blog Posts', href: '/posts', icon: UsersIcon, current: false },
     { name: 'Properties', href: '/properties', icon: FolderIcon, current: false },
     { name: "Faqs", href: "/faqs", icon: QuestionMarkCircleIcon, current: false },
-    { name: "testimonials", href: "/testimonials", icon: MessageCircleIcon, current: false },
+    { name: "Testimonials", href: "/testimonials", icon: MessageCircleIcon, current: false },
     { name: "Contacts Messages", href: "/contact-messages", icon: MessageCircleIcon, current: false },
 ]
 

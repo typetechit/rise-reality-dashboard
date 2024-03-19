@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\APIWebsiteController;
 use App\Http\Controllers\UserAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -17,3 +18,4 @@ Route::resource('properties', \App\Http\Controllers\Property\APIPropertyControll
 Route::resource('posts', \App\Http\Controllers\Blog\APIPostController::class);
 Route::resource('faqs', \App\Http\Controllers\Faq\APIFaqController::class);
 Route::resource('testimonials', \App\Http\Controllers\Testimonial\APITestimonialController::class);
+Route::get('website/filter_options', [APIWebsiteController::class, 'getFilterOptions'])->name('website.getFilterOptions');
