@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Blog\PostController;
+use App\Http\Controllers\Faq\FaqController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Property\PropertyController;
+use App\Http\Controllers\Testimonial\TestimonialController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,6 +29,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('posts', PostController::class);
     Route::resource('properties', PropertyController::class);
+    Route::resource('faqs', FaqController::class);
+    Route::resource('testimonials', TestimonialController::class);
 });
 
 require __DIR__.'/auth.php';

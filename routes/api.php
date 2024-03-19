@@ -13,11 +13,7 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-
-//Route::middleware('auth:sanctum')
-//    ->group(function() {
-//        Route::resource('properties', \App\Http\Controllers\APIPropertyController::class);
-//    });
-
-Route::resource('properties', \App\Http\Controllers\APIPropertyController::class);
+Route::resource('properties', \App\Http\Controllers\Property\APIPropertyController::class);
 Route::resource('posts', \App\Http\Controllers\Blog\APIPostController::class);
+Route::resource('faqs', \App\Http\Controllers\Faq\APIFaqController::class);
+Route::resource('testimonials', \App\Http\Controllers\Testimonial\APITestimonialController::class);

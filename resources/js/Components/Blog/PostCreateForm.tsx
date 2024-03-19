@@ -84,7 +84,7 @@ export default function PostCreateForm() {
 
                     {/* Input: Is Published */}
                     <div>
-                        <div className="flex items-center gap-5">
+                        <div className="flex flex-col gap-4">
                             <Label htmlFor="is_published" className={`flex-grow cursor-pointer`}>Published</Label>
                             <Switch
                                 id="is_published"
@@ -98,8 +98,8 @@ export default function PostCreateForm() {
                         </progress>
                     )}
 
-                    <div className="flex items-center justify-end mt-4">
-                        <Button className="ms-4" disabled={processing}>
+                    <div className="flex items-center">
+                        <Button disabled={processing}>
                             Create Post
                         </Button>
                     </div>

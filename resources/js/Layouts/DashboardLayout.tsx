@@ -4,7 +4,7 @@ import {
     Bars3Icon,
     CalendarIcon,
     FolderIcon,
-    HomeIcon,
+    HomeIcon, QuestionMarkCircleIcon,
     UsersIcon,
     XMarkIcon,
 } from '@heroicons/react/24/outline'
@@ -12,15 +12,18 @@ import {cn} from "@/lib/utils";
 import {User} from "@/types";
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import {Link} from "@inertiajs/react";
-import {LogOutIcon} from "lucide-react";
+import {LogOutIcon, MessageCircleIcon} from "lucide-react";
 import {Card, CardContent, CardHeader, CardTitle} from "@/Components/ui/card";
 import GoBack from "@/Components/GoBack";
+import {QuestionMarkIcon} from "@radix-ui/react-icons";
 
 const navigations = [
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, current: true },
     { name: 'Blog Posts', href: '/posts', icon: UsersIcon, current: false },
     { name: 'Properties', href: '/properties', icon: FolderIcon, current: false },
-    { name: 'Website Content', href: '/website-content/', icon: CalendarIcon, current: false },
+    { name: "Faqs", href: "/faqs", icon: QuestionMarkCircleIcon, current: false },
+    { name: "testimonials", href: "/testimonials", icon: MessageCircleIcon, current: false },
+    { name: "Contacts Messages", href: "/contact-messages", icon: MessageCircleIcon, current: false },
 ]
 
 export default function DashboardLayout({ user, header, children }: PropsWithChildren<{ user: User, header?: ReactNode }>) {

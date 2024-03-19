@@ -7,6 +7,7 @@ use App\Http\Requests\Blog\PostCreateRequest;
 use App\Http\Requests\Blog\PostUpdateRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -41,7 +42,7 @@ class PostController extends Controller
         $postData = $request->validationData();
 
         if($request->hasFile('featured_image')){
-            $featuredImagePath = $request->featured_image->store('posts_images');
+            $featuredImagePath = $request->file('featured_image')->storePublicly('posts_images');
             $postData['featured_image'] = $featuredImagePath;
         }
 

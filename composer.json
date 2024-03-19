@@ -12,6 +12,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "nwidart/laravel-modules": "^10.0",
+        "spatie/laravel-image-optimizer": "^1.8",
         "spatie/laravel-medialibrary": "^11.4",
         "spatie/laravel-tags": "^4.6",
         "tightenco/ziggy": "^2.0"

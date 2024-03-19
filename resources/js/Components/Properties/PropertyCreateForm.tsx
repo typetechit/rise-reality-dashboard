@@ -1,26 +1,14 @@
-import {useEffect, FormEventHandler, useState, useRef} from 'react';
-import Checkbox from '@/Components/Checkbox';
+import {FormEventHandler, useState} from 'react';
 import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 import {Card, CardContent, CardHeader, CardTitle} from "@/Components/ui/card";
-import ContentEditor from "@/Components/ContentEditor";
-import Dump from "@/Components/Dump";
-import HTMLDisplay from "@/Components/HTMLDisplay";
-import '@mdxeditor/editor/style.css'
-import {MDXEditor, headingsPlugin, MDXEditorMethods} from "@mdxeditor/editor";
-import Markdown from "react-markdown";
 import {Input} from "@/Components/ui/input";
 import {Label} from "@/Components/ui/label";
 import {Textarea} from "@/Components/ui/textarea";
 import {Button} from "@/Components/ui/button";
-import {Switch} from "@/Components/ui/switch";
 import Select from "react-select";
 import {RadioGroup, RadioGroupItem} from "@/Components/ui/radio-group";
-import {Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow} from "@/Components/ui/table";
-import {EyeClosedIcon} from "@radix-ui/react-icons";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/Components/ui/table";
 import {TrashIcon} from "lucide-react";
 
 function CategoryAttributeModificationTable({

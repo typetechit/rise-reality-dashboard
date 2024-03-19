@@ -21,11 +21,10 @@ class Post extends Model
 
     protected $imageDir = "posts_images";
 
-    public function getFeaturedImage()
+    public function getFeaturedImageAttribute($value)
     {
-        return ($this->featured_image && Storage::disk('public')->exists("$this->imageDir/$this->featured_image"))
-            ? asset('storage/' . $this->imageDir . '/' . $this->featured_image)
-            : asset('img/default-image.png');
+        return $value ? asset('storage/' . $value) : asset('/img/defualt-avatar.png');
+
     }
 
 
