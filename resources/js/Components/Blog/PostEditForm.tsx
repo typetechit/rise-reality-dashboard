@@ -7,6 +7,7 @@ import {Textarea} from "@/Components/ui/textarea";
 import {Card, CardContent, CardHeader, CardTitle} from "@/Components/ui/card";
 import {Switch} from "@/Components/ui/switch";
 import {Label} from "@/Components/ui/label";
+import Dump from "@/Components/Dump";
 
 export default function PostEditForm({ post }: { post: any }) {
     const { data, setData, patch, processing, progress, errors, reset } = useForm({
@@ -29,6 +30,11 @@ export default function PostEditForm({ post }: { post: any }) {
             </CardHeader>
 
             <CardContent>
+
+                <img src={post.featured_image} width={100} height={100} />
+
+                <Dump data={{img: post.featured_image}} />
+
                 <form onSubmit={submit} className={`flex flex-col gap-5`}>
 
                     {/* Input: Title */}

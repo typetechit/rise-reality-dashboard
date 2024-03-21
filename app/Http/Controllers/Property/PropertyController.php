@@ -77,7 +77,7 @@ class PropertyController extends Controller
                 'title' => $validatedData['title'],
                 'description' => $validatedData['description'],
                 'content' => $validatedData['content'],
-                'featured_image' => $validatedData['featured_image'],
+                'featured_image' => null,
                 'is_published' => $validatedData['is_published'],
                 'price' => $validatedData['price'],
                 'location' => $validatedData['location'],
@@ -92,6 +92,13 @@ class PropertyController extends Controller
 
             $newProperty = $request->user()->properties()
                 ->create($newPropertyData);
+
+            if($request->hasFile('featured_image')){
+                $featuredImagePath = $request->file('featured_image')->store('property_images', 'public');
+                $newProperty->update([
+                    'featured_image' => $featuredImagePath
+                ]);
+            }
 
             DB::commit();
 

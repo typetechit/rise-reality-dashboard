@@ -41,12 +41,21 @@ class PostController extends Controller
     {
         $postData = $request->validationData();
 
-        if($request->hasFile('featured_image')){
-            $featuredImagePath = $request->file('featured_image')->storePublicly('posts_images');
-            $postData['featured_image'] = $featuredImagePath;
-        }
+        $newPost = $request->user()->posts()->create([
+            'title' => $postData['title'],
+            'description' => $postData['description'],
+            'is_published' => $postData['is_published'],
+        ]);
 
-        $newPost = $request->user()->posts()->create($postData);
+        if($request->hasFile('featured_image')){
+            $featuredImagePath = $request
+                ->file('featured_image')
+                ->store('post_images', 'public');
+
+            $newPost->update([
+                "featured_image" => $featuredImagePath
+            ]);
+        }
 
         return to_route('posts.edit', ['post' => $newPost]);
     }

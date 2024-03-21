@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Post extends Model
@@ -19,14 +19,17 @@ class Post extends Model
         'is_published'
     ];
 
-    protected $imageDir = "posts_images";
-
-    public function getFeaturedImageAttribute($value)
+    /**
+     * Get the post's featured image.
+     *
+     * @return Attribute
+     */
+    protected function featuredImage(): Attribute
     {
-        return $value ? asset('storage/' . $value) : asset('/img/defualt-avatar.png');
-
+        return Attribute::make(
+            get: fn ($value) => asset('storage/'.$value),
+        );
     }
-
 
     public function user()
     {
