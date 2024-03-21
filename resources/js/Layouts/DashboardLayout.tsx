@@ -11,7 +11,7 @@ import {cn} from "@/lib/utils";
 import {User} from "@/types";
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import {Link} from "@inertiajs/react";
-import {LogOutIcon, MessageCircleIcon} from "lucide-react";
+import {LogOutIcon, MessageCircleIcon, Terminal} from "lucide-react";
 import {Card, CardContent, CardHeader, CardTitle} from "@/Components/ui/card";
 import GoBack from "@/Components/GoBack";
 import {animeAtom, authUser, sidebarOpenState} from "@/store/DashboardLayoutState";
@@ -254,7 +254,7 @@ export function SidebarNavigations({navigations}: { navigations: any[] }) {
 
                         {navigations.map((item) => (
                             <li key={item.name}>
-                                <a
+                                <Link
                                     href={item.href}
                                     className={cn(
                                         item.current
@@ -271,7 +271,7 @@ export function SidebarNavigations({navigations}: { navigations: any[] }) {
                                         aria-hidden="true"
                                     />
                                     {item.name}
-                                </a>
+                                </Link>
                             </li>
                         ))}
                     </ul>
