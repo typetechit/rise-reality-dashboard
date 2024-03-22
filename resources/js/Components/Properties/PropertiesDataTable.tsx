@@ -158,9 +158,9 @@ export default function PropertiesDataTable({ properties }: {properties: any}) {
                 <div className="flex items-center gap-4 pb-4">
                     <Input
                         placeholder="Filter posts..."
-                        value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+                        value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
                         onChange={(event) =>
-                            table.getColumn("email")?.setFilterValue(event.target.value)
+                            table.getColumn("title")?.setFilterValue(event.target.value)
                         }
                         className="max-w-sm"
                     />

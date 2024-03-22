@@ -10,6 +10,7 @@ import Select from "react-select";
 import {RadioGroup, RadioGroupItem} from "@/Components/ui/radio-group";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/Components/ui/table";
 import {TrashIcon} from "lucide-react";
+import VideoLinksInput from "@/Components/ui/VideoLinksInput";
 
 function CategoryAttributeModificationTable({
                                                 attributes,
@@ -68,6 +69,7 @@ export default function PropertyCreateForm({ listingTypes, amenityTypes, categor
         amenities: [],
         category: null as any,
         category_attributes: [] as any[],
+        video_links: [""]
     });
 
     const [editorContent, setEditorContent] = useState("")
@@ -383,6 +385,17 @@ export default function PropertyCreateForm({ listingTypes, amenityTypes, categor
                             onValueChange={handleCategoryAttributeValueChange}
                             onRemoveItem={handleCategoryAttributeRemove}
                         />
+
+                        {/* Input: Video Links */}
+                        <div>
+                            <Label htmlFor="video_links">Video Links</Label>
+
+                            <VideoLinksInput
+                                defaultLinks={data.video_links}
+                                onChange={(links) => setData('video_links', links)}
+                            />
+
+                        </div>
 
                         <div className="flex items-center mt-4">
                             <Button disabled={processing}>

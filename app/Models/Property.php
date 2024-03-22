@@ -20,6 +20,7 @@ class Property extends Model
         'content',
         'featured_image',
         'gallery_images',
+        'video_links',
         'is_published',
         'price',
         'location',
@@ -41,6 +42,7 @@ class Property extends Model
     {
         return [
             'gallery_images' => 'array',
+            'video_links' => 'array',
             'amenities' => 'array',
             'category_attributes' => 'array'
         ];

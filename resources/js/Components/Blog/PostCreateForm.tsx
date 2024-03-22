@@ -1,4 +1,4 @@
-import { useEffect, FormEventHandler } from 'react';
+import {useEffect, FormEventHandler, useState} from 'react';
 import Checkbox from '@/Components/Checkbox';
 import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
@@ -14,15 +14,18 @@ import {Card, CardContent, CardHeader, CardTitle} from "@/Components/ui/card";
 import {Switch} from "@/Components/ui/switch";
 import {Label} from "@/Components/ui/label";
 import Dump from "@/Components/Dump";
+import {MinusIcon} from "@heroicons/react/24/solid";
+import {MinusCircle, PlusCircle} from "lucide-react";
+import VideoLinksInput from "@/Components/ui/VideoLinksInput";
 
 export default function PostCreateForm() {
-    const { data, setData, progress, post, processing, errors, reset } = useForm({
+    const { data, setData, setError, progress, post, processing, errors, reset } = useForm({
         title: '',
         description: '',
         featured_image: null,
         is_published: false,
         gallery_images: null,
-        video_links: null
+        video_links: [""]
     });
 
     const submit: FormEventHandler = (e) => {
@@ -100,6 +103,17 @@ export default function PostCreateForm() {
                         <InputError message={errors.gallery_images} className="mt-2"/>
                     </div>
 
+                    {/* Input: Video Links */}
+                    <div>
+                        <Label htmlFor="video_links">Video Links</Label>
+
+                        <VideoLinksInput
+                            defaultLinks={data.video_links}
+                            onChange={(links) => setData('video_links', links)}
+                        />
+
+                    </div>
+
                     {/* Input: Is Published */}
                     <div>
                         <div className="flex flex-col gap-4">
@@ -109,6 +123,7 @@ export default function PostCreateForm() {
                                 onCheckedChange={(value) => setData('is_published', value)} />
                         </div>
                     </div>
+
 
                     {progress && (
                         <progress value={progress.percentage} max="100">

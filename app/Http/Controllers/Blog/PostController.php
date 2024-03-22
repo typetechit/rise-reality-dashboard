@@ -40,20 +40,25 @@ class PostController extends Controller
     public function store(PostCreateRequest $request)
     {
         $postData = $request->validationData();
+
         $newPost = $request->user()->posts()->create([
             'title' => $postData['title'],
             'description' => $postData['description'],
             'is_published' => $postData['is_published'],
         ]);
 
+        $updatableData = [];
+
         if($request->hasFile('featured_image')){
             $featuredImagePath = $request
                 ->file('featured_image')
                 ->store('post_images', 'public');
 
-            $newPost->update([
-                "featured_image" => $featuredImagePath
-            ]);
+            $updatableData["featured_image"] = $featuredImagePath;
+        }
+
+        if(count($request->video_links) > 0){
+            $updatableData["video_links"] = $request->video_links;
         }
 
         if($request->hasFile('gallery_images')){
@@ -69,10 +74,10 @@ class PostController extends Controller
                 return asset('storage/'.$link);
             });
 
-            $newPost->update([
-                "gallery_images" => $filesPathLinks
-            ]);
+            $updatableData["gallery_images"] = $filesPathLinks;
         }
+
+        $newPost->update($updatableData);
 
         return to_route('posts.edit', ['post' => $newPost]);
     }

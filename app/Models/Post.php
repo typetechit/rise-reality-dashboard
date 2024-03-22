@@ -17,6 +17,7 @@ class Post extends Model
         'description',
         'featured_image',
         'gallery_images',
+        'video_links',
         'is_published'
     ];
 
@@ -24,6 +25,7 @@ class Post extends Model
     {
         return [
             'gallery_images' => 'array',
+            'video_links' => 'array',
         ];
     }
 

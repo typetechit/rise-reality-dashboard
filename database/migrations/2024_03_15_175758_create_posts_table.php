@@ -21,6 +21,7 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->text('featured_image')->nullable();
             $table->json('gallery_images')->nullable();
+            $table->json('video_links')->nullable();
             $table->boolean('is_published')->default(false);
 
             $table->timestamps();

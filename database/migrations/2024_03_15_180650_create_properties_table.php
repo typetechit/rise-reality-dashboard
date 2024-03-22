@@ -24,6 +24,7 @@ return new class extends Migration
             $table->longText('content')->nullable();
             $table->text('featured_image')->nullable();
             $table->json('gallery_images')->nullable();
+            $table->json('video_links')->nullable();
             $table->boolean('is_published')->default(false);
             $table->decimal('price')->nullable();
             $table->text('location')->nullable();

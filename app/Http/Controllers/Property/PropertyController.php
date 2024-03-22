@@ -93,11 +93,11 @@ class PropertyController extends Controller
             $newProperty = $request->user()->properties()
                 ->create($newPropertyData);
 
+            $updatableData = [];
+
             if($request->hasFile('featured_image')){
                 $featuredImagePath = $request->file('featured_image')->store('property_images', 'public');
-                $newProperty->update([
-                    'featured_image' => $featuredImagePath
-                ]);
+                $updatableData['featured_image'] = $featuredImagePath;
             }
 
             if($request->hasFile('gallery_images')){
@@ -113,10 +113,14 @@ class PropertyController extends Controller
                     return asset('storage/'.$link);
                 });
 
-                $newProperty->update([
-                    "gallery_images" => $filesPathLinks
-                ]);
+                $updatableData['gallery_images'] = $filesPathLinks;
             }
+
+            if(count($request->video_links) > 0){
+                $updatableData["video_links"] = $request->video_links;
+            }
+
+            $newProperty->update($updatableData);
 
             DB::commit();
 
