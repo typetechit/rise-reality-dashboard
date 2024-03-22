@@ -19,6 +19,7 @@ class Property extends Model
         'description',
         'content',
         'featured_image',
+        'gallery_images',
         'is_published',
         'price',
         'location',
@@ -39,6 +40,7 @@ class Property extends Model
     protected function casts(): array
     {
         return [
+            'gallery_images' => 'array',
             'amenities' => 'array',
             'category_attributes' => 'array'
         ];

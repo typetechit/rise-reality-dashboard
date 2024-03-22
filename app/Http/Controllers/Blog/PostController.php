@@ -40,7 +40,6 @@ class PostController extends Controller
     public function store(PostCreateRequest $request)
     {
         $postData = $request->validationData();
-
         $newPost = $request->user()->posts()->create([
             'title' => $postData['title'],
             'description' => $postData['description'],
@@ -54,6 +53,24 @@ class PostController extends Controller
 
             $newPost->update([
                 "featured_image" => $featuredImagePath
+            ]);
+        }
+
+        if($request->hasFile('gallery_images')){
+
+            $files = $request->file('gallery_images');
+            $filesPathLinks = [];
+
+            foreach($files as $file){
+                $filesPathLinks[] = $file->store('gallery_images', 'public');
+            }
+
+            $filesPathLinks = collect($filesPathLinks)->map(function($link) {
+                return asset('storage/'.$link);
+            });
+
+            $newPost->update([
+                "gallery_images" => $filesPathLinks
             ]);
         }
 

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('title');
             $table->longText('description')->nullable();
             $table->text('featured_image')->nullable();
+            $table->json('gallery_images')->nullable();
             $table->boolean('is_published')->default(false);
 
             $table->timestamps();

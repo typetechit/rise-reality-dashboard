@@ -100,6 +100,24 @@ class PropertyController extends Controller
                 ]);
             }
 
+            if($request->hasFile('gallery_images')){
+
+                $files = $request->file('gallery_images');
+                $filesPathLinks = [];
+
+                foreach($files as $file){
+                    $filesPathLinks[] = $file->store('property_gallery_images', 'public');
+                }
+
+                $filesPathLinks = collect($filesPathLinks)->map(function($link) {
+                    return asset('storage/'.$link);
+                });
+
+                $newProperty->update([
+                    "gallery_images" => $filesPathLinks
+                ]);
+            }
+
             DB::commit();
 
             return to_route('properties.index');

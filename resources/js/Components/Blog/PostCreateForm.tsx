@@ -21,7 +21,8 @@ export default function PostCreateForm() {
         description: '',
         featured_image: null,
         is_published: false,
-        gallery_images: null
+        gallery_images: null,
+        video_links: null
     });
 
     const submit: FormEventHandler = (e) => {

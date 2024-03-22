@@ -23,6 +23,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->longText('content')->nullable();
             $table->text('featured_image')->nullable();
+            $table->json('gallery_images')->nullable();
             $table->boolean('is_published')->default(false);
             $table->decimal('price')->nullable();
             $table->text('location')->nullable();

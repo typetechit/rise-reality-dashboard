@@ -56,6 +56,7 @@ export default function PropertyCreateForm({ listingTypes, amenityTypes, categor
         description: '',
         content: '',
         featured_image: null,
+        gallery_images: null,
         is_published: false,
         price: 0,
         location: '',
@@ -106,7 +107,7 @@ export default function PropertyCreateForm({ listingTypes, amenityTypes, categor
                 <CardContent>
 
                     <form onSubmit={submit} className={`flex flex-col gap-4`}>
-                        <div className={`grid grid-cols-2 gap-4`}>
+                        <div className={`grid grid-cols-3 gap-4`}>
                             {/* Input: Title */}
                             <div>
                                 <Label htmlFor="title">Title</Label>
@@ -134,6 +135,22 @@ export default function PropertyCreateForm({ listingTypes, amenityTypes, categor
                                 />
 
                                 <InputError message={errors.title} className="mt-2"/>
+                            </div>
+
+                            {/* Input: Gallery Images */}
+                            <div>
+                                <Label htmlFor="gallery_images">Gallery Images</Label>
+
+                                <Input
+                                    id="gallery_images"
+                                    type="file"
+                                    name="gallery_images"
+                                    accept={`image/png, image/gif, image/jpeg`}
+                                    multiple={true}
+                                    onChange={(e: any) => setData('gallery_images', e.target.files)}
+                                />
+
+                                <InputError message={errors.gallery_images} className="mt-2"/>
                             </div>
                         </div>
 

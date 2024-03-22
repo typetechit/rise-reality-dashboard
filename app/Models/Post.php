@@ -16,8 +16,16 @@ class Post extends Model
         'title',
         'description',
         'featured_image',
+        'gallery_images',
         'is_published'
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'gallery_images' => 'array',
+        ];
+    }
 
     /**
      * Get the post's featured image.

@@ -25,6 +25,7 @@ class PostCreateRequest extends FormRequest
             'title' => 'required',
             'description' => 'required',
             'featured_image' => 'required|file|mimes:jpg,jpeg,png',
+            'gallery_images.*' => 'required|file|mimes:jpg,jpeg,png',
             'is_published' => 'required|boolean'
         ];
     }
