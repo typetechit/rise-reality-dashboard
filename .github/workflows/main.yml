@@ -1,0 +1,31 @@
+name: Deploy RISErealty admin dashboard
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    deploy:
+        name: Deploy to Godaddy Droplet
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v2
+
+            - name: SSH into Godaddy Droplet
+              uses: appleboy/ssh-action@master
+              with:
+                  host: ${{ secrets.WEB_IP }}
+                  username: ${{ secrets.USER_ID }}
+                  password: ${{ secrets.PASSWORD }}
+                  port: 22
+                  script: |
+                      whoami
+                      cd /var/www/html/rise-reality-dashboard/
+                      git pull
+                      composer install
+                      pnpm i
+                      pnpm run build
+
