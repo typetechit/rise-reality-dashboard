@@ -35,7 +35,9 @@ export default function VideoLinksInput({ defaultLinks, onChange }: { defaultLin
                 return (
                     <div key={`video_link_${itemIdx}`} className={`flex items-center gap-4`}>
                         <Input
-                            onChange={e => updateVideoLink(e.target.value, itemIdx) } />
+                            value={video_link}
+                            onChange={e => updateVideoLink(e.target.value, itemIdx) }
+                        />
 
                         <Button
                             type={'button'}

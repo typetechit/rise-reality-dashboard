@@ -8,13 +8,16 @@ import {Card, CardContent, CardHeader, CardTitle} from "@/Components/ui/card";
 import {Switch} from "@/Components/ui/switch";
 import {Label} from "@/Components/ui/label";
 import Dump from "@/Components/Dump";
+import VideoLinksInput from "@/Components/ui/VideoLinksInput";
 
 export default function PostEditForm({ post }: { post: any }) {
     const { data, setData, patch, processing, progress, errors, reset } = useForm({
         title: post?.title,
         description: post?.description,
         featured_image: null,
-        is_published: post?.is_published
+        is_published: post?.is_published,
+        gallery_images: null,
+        video_links: post?.video_links || [""]
     });
 
     const submit: FormEventHandler = (e) => {
@@ -30,11 +33,6 @@ export default function PostEditForm({ post }: { post: any }) {
             </CardHeader>
 
             <CardContent>
-
-                <img src={post.featured_image} width={100} height={100} />
-
-                <Dump data={{img: post.featured_image}} />
-
                 <form onSubmit={submit} className={`flex flex-col gap-5`}>
 
                     {/* Input: Title */}
@@ -81,9 +79,36 @@ export default function PostEditForm({ post }: { post: any }) {
                         <InputError message={errors.title} className="mt-2"/>
                     </div>
 
+                    {/* Input: Gallery Images */}
+                    <div>
+                        <Label htmlFor="gallery_images">Gallery Images</Label>
+
+                        <Input
+                            id="gallery_images"
+                            type="file"
+                            name="gallery_images"
+                            accept={`image/png, image/gif, image/jpeg`}
+                            multiple={true}
+                            onChange={(e: any) => setData('gallery_images', e.target.files)}
+                        />
+
+                        <InputError message={errors.gallery_images} className="mt-2"/>
+                    </div>
+
+                    {/* Input: Video Links */}
+                    <div>
+                        <Label htmlFor="video_links">Video Links</Label>
+
+                        <VideoLinksInput
+                            defaultLinks={data.video_links}
+                            onChange={(links) => setData('video_links', links)}
+                        />
+
+                    </div>
+
                     {/* Input: Is Published */}
                     <div>
-                        <div className="flex items-center gap-5">
+                        <div className="flex flex-col gap-4">
                             <Label htmlFor="is_published" className={`flex-grow cursor-pointer`}>Published</Label>
                             <Switch
                                 id="is_published"
@@ -98,8 +123,8 @@ export default function PostEditForm({ post }: { post: any }) {
                         </progress>
                     )}
 
-                    <div className="flex items-center justify-end mt-4">
-                        <Button className="ms-4" disabled={processing}>
+                    <div className="flex items-center">
+                        <Button disabled={processing}>
                             { processing ? "Updating..." : "Update Post"}
                         </Button>
                     </div>
