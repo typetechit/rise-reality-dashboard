@@ -62,20 +62,24 @@ export default function PropertyEditForm({ property, listingTypes, amenityTypes,
         is_published: property?.is_published || '',
         price: property?.price || 0,
         location: property?.location || '',
+        map_url: property?.map_url || '',
         mls_code: property?.mls_code || '',
         build_year: property?.build_year || '',
         property_size: property?.property_size || '',
         is_featured: property?.is_featured || '',
         listing_type: property?.listing_type || '',
-        amenities: [],
+        amenities: property?.amenities || [],
         category: null as any,
         category_attributes: [] as any[],
-        video_links: property.video_links || [""]
+        video_links: property.video_links || [""],
+        _method: 'PUT'
     });
 
     const [editorContent, setEditorContent] = useState("")
     const [categoryAttributes, setCategoryAttributes] = useState([])
     const [selectedCategoryAttributes, setSelectedCategoryAttributes] = useState<any[]>([])
+
+    const selectedListingType = listingTypes[listingTypes.findIndex(item => item.value === property.listing_type)]
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -191,7 +195,7 @@ export default function PropertyEditForm({ property, listingTypes, amenityTypes,
                         </div>
 
 
-                        <div className={`grid grid-cols-3 gap-4`}>
+                        <div className={`grid grid-cols-4 gap-4`}>
                             {/* Input: Price */}
                             <div>
                                 <Label htmlFor="price">Price</Label>
@@ -220,6 +224,21 @@ export default function PropertyEditForm({ property, listingTypes, amenityTypes,
                                 />
 
                                 <InputError message={errors.location} className="mt-2"/>
+                            </div>
+
+                            {/* Input: map url */}
+                            <div>
+                                <Label htmlFor="location">Map URL</Label>
+
+                                <Input
+                                    id="map_url"
+                                    type={'text'}
+                                    name="map_url"
+                                    value={data.map_url}
+                                    onChange={(e) => setData('map_url', e.target.value)}
+                                />
+
+                                <InputError message={errors.map_url} className="mt-2"/>
                             </div>
 
                             {/* Input: mls_code */}
@@ -277,6 +296,7 @@ export default function PropertyEditForm({ property, listingTypes, amenityTypes,
                                     id={`listing_type`}
                                     name={'listing_type'}
                                     options={listingTypes}
+                                    defaultValue={selectedListingType}
                                     onChange={item => setData('listing_type', item.value)}
                                 />
 
@@ -294,6 +314,7 @@ export default function PropertyEditForm({ property, listingTypes, amenityTypes,
                                     id={`amenities`}
                                     name={'amenities'}
                                     options={amenityTypes}
+                                    defaultValue={property.amenities}
                                     isMulti={true}
                                     onChange={(item: any) => setData('amenities', item)}
                                 />

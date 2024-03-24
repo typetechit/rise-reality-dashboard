@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Property;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Property\PropertyCreateRequest;
+use App\Http\Requests\Property\PropertyUpdateRequest;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Property;
@@ -168,9 +169,66 @@ class PropertyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(PropertyUpdateRequest $request, Property $property)
     {
-        dd('Coming Soon.');
+        DB::beginTransaction();
+
+        try {
+            $validatedData = $request->validationData();
+            dd($validatedData);
+
+            $updatableData = [
+                'category_id' => $validatedData['category']['id'],
+                'title' => $validatedData['title'],
+                'description' => $validatedData['description'],
+                'content' => $validatedData['content'],
+                'is_published' => $validatedData['is_published'],
+                'price' => $validatedData['price'],
+                'location' => $validatedData['location'],
+                'map_url' => $validatedData['map_url'],
+                'mls_code' => $validatedData['mls_code'],
+                'build_year' => $validatedData['build_year'],
+                'property_size' => $validatedData['property_size'],
+                'is_featured' => $validatedData['is_featured'],
+                'listing_type' => $validatedData['listing_type'],
+                'amenities' => $validatedData['amenities'],
+                'category_attributes' => $validatedData['category_attributes'],
+            ];
+
+            if($request->hasFile('featured_image')){
+                $featuredImagePath = $request->file('featured_image')->store('property_images', 'public');
+                $updatableData['featured_image'] = $featuredImagePath;
+            }
+
+            if($request->hasFile('gallery_images')){
+
+                $files = $request->file('gallery_images');
+                $filesPathLinks = [];
+
+                foreach($files as $file){
+                    $filesPathLinks[] = $file->store('property_gallery_images', 'public');
+                }
+
+                $filesPathLinks = collect($filesPathLinks)->map(function($link) {
+                    return asset('storage/'.$link);
+                });
+
+                $updatableData['gallery_images'] = $filesPathLinks;
+            }
+
+            if(count($request->video_links) > 0){
+                $updatableData["video_links"] = $request->video_links;
+            }
+
+            $property->update($updatableData);
+
+            DB::commit();
+
+            return to_route('properties.edit', ['property' => $property]);
+        }catch (\Exception $e){
+            DB::rollBack();
+            dd($e);
+        }
     }
 
     /**

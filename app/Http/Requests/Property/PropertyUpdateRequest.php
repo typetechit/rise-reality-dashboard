@@ -11,7 +11,7 @@ class PropertyUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return auth()->check();
     }
 
     /**
@@ -21,8 +21,24 @@ class PropertyUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+        $availableListingTypes = collect(['Exclusive Listing', 'Lease', 'Rental', 'Sale'])->implode(',');
+
         return [
-            //
+            'title' => 'required',
+            'description' => 'required',
+            'content' => 'nullable',
+            'price' => 'required|numeric|gte:1',
+            'is_published' => 'required|boolean',
+            'location' => 'required',
+            'map_url' => 'required',
+            'mls_code' => 'required',
+            'build_year' => 'required|numeric|gte:1',
+            'property_size' => 'required|numeric|gte:1',
+            'is_featured' => 'required|boolean',
+            'listing_type' => ["required", "in:$availableListingTypes"],
+            'amenities' => ["nullable", 'array'],
+            'category' => ["nullable"],
+            'category_attributes' => ["nullable", "array"],
         ];
     }
 }

@@ -22,7 +22,7 @@ export default function PropertyEditPage({
             <div className={`p-5`}>
                 <PropertyEditForm
                     property={property}
-                    listingTypes={listingTypes.map(item => ({...item, value: item, label: item}))}
+                    listingTypes={listingTypes.map(item => ({value: item, label: item}))}
                     amenityTypes={amenities.map(item => ({...item, value: item.name, label: item.name}))}
                     categories={categories.map(item => ({...item, value: item.name, label: item.name}))}
                 />
