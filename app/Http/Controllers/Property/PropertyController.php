@@ -142,9 +142,26 @@ class PropertyController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Property $property)
     {
-        //
+        $availableListingTypes = ['Exclusive Listing', 'Lease', 'Rental', 'Sale'];
+        $availableAmenities = Property\Amenity::query()
+            ->select(['id', 'name'])
+            ->latest()
+            ->get();
+
+        $availableCategories = Category::query()
+            ->with('attributes:id,name,icon')
+            ->where('type', 'property')
+            ->orderBy('name')
+            ->get();
+
+        return inertia('Properties/Edit', [
+            'property' => $property,
+            'listingTypes' => $availableListingTypes,
+            'amenities' => $availableAmenities,
+            'categories' => $availableCategories
+        ]);
     }
 
     /**
@@ -152,7 +169,7 @@ class PropertyController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        dd('Coming Soon.');
     }
 
     /**

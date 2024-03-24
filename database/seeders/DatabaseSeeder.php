@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             AmenityTableSeeder::class,
             CategoryTableSeeder::class,
             AttributeTableSeeder::class,
+            CategoryAttributeSeeder::class,
             FaqTableSeeder::class,
             TestimonialTableSeeder::class
         ]);

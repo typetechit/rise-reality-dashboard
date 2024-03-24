@@ -10,9 +10,10 @@ import {Label} from "@/Components/ui/label";
 export default function TestimonialCreateForm() {
     const { data, setData, progress, post, processing, errors, reset } = useForm({
         name: "",
-        type: "",
-        img: null,
-        description: "",
+        position: "",
+        company: "",
+        image: null,
+        comment: "",
     });
 
     const submit: FormEventHandler = (e) => {
@@ -44,18 +45,32 @@ export default function TestimonialCreateForm() {
                         <InputError message={errors.name} className="mt-2"/>
                     </div>
 
-                    {/* Input: type */}
+                    {/* Input: Position */}
                     <div>
-                        <Label htmlFor="type">Type</Label>
+                        <Label htmlFor="type">Position</Label>
 
                         <Input
-                            id="type"
-                            name="type"
-                            value={data.type}
-                            onChange={(e: any) => setData('type', e.target.value)}
+                            id="position"
+                            name="position"
+                            value={data.position}
+                            onChange={(e: any) => setData('position', e.target.value)}
                         />
 
-                        <InputError message={errors.type} className="mt-2"/>
+                        <InputError message={errors.position} className="mt-2"/>
+                    </div>
+
+                    {/* Input: Company */}
+                    <div>
+                        <Label htmlFor="company">Company</Label>
+
+                        <Input
+                            id="company"
+                            name="company"
+                            value={data.company}
+                            onChange={(e: any) => setData('company', e.target.value)}
+                        />
+
+                        <InputError message={errors.company} className="mt-2"/>
                     </div>
 
                     {/* Input: Featured Image */}
@@ -63,28 +78,28 @@ export default function TestimonialCreateForm() {
                         <Label htmlFor="img">Image</Label>
 
                         <Input
-                            id="img"
+                            id="image"
                             type="file"
-                            name="img"
+                            name="image"
                             accept={`image/png, image/gif, image/jpeg`}
-                            onChange={(e: any) => setData('img', e.target.files[0])}
+                            onChange={(e: any) => setData('image', e.target.files[0])}
                         />
 
-                        <InputError message={errors.img} className="mt-2"/>
+                        <InputError message={errors.image} className="mt-2"/>
                     </div>
 
-                    {/* Input: Description */}
+                    {/* Input: Comment */}
                     <div>
-                        <Label htmlFor="description">Description</Label>
+                        <Label htmlFor="comment">Comment</Label>
 
                         <Textarea
-                            id="description"
-                            name="description"
-                            value={data.description}
-                            onChange={(e: any) => setData('description', e.target.value)}
+                            id="comment"
+                            name="comment"
+                            value={data.comment}
+                            onChange={(e: any) => setData('comment', e.target.value)}
                         />
 
-                        <InputError message={errors.description} className="mt-2"/>
+                        <InputError message={errors.comment} className="mt-2"/>
                     </div>
 
                     <div className="flex items-center">

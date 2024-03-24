@@ -37,20 +37,29 @@ import {
 import {Badge} from "@/Components/ui/badge";
 import {Card, CardContent} from "@/Components/ui/card";
 import {Link} from "@inertiajs/react";
-import {PencilIcon, TrashIcon} from "lucide-react";
-
+import {PencilIcon} from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar"
 
-export type Testimonial = {
-    id: number
-    name: string
-    position: string
-    company: string
-    image: string
-    comment: string
+export type User = {
+    id: number,
+    name: string,
+    email: string,
+    email_verified_at: string,
+    role: string,
+    designation: string,
+    description: string,
+    social_links: string,
+    experience: string,
+    location: string,
+    practice_area: string,
+    phone: string,
+    image: string,
+    remember_token: string,
+    created_at: string,
+    updated_at: string,
 }
 
-export const columns: ColumnDef<Testimonial>[] = [
+export const columns: ColumnDef<User>[] = [
     {
         id: "select",
         header: ({ table }) => (
@@ -74,49 +83,51 @@ export const columns: ColumnDef<Testimonial>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "name",
-        header: "Name",
+        accessorKey: "image",
+        header: 'Image',
         cell: ({ row }) => {
-            const testimonial = row.original
-
+            const user = row.original
             return (
-                <div className={`flex items-center gap-4`}>
-                    <Avatar>
-                        <AvatarImage src={testimonial.image} />
-                        <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
-
-                    <span>{testimonial.name}</span>
-                </div>
+                <Avatar>
+                    <AvatarImage src={user.image} />
+                    <AvatarFallback>{user.name}</AvatarFallback>
+                </Avatar>
             )
         }
     },
     {
-        accessorKey: "position",
-        header: 'Position',
+        accessorKey: "name",
+        header: "Name",
     },
     {
-        accessorKey: "company",
-        header: 'Company',
+        accessorKey: "email",
+        header: 'Email',
     },
     {
-        accessorKey: "comment",
-        header: 'comment',
+        accessorKey: "designation",
+        header: 'designation',
+    },
+    {
+        accessorKey: "role",
+        header: 'Role',
+        cell: ({ row }) => {
+            const user = row.original
+            const userRole = user?.role || ""
+            let content = <Badge variant={'outline'}>{userRole}</Badge>
+
+            return content
+        }
     },
     {
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
-            const testimonial = row.original
+            const user = row.original
 
             return (
                 <div className={`flex gap-4`}>
-                    <Link href={route('testimonials.edit', {'testimonial': testimonial.id})}>
+                    <Link href={route('users.edit', {'user': user.id})}>
                         <PencilIcon className={`w-5 h-5`} />
-                    </Link>
-
-                    <Link href={route('testimonials.destroy', {'testimonial': testimonial.id})} method={'delete'} >
-                        <TrashIcon className={`w-5 h-5`} />
                     </Link>
                 </div>
             )
@@ -124,7 +135,9 @@ export const columns: ColumnDef<Testimonial>[] = [
     },
 ]
 
-export default function TestimonialsDataTable({ faqs }: {faqs: any}) {
+export default function UsersDataTable({ users }: {users: any}) {
+    const usersData = users.data
+
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         []
@@ -134,7 +147,7 @@ export default function TestimonialsDataTable({ faqs }: {faqs: any}) {
     const [rowSelection, setRowSelection] = React.useState({})
 
     const table = useReactTable({
-        data: faqs,
+        data: usersData,
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -193,7 +206,7 @@ export default function TestimonialsDataTable({ faqs }: {faqs: any}) {
                     </DropdownMenu>
 
                     <Button>
-                        <Link href={route('testimonials.create')}>Add New Testimonial</Link>
+                        <Link href={route('users.create')}>Add New User</Link>
                     </Button>
                 </div>
 

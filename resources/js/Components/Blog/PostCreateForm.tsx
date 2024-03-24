@@ -23,9 +23,7 @@ export default function PostCreateForm() {
         title: '',
         description: '',
         featured_image: null,
-        is_published: false,
-        gallery_images: null,
-        video_links: [""]
+        is_published: false
     });
 
     const submit: FormEventHandler = (e) => {
@@ -85,33 +83,6 @@ export default function PostCreateForm() {
                         />
 
                         <InputError message={errors.featured_image} className="mt-2"/>
-                    </div>
-
-                    {/* Input: Gallery Images */}
-                    <div>
-                        <Label htmlFor="gallery_images">Gallery Images</Label>
-
-                        <Input
-                            id="gallery_images"
-                            type="file"
-                            name="gallery_images"
-                            accept={`image/png, image/gif, image/jpeg`}
-                            multiple={true}
-                            onChange={(e: any) => setData('gallery_images', e.target.files)}
-                        />
-
-                        <InputError message={errors.gallery_images} className="mt-2"/>
-                    </div>
-
-                    {/* Input: Video Links */}
-                    <div>
-                        <Label htmlFor="video_links">Video Links</Label>
-
-                        <VideoLinksInput
-                            defaultLinks={data.video_links}
-                            onChange={(links) => setData('video_links', links)}
-                        />
-
                     </div>
 
                     {/* Input: Is Published */}

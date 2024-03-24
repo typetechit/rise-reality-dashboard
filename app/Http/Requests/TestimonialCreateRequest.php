@@ -11,7 +11,7 @@ class TestimonialCreateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->check();
+        return auth()->check() && auth()->user()->role === 'ADMIN';
     }
 
     /**
@@ -23,9 +23,10 @@ class TestimonialCreateRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
-            'img' => 'nullable|file|mimes:jpg,jpeg,png',
-            'description' => 'required|string',
+            'image' => 'nullable|file|mimes:jpg,jpeg,png',
+            'position' => 'required|string|max:255',
+            'company' => 'required|string|max:255',
+            'comment' => 'required|string',
         ];
     }
 }

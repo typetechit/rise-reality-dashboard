@@ -6,13 +6,15 @@ import {Button} from "@/Components/ui/button";
 import {Textarea} from "@/Components/ui/textarea";
 import {Card, CardContent, CardHeader, CardTitle} from "@/Components/ui/card";
 import {Label} from "@/Components/ui/label";
+import Dump from "@/Components/Dump";
 
 export default function TestimonialEditForm({ testimonial }: { testimonial: any }) {
     const { data, setData, progress, patch, processing, errors, reset } = useForm({
         name: testimonial?.name || "",
-        type: testimonial?.type || "",
+        position: testimonial?.position || "",
+        company: testimonial?.company || "",
         image: null,
-        description: testimonial?.description || "",
+        comment: testimonial?.comment || "",
     });
 
     const submit: FormEventHandler = (e) => {
@@ -24,7 +26,7 @@ export default function TestimonialEditForm({ testimonial }: { testimonial: any 
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Create new Testimonial</CardTitle>
+                <CardTitle>Edit Testimonial</CardTitle>
             </CardHeader>
 
             <CardContent>
@@ -44,23 +46,37 @@ export default function TestimonialEditForm({ testimonial }: { testimonial: any 
                         <InputError message={errors.name} className="mt-2"/>
                     </div>
 
-                    {/* Input: type */}
+                    {/* Input: Position */}
                     <div>
-                        <Label htmlFor="type">Type</Label>
+                        <Label htmlFor="type">Position</Label>
 
                         <Input
-                            id="type"
-                            name="type"
-                            value={data.type}
-                            onChange={(e: any) => setData('type', e.target.value)}
+                            id="position"
+                            name="position"
+                            value={data.position}
+                            onChange={(e: any) => setData('position', e.target.value)}
                         />
 
-                        <InputError message={errors.type} className="mt-2"/>
+                        <InputError message={errors.position} className="mt-2"/>
+                    </div>
+
+                    {/* Input: Company */}
+                    <div>
+                        <Label htmlFor="company">Company</Label>
+
+                        <Input
+                            id="company"
+                            name="company"
+                            value={data.company}
+                            onChange={(e: any) => setData('company', e.target.value)}
+                        />
+
+                        <InputError message={errors.company} className="mt-2"/>
                     </div>
 
                     {/* Input: Featured Image */}
                     <div>
-                        <Label htmlFor="image">Image</Label>
+                        <Label htmlFor="img">Image</Label>
 
                         <Input
                             id="image"
@@ -73,18 +89,18 @@ export default function TestimonialEditForm({ testimonial }: { testimonial: any 
                         <InputError message={errors.image} className="mt-2"/>
                     </div>
 
-                    {/* Input: Description */}
+                    {/* Input: Comment */}
                     <div>
-                        <Label htmlFor="description">Description</Label>
+                        <Label htmlFor="comment">Comment</Label>
 
                         <Textarea
-                            id="description"
-                            name="description"
-                            value={data.description}
-                            onChange={(e: any) => setData('description', e.target.value)}
+                            id="comment"
+                            name="comment"
+                            value={data.comment}
+                            onChange={(e: any) => setData('comment', e.target.value)}
                         />
 
-                        <InputError message={errors.description} className="mt-2"/>
+                        <InputError message={errors.comment} className="mt-2"/>
                     </div>
 
                     <div className="flex items-center">

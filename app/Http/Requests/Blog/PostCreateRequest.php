@@ -25,9 +25,6 @@ class PostCreateRequest extends FormRequest
             'title' => 'required',
             'description' => 'required',
             'featured_image' => 'required|file|mimes:jpg,jpeg,png',
-            'gallery_images.*' => 'required|file|mimes:jpg,jpeg,png',
-            'video_links' => 'required|array',
-            'video_links.*' => 'required|url',
             'is_published' => 'required|boolean'
         ];
     }

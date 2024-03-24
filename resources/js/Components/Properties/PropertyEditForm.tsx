@@ -11,6 +11,7 @@ import {RadioGroup, RadioGroupItem} from "@/Components/ui/radio-group";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/Components/ui/table";
 import {TrashIcon} from "lucide-react";
 import VideoLinksInput from "@/Components/ui/VideoLinksInput";
+import Dump from "@/Components/Dump";
 
 function CategoryAttributeModificationTable({
                                                 attributes,
@@ -51,25 +52,25 @@ function CategoryAttributeModificationTable({
     );
 }
 
-export default function PropertyCreateForm({ listingTypes, amenityTypes, categories }: { listingTypes: any[], amenityTypes: any[], categories: any[] }) {
+export default function PropertyEditForm({ property, listingTypes, amenityTypes, categories }: { property: any, listingTypes: any[], amenityTypes: any[], categories: any[] }) {
     const { data, setData, post, processing, errors, reset } = useForm({
-        title: '',
-        description: '',
-        content: '',
+        title: property?.title || '',
+        description: property?.description || '',
+        content: property?.content || '',
         featured_image: null,
         gallery_images: null,
-        is_published: false,
-        price: 0,
-        location: '',
-        mls_code: '',
-        build_year: '',
-        property_size: '',
-        is_featured: false,
-        listing_type: '',
+        is_published: property?.is_published || '',
+        price: property?.price || 0,
+        location: property?.location || '',
+        mls_code: property?.mls_code || '',
+        build_year: property?.build_year || '',
+        property_size: property?.property_size || '',
+        is_featured: property?.is_featured || '',
+        listing_type: property?.listing_type || '',
         amenities: [],
         category: null as any,
         category_attributes: [] as any[],
-        video_links: [""]
+        video_links: property.video_links || [""]
     });
 
     const [editorContent, setEditorContent] = useState("")
@@ -78,7 +79,7 @@ export default function PropertyCreateForm({ listingTypes, amenityTypes, categor
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        post(route('properties.store'));
+        post(route('properties.update', {property: property.id}));
     };
 
     function handleCategoryAttributeValueChange(attribute: any, indexId: any) {
@@ -307,7 +308,7 @@ export default function PropertyCreateForm({ listingTypes, amenityTypes, categor
                                 >Is Featured</Label>
 
                                 <RadioGroup
-                                    defaultValue="option-one"
+                                    defaultValue={property?.is_featured?.toString() || "0"}
                                     className={`flex items-center gap-5 mt-3`}
                                     onValueChange={(value: any) => setData('is_featured', value)}
                                 >
@@ -325,12 +326,12 @@ export default function PropertyCreateForm({ listingTypes, amenityTypes, categor
                             {/* Input: Is Published */}
                             <div>
                                 <Label
-                                    htmlFor="is_featured"
+                                    htmlFor="is_published"
                                     className={`flex-grow cursor-pointer`}
                                 >Is Published</Label>
 
                                 <RadioGroup
-                                    defaultValue="option-one"
+                                    defaultValue={property?.is_published?.toString() || "0"}
                                     className={`flex items-center gap-5 mt-3`}
                                     onValueChange={(value: any) => setData('is_published', value)}
                                 >
@@ -399,7 +400,7 @@ export default function PropertyCreateForm({ listingTypes, amenityTypes, categor
 
                         <div className="flex items-center mt-4">
                             <Button disabled={processing}>
-                                {processing ? "Adding Property ..." : "Add Property"}
+                                {processing ? "Updating Property ..." : "Update Property"}
                             </Button>
                         </div>
                     </form>

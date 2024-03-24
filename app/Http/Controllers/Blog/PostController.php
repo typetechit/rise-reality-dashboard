@@ -57,26 +57,6 @@ class PostController extends Controller
             $updatableData["featured_image"] = $featuredImagePath;
         }
 
-        if(count($request->video_links) > 0){
-            $updatableData["video_links"] = $request->video_links;
-        }
-
-        if($request->hasFile('gallery_images')){
-
-            $files = $request->file('gallery_images');
-            $filesPathLinks = [];
-
-            foreach($files as $file){
-                $filesPathLinks[] = $file->store('gallery_images', 'public');
-            }
-
-            $filesPathLinks = collect($filesPathLinks)->map(function($link) {
-                return asset('storage/'.$link);
-            });
-
-            $updatableData["gallery_images"] = $filesPathLinks;
-        }
-
         $newPost->update($updatableData);
 
         return to_route('posts.edit', ['post' => $newPost]);
@@ -113,26 +93,6 @@ class PostController extends Controller
                 ->store('post_images', 'public');
 
             $updatableData["featured_image"] = $featuredImagePath;
-        }
-
-        if(count($request->video_links) > 0){
-            $updatableData["video_links"] = $request->video_links;
-        }
-
-        if($request->hasFile('gallery_images')){
-
-            $files = $request->file('gallery_images');
-            $filesPathLinks = [];
-
-            foreach($files as $file){
-                $filesPathLinks[] = $file->store('gallery_images', 'public');
-            }
-
-            $filesPathLinks = collect($filesPathLinks)->map(function($link) {
-                return asset('storage/'.$link);
-            });
-
-            $updatableData["gallery_images"] = $filesPathLinks;
         }
 
         $post->update($updatableData);

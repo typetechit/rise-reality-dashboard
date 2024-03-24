@@ -33,7 +33,26 @@ class TestimonialController extends Controller
      */
     public function store(TestimonialCreateRequest $request)
     {
-        $newTestimonial = Testimonial::create($request->validationData());
+        $validatedData = $request->validationData();
+
+        $newTestimonial = Testimonial::create([
+            'name' => $validatedData['name'],
+            'position' => $validatedData['position'],
+            'company' => $validatedData['company'],
+            'comment' => $validatedData['comment'],
+        ]);
+
+        $updatableData = [];
+
+        if($request->hasFile('image')){
+            $featuredImagePath = $request
+                ->file('image')
+                ->store('testimonial_images', 'public');
+
+            $updatableData["image"] = $featuredImagePath;
+        }
+
+        $newTestimonial->update($updatableData);
 
         return redirect()->route('testimonials.index');
     }
@@ -61,7 +80,18 @@ class TestimonialController extends Controller
      */
     public function update(TestimonialCreateRequest $request, Testimonial $testimonial)
     {
-        $testimonial->update($request->validationData());
+        $updatableData = $request->validationData();
+        dd($updatableData);
+        if($request->hasFile('image')){
+            $featuredImagePath = $request
+                ->file('image')
+                ->store('testimonial_images', 'public');
+
+            $updatableData["image"] = $featuredImagePath;
+        }
+
+        $testimonial->update($updatableData);
+
 
         return redirect()->route('testimonials.index');
     }

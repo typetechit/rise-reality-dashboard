@@ -32,6 +32,7 @@ return new class extends Migration
             $table->text('location')->nullable();
             $table->text('practice_area')->nullable();
             $table->text('phone')->nullable();
+            $table->text('image')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

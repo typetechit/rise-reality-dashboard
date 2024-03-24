@@ -11,32 +11,34 @@ import {cn} from "@/lib/utils";
 import {User} from "@/types";
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import {Link} from "@inertiajs/react";
-import {LogOutIcon, MessageCircleIcon, Terminal} from "lucide-react";
+import {BuildingIcon, LogOutIcon, MessageCircleIcon, Terminal} from "lucide-react";
 import {Card, CardContent, CardHeader, CardTitle} from "@/Components/ui/card";
 import GoBack from "@/Components/GoBack";
 import {animeAtom, authUser, sidebarOpenState} from "@/store/DashboardLayoutState";
 import {useAtom, useAtomValue, useSetAtom} from 'jotai'
 import Dump from "@/Components/Dump";
+import {NewspaperIcon} from "@heroicons/react/24/solid";
 
 const adminNavigations = [
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, current: true },
-    { name: 'Blog Posts', href: '/posts', icon: UsersIcon, current: false },
-    { name: 'Properties', href: '/properties', icon: FolderIcon, current: false },
+    { name: 'Blog Posts', href: '/posts', icon: NewspaperIcon, current: false },
+    { name: 'Properties', href: '/properties', icon: BuildingIcon, current: false },
     { name: "Faqs", href: "/faqs", icon: QuestionMarkCircleIcon, current: false },
     { name: "Testimonials", href: "/testimonials", icon: MessageCircleIcon, current: false },
     { name: "Contacts Messages", href: "/contact-messages", icon: MessageCircleIcon, current: false },
     { name: "Inbox", href: "/inbox", icon: InboxIcon, current: false },
+    { name: "Users", href: "/users", icon: UsersIcon, current: false },
 ]
 
 const propertyAgentNavigations = [
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, current: true },
-    { name: 'Properties', href: '/properties', icon: FolderIcon, current: false },
+    { name: 'Properties', href: '/properties', icon: BuildingIcon, current: false },
     { name: "Inbox", href: "/inbox", icon: InboxIcon, current: false },
 ]
 
 const editorNavigations = [
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, current: true },
-    { name: 'Blog Posts', href: '/posts', icon: UsersIcon, current: false },
+    { name: 'Blog Posts', href: '/posts', icon: NewspaperIcon, current: false },
 ]
 
 export default function DashboardLayout({ user, header, children }: PropsWithChildren<{ user: User, header?: ReactNode }>) {
@@ -251,9 +253,6 @@ export function SidebarNavigations({navigations}: { navigations: any[] }) {
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
                 <li>
                     <ul role="list" className="-mx-2 space-y-1">
-
-                        {  }
-
                         {navigations.map((item) => (
                             <li key={item.name}>
                                 <Link
@@ -297,7 +296,6 @@ export function SidebarDesktop() {
 
     return (
         <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-            {/*<Dump data={user} />*/}
             {/* Sidebar component, swap this element with another sidebar if you like */}
             <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
                 <div className="flex max-h-24 shrink-0 items-center">
