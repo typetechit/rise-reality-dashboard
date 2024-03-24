@@ -3,7 +3,7 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "tsc && vite build && vite build --ssr"
+        "build": "vite build && vite build --ssr"
     },
     "devDependencies": {
         "@headlessui/react": "^1.4.2",
@@ -40,7 +40,6 @@
         "@stitches/react": "^1.2.8",
         "@tailwindcss/typography": "^0.5.10",
         "@tanstack/react-table": "^8.13.2",
-        "@tinymce/tinymce-react": "^4.3.2",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.0",
         "jotai": "^2.7.1",
