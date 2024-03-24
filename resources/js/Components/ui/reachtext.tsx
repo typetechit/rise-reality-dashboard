@@ -39,17 +39,17 @@ export default function ReachText({
     async function imageUploadHandler(image: File) {
         const formData = new FormData();
         formData.append("image", image);
+        // get csrf token form cookie
 
         const response = await fetch("/editor-file-upload", {
             method: "POST",
             body: formData,
         });
 
-        console.log("Response status:", response.status); // Log the response status
-
         if (response.ok) {
-            const { url } = await response.json();
-            return url;
+            const { editor_uploaded_image } = await response.json();
+            console.log("Response status:", editor_uploaded_image); // Log the response status
+            return editor_uploaded_image;
         } else {
             console.error("Error uploading image:", response.statusText); // Log any errors
             console.log("Failed to upload image");

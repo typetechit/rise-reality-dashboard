@@ -55,7 +55,6 @@ Start Typing Here \n sdfsdf
             <CardHeader>
                 <CardTitle>Create new Post</CardTitle>
             </CardHeader>
-            <Dump data={data} />
             <CardContent>
                 <form onSubmit={submit} className={`flex flex-col gap-5`}>
                     {/* Input: Title */}

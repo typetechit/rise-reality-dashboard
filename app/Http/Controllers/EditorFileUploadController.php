@@ -15,10 +15,10 @@ class EditorFileUploadController extends Controller
         if($request->hasFile('image')){
             $uploadedImagePath = $request
                 ->file('image')
-                ->store('editor-file-upload', 'public');
+                ->store('editor_uploaded_image', 'public');
 
             return response()->json([
-                'editor-uploaded-image' => $uploadedImagePath
+                'editor_uploaded_image' => asset('storage/'.$uploadedImagePath),
             ]);
         }
 
