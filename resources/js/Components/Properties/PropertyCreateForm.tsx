@@ -63,6 +63,7 @@ export default function PropertyCreateForm({ listingTypes, amenityTypes, categor
         is_published: false,
         price: 0,
         location: '',
+        map_url: '',
         mls_code: '',
         build_year: '',
         property_size: '',
@@ -179,31 +180,23 @@ export default function PropertyCreateForm({ listingTypes, amenityTypes, categor
                         <div>
                             <Label htmlFor="content">Content</Label>
                             <ReachText
-                            markdown={data.description}
-                            editorRef={editorRef}
-                            onChange={() =>
-                                setData(
-                                    "content",
-                                    JSON.stringify(
-                                        editorRef.current?.getMarkdown()
+                                markdown={data.description}
+                                editorRef={editorRef}
+                                onChange={() =>
+                                    setData(
+                                        "content",
+                                        JSON.stringify(
+                                            editorRef.current?.getMarkdown()
+                                        )
                                     )
-                                )
-                            }
-                        />
-                            {/* <Textarea
-                                id="content"
-                                name="content"
-                                value={data.content}
-                                className="mt-1 block w-full"
-                                autoComplete="current-password"
-                                onChange={(e) => setData('content', e.target.value)}
-                            /> */}
+                                }
+                            />
 
                             <InputError message={errors.content} className="mt-2"/>
                         </div>
 
 
-                        <div className={`grid grid-cols-3 gap-4`}>
+                        <div className={`grid grid-cols-4 gap-4`}>
                             {/* Input: Price */}
                             <div>
                                 <Label htmlFor="price">Price</Label>
@@ -232,6 +225,21 @@ export default function PropertyCreateForm({ listingTypes, amenityTypes, categor
                                 />
 
                                 <InputError message={errors.location} className="mt-2"/>
+                            </div>
+
+                            {/* Input: map url */}
+                            <div>
+                                <Label htmlFor="location">Map URL</Label>
+
+                                <Input
+                                    id="map_url"
+                                    type={'text'}
+                                    name="map_url"
+                                    value={data.map_url}
+                                    onChange={(e) => setData('map_url', e.target.value)}
+                                />
+
+                                <InputError message={errors.map_url} className="mt-2"/>
                             </div>
 
                             {/* Input: mls_code */}
@@ -359,45 +367,53 @@ export default function PropertyCreateForm({ listingTypes, amenityTypes, categor
                             </div>
                         </div>
 
-                        <div className={`grid grid-cols-3 gap-4`}>
+                        <div className={`bg-gray-100 p-4`}>
+                            <div className={`grid grid-cols-2 gap-4 border-b`}>
 
-                            {/* Input: Categories */}
-                            <div>
-                                <Label htmlFor="category">Category</Label>
+                                {/* Input: Categories */}
+                                <div>
+                                    <Label htmlFor="category">Category</Label>
 
-                                <Select
-                                    id={`category`}
-                                    name={'category'}
-                                    options={categories}
-                                    onChange={(item: any) => {
-                                        setData('category', {id: item.id, name: item.name})
-                                        setCategoryAttributes(item.attributes.map((attr: any) => ({id: attr.id, name: attr.name, icon: attr.icon, value: attr.id, label: attr.name })))
-                                    }}
-                                />
+                                    <Select
+                                        id={`category`}
+                                        name={'category'}
+                                        options={categories}
+                                        onChange={(item: any) => {
+                                            setData('category', {id: item.id, name: item.name})
+                                            setCategoryAttributes(item.attributes.map((attr: any) => ({
+                                                id: attr.id,
+                                                name: attr.name,
+                                                icon: attr.icon,
+                                                value: attr.id,
+                                                label: attr.name
+                                            })))
+                                        }}
+                                    />
 
-                                <InputError message={errors.amenities} className="mt-2"/>
+                                    <InputError message={errors.amenities} className="mt-2"/>
+                                </div>
+
+                                {/* Input: Category Attributes */}
+                                <div>
+                                    <Label htmlFor="category_attributes">Category Attributes</Label>
+
+                                    <Select
+                                        id={`category_attributes`}
+                                        options={categoryAttributes}
+                                        isMulti={true}
+                                        onChange={(data: any) => setSelectedCategoryAttributes(data)}
+                                    />
+
+                                    <InputError message={errors.category_attributes} className="mt-2"/>
+                                </div>
                             </div>
 
-                            {/* Input: Category Attributes */}
-                            <div>
-                                <Label htmlFor="category_attributes">Category Attributes</Label>
-
-                                <Select
-                                    id={`category_attributes`}
-                                    options={categoryAttributes}
-                                    isMulti={true}
-                                    onChange={(data: any) => setSelectedCategoryAttributes(data)}
-                                />
-
-                                <InputError message={errors.category_attributes} className="mt-2"/>
-                            </div>
+                            <CategoryAttributeModificationTable
+                                attributes={selectedCategoryAttributes}
+                                onValueChange={handleCategoryAttributeValueChange}
+                                onRemoveItem={handleCategoryAttributeRemove}
+                            />
                         </div>
-
-                        <CategoryAttributeModificationTable
-                            attributes={selectedCategoryAttributes}
-                            onValueChange={handleCategoryAttributeValueChange}
-                            onRemoveItem={handleCategoryAttributeRemove}
-                        />
 
                         {/* Input: Video Links */}
                         <div>
@@ -419,5 +435,5 @@ export default function PropertyCreateForm({ listingTypes, amenityTypes, categor
                 </CardContent>
             </Card>
         </>
-);
+    );
 }

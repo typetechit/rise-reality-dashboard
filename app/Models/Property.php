@@ -24,6 +24,7 @@ class Property extends Model
         'is_published',
         'price',
         'location',
+        'map_url',
         'mls_code',
         'build_year',
         'property_size',

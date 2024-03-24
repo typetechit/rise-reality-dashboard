@@ -81,6 +81,7 @@ class PropertyController extends Controller
                 'is_published' => $validatedData['is_published'],
                 'price' => $validatedData['price'],
                 'location' => $validatedData['location'],
+                'map_url' => $validatedData['map_url'],
                 'mls_code' => $validatedData['mls_code'],
                 'build_year' => $validatedData['build_year'],
                 'property_size' => $validatedData['property_size'],

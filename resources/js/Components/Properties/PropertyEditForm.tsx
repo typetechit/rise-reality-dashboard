@@ -347,45 +347,55 @@ export default function PropertyEditForm({ property, listingTypes, amenityTypes,
                             </div>
                         </div>
 
-                        <div className={`grid grid-cols-3 gap-4`}>
 
-                            {/* Input: Categories */}
-                            <div>
-                                <Label htmlFor="category">Category</Label>
+                        <div className={`bg-gray-100 p-4`}>
+                            <div className={`grid grid-cols-2 gap-4 border-b`}>
 
-                                <Select
-                                    id={`category`}
-                                    name={'category'}
-                                    options={categories}
-                                    onChange={(item: any) => {
-                                        setData('category', {id: item.id, name: item.name})
-                                        setCategoryAttributes(item.attributes.map((attr: any) => ({id: attr.id, name: attr.name, icon: attr.icon, value: attr.id, label: attr.name })))
-                                    }}
-                                />
+                                {/* Input: Categories */}
+                                <div>
+                                    <Label htmlFor="category">Category</Label>
 
-                                <InputError message={errors.amenities} className="mt-2"/>
+                                    <Select
+                                        id={`category`}
+                                        name={'category'}
+                                        options={categories}
+                                        onChange={(item: any) => {
+                                            setData('category', {id: item.id, name: item.name})
+                                            setCategoryAttributes(item.attributes.map((attr: any) => ({
+                                                id: attr.id,
+                                                name: attr.name,
+                                                icon: attr.icon,
+                                                value: attr.id,
+                                                label: attr.name
+                                            })))
+                                        }}
+                                    />
+
+                                    <InputError message={errors.amenities} className="mt-2"/>
+                                </div>
+
+                                {/* Input: Category Attributes */}
+                                <div>
+                                    <Label htmlFor="category_attributes">Category Attributes</Label>
+
+                                    <Select
+                                        id={`category_attributes`}
+                                        options={categoryAttributes}
+                                        isMulti={true}
+                                        onChange={(data: any) => setSelectedCategoryAttributes(data)}
+                                    />
+
+                                    <InputError message={errors.category_attributes} className="mt-2"/>
+                                </div>
                             </div>
 
-                            {/* Input: Category Attributes */}
-                            <div>
-                                <Label htmlFor="category_attributes">Category Attributes</Label>
-
-                                <Select
-                                    id={`category_attributes`}
-                                    options={categoryAttributes}
-                                    isMulti={true}
-                                    onChange={(data: any) => setSelectedCategoryAttributes(data)}
-                                />
-
-                                <InputError message={errors.category_attributes} className="mt-2"/>
-                            </div>
+                            <CategoryAttributeModificationTable
+                                attributes={selectedCategoryAttributes}
+                                onValueChange={handleCategoryAttributeValueChange}
+                                onRemoveItem={handleCategoryAttributeRemove}
+                            />
                         </div>
 
-                        <CategoryAttributeModificationTable
-                            attributes={selectedCategoryAttributes}
-                            onValueChange={handleCategoryAttributeValueChange}
-                            onRemoveItem={handleCategoryAttributeRemove}
-                        />
 
                         {/* Input: Video Links */}
                         <div>
@@ -407,5 +417,5 @@ export default function PropertyEditForm({ property, listingTypes, amenityTypes,
                 </CardContent>
             </Card>
         </>
-);
+    );
 }

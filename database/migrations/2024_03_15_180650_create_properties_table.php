@@ -27,7 +27,8 @@ return new class extends Migration
             $table->json('video_links')->nullable();
             $table->boolean('is_published')->default(false);
             $table->decimal('price')->nullable();
-            $table->text('location')->nullable();
+            $table->string('location')->nullable();
+            $table->text('map_url')->nullable();
             $table->string('mls_code')->unique();
             $table->string('build_year')->nullable();
             $table->integer('property_size')->nullable();

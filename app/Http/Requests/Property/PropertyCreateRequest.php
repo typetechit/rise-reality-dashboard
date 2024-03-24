@@ -30,6 +30,7 @@ class PropertyCreateRequest extends FormRequest
             'price' => 'required|numeric|gte:1',
             'is_published' => 'required|boolean',
             'location' => 'required',
+            'map_url' => 'required',
             'mls_code' => 'required',
             'build_year' => 'required|numeric|gte:1',
             'property_size' => 'required|numeric|gte:1',
