@@ -1,4 +1,4 @@
-import {FormEventHandler, useState} from 'react';
+
 import InputError from '@/Components/InputError';
 import { useForm } from '@inertiajs/react';
 import {Card, CardContent, CardHeader, CardTitle} from "@/Components/ui/card";
@@ -11,7 +11,9 @@ import {RadioGroup, RadioGroupItem} from "@/Components/ui/radio-group";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/Components/ui/table";
 import {TrashIcon} from "lucide-react";
 import VideoLinksInput from "@/Components/ui/VideoLinksInput";
-
+import { useEffect, FormEventHandler, useState, useRef } from "react";
+import { MDXEditorMethods } from "@mdxeditor/editor";
+import ReachText from '../ui/reachtext';
 function CategoryAttributeModificationTable({
                                                 attributes,
                                                 onValueChange,
@@ -71,7 +73,7 @@ export default function PropertyCreateForm({ listingTypes, amenityTypes, categor
         category_attributes: [] as any[],
         video_links: [""]
     });
-
+    const editorRef = useRef<MDXEditorMethods | null>(null);
     const [editorContent, setEditorContent] = useState("")
     const [categoryAttributes, setCategoryAttributes] = useState([])
     const [selectedCategoryAttributes, setSelectedCategoryAttributes] = useState<any[]>([])
@@ -176,15 +178,26 @@ export default function PropertyCreateForm({ listingTypes, amenityTypes, categor
                         {/* Input: Content */}
                         <div>
                             <Label htmlFor="content">Content</Label>
-
-                            <Textarea
+                            <ReachText
+                            markdown={data.description}
+                            editorRef={editorRef}
+                            onChange={() =>
+                                setData(
+                                    "content",
+                                    JSON.stringify(
+                                        editorRef.current?.getMarkdown()
+                                    )
+                                )
+                            }
+                        />
+                            {/* <Textarea
                                 id="content"
                                 name="content"
                                 value={data.content}
                                 className="mt-1 block w-full"
                                 autoComplete="current-password"
                                 onChange={(e) => setData('content', e.target.value)}
-                            />
+                            /> */}
 
                             <InputError message={errors.content} className="mt-2"/>
                         </div>

@@ -30,7 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('contact-messages', ContactMessageController::class);
     Route::get('inbox', [InboxController::class, 'index'])->name('inbox.index');
 
-    Route::post('editor-file-upload', [\App\Http\Controllers\EditorFileUploadController::class, 'index'])
+    Route::post('editor-file-upload', [\App\Http\Controllers\EditorFileUploadController::class, 'upload'])
         ->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class);
 });
 
