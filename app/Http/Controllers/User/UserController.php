@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UserCreateRequest;
 use App\Http\Requests\User\UserUpdateRequest;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -94,11 +95,7 @@ class UserController extends Controller
     public function update(UserUpdateRequest $request, User $user)
     {
         $updatableData = $request->validationData();
-        unset($updatableData['password_confirmation']);
-
-        if($request->has('password')){
-            $updatableData['password'] = Hash::make($updatableData['password']);
-        }
+        unset($updatableData['_method']);
 
         if($request->hasFile('image')){
             $featuredImagePath = $request
@@ -109,7 +106,6 @@ class UserController extends Controller
         }
 
         $user->update($updatableData);
-
         return to_route('users.show', ['user' => $user]);
     }
 
