@@ -24,7 +24,6 @@ class UserUpdateRequest extends FormRequest
         return [
             "name" => ["required", "max:100"],
             "email" => ["required", "email"],
-            "password" => ["nullable", "min:6"],
             "role" => ["required", "in:ADMIN,PROPERTY_AGENT,EDITOR"],
             "designation" => ["nullable"],
             "description" => ["nullable"],

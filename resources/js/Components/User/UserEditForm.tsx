@@ -7,30 +7,30 @@ import {Textarea} from "@/Components/ui/textarea";
 import {Card, CardContent, CardHeader, CardTitle} from "@/Components/ui/card";
 import {Label} from "@/Components/ui/label";
 import Select from "react-select";
+import Dump from "@/Components/Dump";
 
 export default function UserEditForm({ user, roles }: { user: any, roles: string[] }) {
 
     const roleOptions = roles.map(role => ({label: role, value: role}));
     const defaultRole = roleOptions.filter(role => role.value === user.role)[0]
-    const { data, setData, patch, processing, progress, errors, reset } = useForm({
-        name: user?.name,
-        email: user?.email,
-        image: null,
-        role: user?.role,
-        designation: user?.designation,
-        description: user?.description,
-        experience: user?.experience,
-        location: user?.location,
-        practice_area: user?.practice_area,
-        phone: user?.phone,
-        password: '',
-        password_confirmation: '',
+    const { data, setData, post, processing, progress, errors, reset } = useForm({
+        name: user?.name || "",
+        email: user?.email || "",
+        image: "",
+        role: user?.role || "",
+        designation: user?.designation || "",
+        description: user?.description || "",
+        experience: user?.experience || "",
+        location: user?.location || "",
+        practice_area: user?.practice_area || "",
+        phone: user?.phone || "",
+        _method: 'put'
     });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        patch(route('users.update', {user: user?.id}));
+        post(route('users.update', {user: user?.id}));
     };
 
     return (
@@ -38,6 +38,8 @@ export default function UserEditForm({ user, roles }: { user: any, roles: string
             <CardHeader>
                 <CardTitle>Edit User</CardTitle>
             </CardHeader>
+
+            <Dump data={data} />
 
             <CardContent>
                 <form onSubmit={submit} className={`flex flex-col gap-5`}>
@@ -98,6 +100,7 @@ export default function UserEditForm({ user, roles }: { user: any, roles: string
                                 id="image"
                                 type="file"
                                 name="image"
+                                multiple={false}
                                 accept={`image/png, image/gif, image/jpeg`}
                                 onChange={(e: any) => setData('image', e.target.files[0])}
                             />
@@ -196,38 +199,6 @@ export default function UserEditForm({ user, roles }: { user: any, roles: string
                         />
 
                         <InputError message={errors.description} className="mt-2"/>
-                    </div>
-
-                    <div className={`grid grid-cols-3 gap-4`}>
-
-                        {/* Input: Password */}
-                        <div>
-                            <Label htmlFor="password">Password</Label>
-
-                            <Input
-                                id="password"
-                                type="password"
-                                name="password"
-                                onChange={(e) => setData('password', e.target.value)}
-                            />
-
-                            <InputError message={errors.password} className="mt-2"/>
-                        </div>
-
-                        {/* Input: Password Confirmation */}
-                        <div>
-                            <Label htmlFor="password">Password Confirmation</Label>
-
-                            <Input
-                                id="password_confirmation"
-                                type="password"
-                                name="password_confirmation"
-                                onChange={(e) => setData('password_confirmation', e.target.value)}
-                            />
-
-                            <InputError message={errors.password_confirmation} className="mt-2"/>
-                        </div>
-
                     </div>
 
                     {progress && (

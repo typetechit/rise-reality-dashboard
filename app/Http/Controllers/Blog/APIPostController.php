@@ -15,7 +15,7 @@ class APIPostController extends Controller
     public function index()
     {
         $posts = Post::query()
-            ->with(['user:id,name'])
+            ->with(['user:id,name,image'])
             ->latest()
             ->paginate(25);
 

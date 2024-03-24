@@ -29,6 +29,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('testimonials', TestimonialController::class);
     Route::resource('contact-messages', ContactMessageController::class);
     Route::get('inbox', [InboxController::class, 'index'])->name('inbox.index');
+
+    Route::post('editor-file-upload', [\App\Http\Controllers\EditorFileUploadController::class, 'index']);
 });
 
 require __DIR__.'/auth.php';

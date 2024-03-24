@@ -28,5 +28,5 @@ jobs:
                       composer install
                       pnpm i
                       pnpm run build
-                      ./reinstall.sh
+#                      ./reinstall.sh
 

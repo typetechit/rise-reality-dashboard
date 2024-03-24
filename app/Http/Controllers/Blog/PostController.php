@@ -17,7 +17,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::query()
-            ->with('user:id,name')
+            ->with('user')
             ->latest()
             ->paginate(25);
 
