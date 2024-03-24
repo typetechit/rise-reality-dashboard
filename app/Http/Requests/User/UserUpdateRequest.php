@@ -25,13 +25,13 @@ class UserUpdateRequest extends FormRequest
             "name" => ["required", "max:100"],
             "email" => ["required", "email"],
             "role" => ["required", "in:ADMIN,PROPERTY_AGENT,EDITOR"],
-            "designation" => ["nullable"],
-            "description" => ["nullable"],
+            "designation" => ["required"],
+            "description" => ["required"],
             "social_links" => ["nullable", "array"],
-            "experience" => ["nullable"],
-            "location" => ["nullable"],
-            "practice_area" => ["nullable"],
-            "phone" => ["nullable"],
+            "experience" => ["required"],
+            "location" => ["required"],
+            "practice_area" => ["required"],
+            "phone" => ["required"],
         ];
     }
 }
