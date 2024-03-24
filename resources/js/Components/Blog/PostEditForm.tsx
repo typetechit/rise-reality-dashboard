@@ -10,22 +10,32 @@ import {Label} from "@/Components/ui/label";
 import Dump from "@/Components/Dump";
 import VideoLinksInput from "@/Components/ui/VideoLinksInput";
 
-export default function PostEditForm({ post }: { post: any }) {
-    const { data, setData, patch, processing, progress, errors, reset } = useForm({
-        title: post?.title,
-        description: post?.description,
+export default function PostEditForm({ post: PostData }: { post: any }) {
+    const { data, setData, post, processing, progress, errors, reset } = useForm({
+        title: PostData?.title,
+        description: PostData?.description,
         featured_image: null,
-        is_published: post?.is_published
+        is_published: PostData?.is_published,
+        _method: 'PUT'
     });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        patch(route('posts.update', {post: post?.id}));
+        post(route('posts.update', {post: PostData?.id}));
     };
 
     return (
         <Card>
+
+            <div className={`shadow-2xl`}>
+                <img
+                    src={PostData.featured_image}
+                    className="object-cover max-h-[400px] w-full"
+                    alt={PostData.title}
+                />
+            </div>
+
             <CardHeader>
                 <CardTitle>Edit Post</CardTitle>
             </CardHeader>
@@ -85,7 +95,7 @@ export default function PostEditForm({ post }: { post: any }) {
                             <Switch
                                 id="is_published"
                                 checked={data.is_published}
-                                onCheckedChange={(value) => setData('is_published', value)} />
+                                onCheckedChange={(value) => setData('is_published', value)}/>
                         </div>
                     </div>
 
@@ -97,7 +107,7 @@ export default function PostEditForm({ post }: { post: any }) {
 
                     <div className="flex items-center">
                         <Button disabled={processing}>
-                            { processing ? "Updating..." : "Update Post"}
+                            {processing ? "Updating..." : "Update Post"}
                         </Button>
                     </div>
                 </form>
