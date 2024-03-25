@@ -533,7 +533,7 @@ export default function PropertyEditForm({
                                     id="gallery_images"
                                     type="file"
                                     name="gallery_images"
-                                    accept={`image/png, image/gif, image/jpeg`}
+                                    accept={`image/png, image/gif, image/jpeg,  image/webp`}
                                     multiple={true}
                                     onChange={(e: any) =>
                                         setData(
