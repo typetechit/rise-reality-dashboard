@@ -214,14 +214,13 @@ export default function PropertyEditForm({
                                 onChange={(e) => setData('content', e.target.value)}
                             /> */}
                             <ReachText
-                                markdown={JSON.parse(data.description)}
+                                markdown={data.description}
                                 editorRef={editorRef}
                                 onChange={() =>
                                     setData(
                                         "description",
-                                        JSON.stringify(
-                                            editorRef.current?.getMarkdown()
-                                        )
+
+                                        editorRef.current?.getMarkdown()
                                     )
                                 }
                             />
