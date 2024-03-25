@@ -13,19 +13,20 @@ export default function TestimonialEditForm({
 }: {
     testimonial: any;
 }) {
-    const { data, setData, progress, patch, processing, errors, reset } =
+    const { data, setData, progress, post, processing, errors, reset } =
         useForm({
             name: testimonial?.name || "",
             position: testimonial?.position || "",
             company: testimonial?.company || "",
             image: null,
             comment: testimonial?.comment || "",
+            _method: "PUT",
         });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        patch(route("testimonials.update", { testimonial: testimonial.id }));
+        post(route("testimonials.update", { testimonial: testimonial.id }));
     };
 
     return (
