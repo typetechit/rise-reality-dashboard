@@ -1,27 +1,36 @@
-import {FormEventHandler, useEffect, useState} from 'react';
-import InputError from '@/Components/InputError';
-import { useForm } from '@inertiajs/react';
-import {Card, CardContent, CardHeader, CardTitle} from "@/Components/ui/card";
-import {Input} from "@/Components/ui/input";
-import {Label} from "@/Components/ui/label";
-import {Textarea} from "@/Components/ui/textarea";
-import {Button} from "@/Components/ui/button";
+import { FormEventHandler, useEffect, useRef, useState } from "react";
+import InputError from "@/Components/InputError";
+import { useForm } from "@inertiajs/react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Input } from "@/Components/ui/input";
+import { Label } from "@/Components/ui/label";
+import { Textarea } from "@/Components/ui/textarea";
+import { Button } from "@/Components/ui/button";
 import Select from "react-select";
-import {RadioGroup, RadioGroupItem} from "@/Components/ui/radio-group";
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/Components/ui/table";
-import {CrossIcon, TrashIcon} from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/Components/ui/radio-group";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/Components/ui/table";
+import { CrossIcon, TrashIcon } from "lucide-react";
 import VideoLinksInput from "@/Components/ui/VideoLinksInput";
 import Dump from "@/Components/Dump";
-import {XMarkIcon} from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import ReachText from "@/Components/ui/reachtext";
+import { MDXEditorMethods } from "@mdxeditor/editor";
 
 function CategoryAttributeModificationTable({
-                                                attributes,
-                                                onValueChange,
-                                                onRemoveItem
+    attributes,
+    onValueChange,
+    onRemoveItem,
 }: {
-    attributes: any[],
-    onValueChange: (attribute: any, indexId: any) => void,
-    onRemoveItem: (attribute: any, indexId: any) => void
+    attributes: any[];
+    onValueChange: (attribute: any, indexId: any) => void;
+    onRemoveItem: (attribute: any, indexId: any) => void;
 }) {
     return (
         <Table>
@@ -36,16 +45,27 @@ function CategoryAttributeModificationTable({
             <TableBody>
                 {attributes.map((attribute, indexId) => (
                     <TableRow key={`attribute.id.${attribute.id}`}>
-                        <TableCell className="font-medium">{attribute.icon}</TableCell>
+                        <TableCell className="font-medium">
+                            {attribute.icon}
+                        </TableCell>
                         <TableCell>{attribute.name}</TableCell>
                         <TableCell>
                             <Input
                                 defaultValue={attribute?.value || ""}
-                                onChange={(e) => onValueChange({...attribute, value: e.target.value}, indexId)}
+                                onChange={(e) =>
+                                    onValueChange(
+                                        { ...attribute, value: e.target.value },
+                                        indexId
+                                    )
+                                }
                             />
                         </TableCell>
                         <TableCell className="text-right">
-                            <Button size={'icon'} type={`button`} onClick={() => onRemoveItem(attribute, indexId)}>
+                            <Button
+                                size={"icon"}
+                                type={`button`}
+                                onClick={() => onRemoveItem(attribute, indexId)}
+                            >
                                 <TrashIcon className={`w-5 h-5`} />
                             </Button>
                         </TableCell>
@@ -56,53 +76,76 @@ function CategoryAttributeModificationTable({
     );
 }
 
-export default function PropertyEditForm({ property, listingTypes, amenityTypes, categories }: { property: any, listingTypes: any[], amenityTypes: any[], categories: any[] }) {
+export default function PropertyEditForm({
+    property,
+    listingTypes,
+    amenityTypes,
+    categories,
+}: {
+    property: any;
+    listingTypes: any[];
+    amenityTypes: any[];
+    categories: any[];
+}) {
     const { data, setData, post, processing, errors, reset } = useForm({
-        title: property?.title || '',
-        description: property?.description || '',
-        content: property?.content || '',
+        title: property?.title || "",
+        description: property?.description || "",
+        content: property?.content || "",
         featured_image: null,
         gallery_images: null,
-        is_published: property?.is_published || '',
+        is_published: property?.is_published || "",
         price: property?.price || 0,
-        location: property?.location || '',
-        map_url: property?.map_url || '',
-        mls_code: property?.mls_code || '',
-        build_year: property?.build_year || '',
-        property_size: property?.property_size || '',
-        is_featured: property?.is_featured || '',
-        listing_type: property?.listing_type || '',
+        location: property?.location || "",
+        map_url: property?.map_url || "",
+        mls_code: property?.mls_code || "",
+        build_year: property?.build_year || "",
+        property_size: property?.property_size || "",
+        is_featured: property?.is_featured || "",
+        listing_type: property?.listing_type || "",
         amenities: property?.amenities || [],
         category: property?.category || null,
         category_attributes: property.category_attributes,
         video_links: property.video_links || [""],
-        _method: 'PUT'
+        _method: "PUT",
     });
+    const editorRef = useRef<MDXEditorMethods | null>(null);
 
-    const [editorContent, setEditorContent] = useState("")
-    const [categoryAttributes, setCategoryAttributes] = useState([])
-    const [selectedCategoryAttributes, setSelectedCategoryAttributes] = useState<any[]>(property.category_attributes || [])
+    const [editorContent, setEditorContent] = useState("");
+    const [categoryAttributes, setCategoryAttributes] = useState([]);
+    const [selectedCategoryAttributes, setSelectedCategoryAttributes] =
+        useState<any[]>(property.category_attributes || []);
 
-    const selectedListingType = listingTypes[listingTypes.findIndex(item => item.value === property.listing_type)]
-    const selectedCategory = categories[categories.findIndex(item => item.value === property.category.name)]
+    const selectedListingType =
+        listingTypes[
+            listingTypes.findIndex(
+                (item) => item.value === property.listing_type
+            )
+        ];
+    const selectedCategory =
+        categories[
+            categories.findIndex(
+                (item) => item.value === property.category.name
+            )
+        ];
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        post(route('properties.update', {property: property.id}), {
-            preserveScroll: true
+        post(route("properties.update", { property: property.id }), {
+            preserveScroll: true,
         });
     };
 
     function handleCategoryAttributeValueChange(attribute: any, indexId: any) {
-        const currentAttributes = [...data.category_attributes]
-        if(!currentAttributes?.length){
-            currentAttributes.push(attribute)
-            setData('category_attributes', categoryAttributes)
-        }else{
-            const updatedAttributes = currentAttributes.map(currAttr => currAttr.id === attribute.id ? attribute : currAttr)
-            setData('category_attributes', updatedAttributes)
+        const currentAttributes = [...data.category_attributes];
+        if (!currentAttributes?.length) {
+            currentAttributes.push(attribute);
+            setData("category_attributes", categoryAttributes);
+        } else {
+            const updatedAttributes = currentAttributes.map((currAttr) =>
+                currAttr.id === attribute.id ? attribute : currAttr
+            );
+            setData("category_attributes", updatedAttributes);
         }
-
     }
 
     function handleCategoryAttributeRemove(attribute: any, indexId: any) {
@@ -112,13 +155,11 @@ export default function PropertyEditForm({ property, listingTypes, amenityTypes,
     return (
         <>
             <Card>
-
                 <CardHeader>
                     <CardTitle>Edit Property</CardTitle>
                 </CardHeader>
 
                 <CardContent>
-
                     <form onSubmit={submit} className={`flex flex-col gap-4`}>
                         {/* Input: Title */}
                         <div>
@@ -128,10 +169,15 @@ export default function PropertyEditForm({ property, listingTypes, amenityTypes,
                                 id="title"
                                 name="title"
                                 value={data.title}
-                                onChange={(e) => setData('title', e.target.value)}
+                                onChange={(e) =>
+                                    setData("title", e.target.value)
+                                }
                             />
 
-                            <InputError message={errors.title} className="mt-2"/>
+                            <InputError
+                                message={errors.title}
+                                className="mt-2"
+                            />
                         </div>
 
                         {/* Input: Description */}
@@ -144,28 +190,46 @@ export default function PropertyEditForm({ property, listingTypes, amenityTypes,
                                 value={data.description}
                                 className="mt-1 block w-full"
                                 autoComplete="current-password"
-                                onChange={(e) => setData('description', e.target.value)}
+                                onChange={(e) =>
+                                    setData("description", e.target.value)
+                                }
                             />
 
-                            <InputError message={errors.description} className="mt-2"/>
+                            <InputError
+                                message={errors.description}
+                                className="mt-2"
+                            />
                         </div>
 
                         {/* Input: Content */}
                         <div>
                             <Label htmlFor="content">Content</Label>
 
-                            <Textarea
+                            {/* <Textarea
                                 id="content"
                                 name="content"
                                 value={data.content}
                                 className="mt-1 block w-full"
                                 autoComplete="current-password"
                                 onChange={(e) => setData('content', e.target.value)}
+                            /> */}
+                            <ReachText
+                                markdown={JSON.parse(data.description)}
+                                editorRef={editorRef}
+                                onChange={() =>
+                                    setData(
+                                        "description",
+                                        JSON.stringify(
+                                            editorRef.current?.getMarkdown()
+                                        )
+                                    )
+                                }
                             />
-
-                            <InputError message={errors.content} className="mt-2"/>
+                            <InputError
+                                message={errors.content}
+                                className="mt-2"
+                            />
                         </div>
-
 
                         <div className={`grid grid-cols-4 gap-4`}>
                             {/* Input: Price */}
@@ -174,13 +238,21 @@ export default function PropertyEditForm({ property, listingTypes, amenityTypes,
 
                                 <Input
                                     id="price"
-                                    type={'number'}
+                                    type={"number"}
                                     name="price"
                                     value={data.price}
-                                    onChange={(e) => setData('price', parseFloat(e.target.value))}
+                                    onChange={(e) =>
+                                        setData(
+                                            "price",
+                                            parseFloat(e.target.value)
+                                        )
+                                    }
                                 />
 
-                                <InputError message={errors.price} className="mt-2"/>
+                                <InputError
+                                    message={errors.price}
+                                    className="mt-2"
+                                />
                             </div>
 
                             {/* Input: location */}
@@ -189,13 +261,18 @@ export default function PropertyEditForm({ property, listingTypes, amenityTypes,
 
                                 <Input
                                     id="location"
-                                    type={'text'}
+                                    type={"text"}
                                     name="location"
                                     value={data.location}
-                                    onChange={(e) => setData('location', e.target.value)}
+                                    onChange={(e) =>
+                                        setData("location", e.target.value)
+                                    }
                                 />
 
-                                <InputError message={errors.location} className="mt-2"/>
+                                <InputError
+                                    message={errors.location}
+                                    className="mt-2"
+                                />
                             </div>
 
                             {/* Input: map url */}
@@ -204,13 +281,18 @@ export default function PropertyEditForm({ property, listingTypes, amenityTypes,
 
                                 <Input
                                     id="map_url"
-                                    type={'text'}
+                                    type={"text"}
                                     name="map_url"
                                     value={data.map_url}
-                                    onChange={(e) => setData('map_url', e.target.value)}
+                                    onChange={(e) =>
+                                        setData("map_url", e.target.value)
+                                    }
                                 />
 
-                                <InputError message={errors.map_url} className="mt-2"/>
+                                <InputError
+                                    message={errors.map_url}
+                                    className="mt-2"
+                                />
                             </div>
 
                             {/* Input: mls_code */}
@@ -219,13 +301,18 @@ export default function PropertyEditForm({ property, listingTypes, amenityTypes,
 
                                 <Input
                                     id="mls_code"
-                                    type={'text'}
+                                    type={"text"}
                                     name="mls_code"
                                     value={data.mls_code}
-                                    onChange={(e) => setData('mls_code', e.target.value)}
+                                    onChange={(e) =>
+                                        setData("mls_code", e.target.value)
+                                    }
                                 />
 
-                                <InputError message={errors.mls_code} className="mt-2"/>
+                                <InputError
+                                    message={errors.mls_code}
+                                    className="mt-2"
+                                />
                             </div>
                         </div>
 
@@ -236,43 +323,62 @@ export default function PropertyEditForm({ property, listingTypes, amenityTypes,
 
                                 <Input
                                     id="build_year"
-                                    type={'number'}
+                                    type={"number"}
                                     name="build_year"
                                     value={data.build_year}
-                                    onChange={(e) => setData('build_year', e.target.value)}
+                                    onChange={(e) =>
+                                        setData("build_year", e.target.value)
+                                    }
                                 />
 
-                                <InputError message={errors.build_year} className="mt-2"/>
+                                <InputError
+                                    message={errors.build_year}
+                                    className="mt-2"
+                                />
                             </div>
 
                             {/* Input: property_size */}
                             <div>
-                                <Label htmlFor="property_size">Property Size</Label>
+                                <Label htmlFor="property_size">
+                                    Property Size
+                                </Label>
 
                                 <Input
                                     id="property_size"
-                                    type={'number'}
+                                    type={"number"}
                                     name="property_size"
                                     value={data.property_size}
-                                    onChange={(e) => setData('property_size', e.target.value)}
+                                    onChange={(e) =>
+                                        setData("property_size", e.target.value)
+                                    }
                                 />
 
-                                <InputError message={errors.property_size} className="mt-2"/>
+                                <InputError
+                                    message={errors.property_size}
+                                    className="mt-2"
+                                />
                             </div>
 
                             {/* Input: Listing Types */}
                             <div>
-                                <Label htmlFor="listing_type">Listing Type</Label>
+                                <Label htmlFor="listing_type">
+                                    Listing Type
+                                </Label>
 
                                 <Select
                                     id={`listing_type`}
-                                    name={'listing_type'}
+                                    name={"listing_type"}
                                     options={listingTypes}
                                     defaultValue={selectedListingType}
-                                    onChange={item => setData('listing_type', item.value)}
+                                    onChange={(item) =>
+                                        setData("listing_type", item.value)
+                                    }
                                 />
 
-                                <InputError message={errors.listing_type} className="mt-2"/>
+                                <InputError
+                                    message={errors.listing_type}
+                                    className="mt-2"
+                                />
                             </div>
 
                             {/* Input: Amenities */}
@@ -281,107 +387,147 @@ export default function PropertyEditForm({ property, listingTypes, amenityTypes,
 
                                 <Select
                                     id={`amenities`}
-                                    name={'amenities'}
+                                    name={"amenities"}
                                     options={amenityTypes}
                                     defaultValue={property.amenities}
                                     isMulti={true}
-                                    onChange={(item: any) => setData('amenities', item)}
+                                    onChange={(item: any) =>
+                                        setData("amenities", item)
+                                    }
                                 />
 
-                                <InputError message={errors.amenities} className="mt-2"/>
+                                <InputError
+                                    message={errors.amenities}
+                                    className="mt-2"
+                                />
                             </div>
                         </div>
 
                         <div className={`bg-gray-100 p-4`}>
                             <div className={`grid grid-cols-2 gap-4 border-b`}>
-
                                 {/* Input: Categories */}
                                 <div>
                                     <Label htmlFor="category">Category</Label>
 
                                     <Select
                                         id={`category`}
-                                        name={'category'}
+                                        name={"category"}
                                         options={categories}
                                         defaultValue={selectedCategory}
                                         onChange={(item: any) => {
-                                            setData('category', {id: item.id, name: item.name})
-                                            setCategoryAttributes(item.attributes.map((attr: any) => ({
-                                                id: attr.id,
-                                                name: attr.name,
-                                                icon: attr.icon,
-                                                value: attr.id,
-                                                label: attr.name
-                                            })))
+                                            setData("category", {
+                                                id: item.id,
+                                                name: item.name,
+                                            });
+                                            setCategoryAttributes(
+                                                item.attributes.map(
+                                                    (attr: any) => ({
+                                                        id: attr.id,
+                                                        name: attr.name,
+                                                        icon: attr.icon,
+                                                        value: attr.id,
+                                                        label: attr.name,
+                                                    })
+                                                )
+                                            );
                                         }}
                                     />
 
-                                    <InputError message={errors.amenities} className="mt-2"/>
+                                    <InputError
+                                        message={errors.amenities}
+                                        className="mt-2"
+                                    />
                                 </div>
 
                                 {/* Input: Category Attributes */}
                                 <div>
-                                    <Label htmlFor="category_attributes">Category Attributes</Label>
+                                    <Label htmlFor="category_attributes">
+                                        Category Attributes
+                                    </Label>
 
                                     <Select
                                         id={`category_attributes`}
-                                        defaultValue={selectedCategoryAttributes}
+                                        defaultValue={
+                                            selectedCategoryAttributes
+                                        }
                                         options={categoryAttributes}
                                         isMulti={true}
-                                        onChange={(data: any) => setSelectedCategoryAttributes(data)}
+                                        onChange={(data: any) =>
+                                            setSelectedCategoryAttributes(data)
+                                        }
                                     />
 
-                                    <InputError message={errors.category_attributes} className="mt-2"/>
+                                    <InputError
+                                        message={errors.category_attributes}
+                                        className="mt-2"
+                                    />
                                 </div>
                             </div>
 
                             <CategoryAttributeModificationTable
                                 attributes={selectedCategoryAttributes}
-                                onValueChange={handleCategoryAttributeValueChange}
+                                onValueChange={
+                                    handleCategoryAttributeValueChange
+                                }
                                 onRemoveItem={handleCategoryAttributeRemove}
                             />
                         </div>
 
-
                         {/* Input: Video Links */}
                         <div>
-                            <Label htmlFor="video_links">Youtube Video Id</Label>
+                            <Label htmlFor="video_links">
+                                Youtube Video Id
+                            </Label>
 
                             <VideoLinksInput
                                 defaultLinks={data.video_links}
-                                onChange={(links) => setData('video_links', links)}
+                                onChange={(links) =>
+                                    setData("video_links", links)
+                                }
                             />
-
                         </div>
 
                         <div className={`grid grid-cols-3 gap-4`}>
-
-
                             {/* Input: Featured Image */}
                             <div className={`col-span-1`}>
-                                <Label htmlFor="featured_image">Featured Image</Label>
+                                <Label htmlFor="featured_image">
+                                    Featured Image
+                                </Label>
 
                                 <Input
                                     id="featured_image"
                                     type="file"
                                     name="featured_image"
                                     accept={`image/png, image/gif, image/jpeg`}
-                                    onChange={(e: any) => setData('featured_image', e.target.files[0])}
+                                    onChange={(e: any) =>
+                                        setData(
+                                            "featured_image",
+                                            e.target.files[0]
+                                        )
+                                    }
                                 />
 
-                                <InputError message={errors.title} className="mt-2"/>
+                                <InputError
+                                    message={errors.title}
+                                    className="mt-2"
+                                />
 
-                                <hr className={`my-4`}/>
+                                <hr className={`my-4`} />
 
                                 <div className={`my-4`}>
-                                    <img className="object-cover h-48 w-72 rounded-lg shadow" src={property.featured_image}
-                                         alt={property.title}/>
+                                    <img
+                                        className="object-cover h-48 w-72 rounded-lg shadow"
+                                        src={property.featured_image}
+                                        alt={property.title}
+                                    />
                                 </div>
                             </div>
 
                             {/* Input: Gallery Images */}
-                            <div className={'col-span-2'}>
-                                <Label htmlFor="gallery_images">Gallery Images</Label>
+                            <div className={"col-span-2"}>
+                                <Label htmlFor="gallery_images">
+                                    Gallery Images
+                                </Label>
 
                                 <Input
                                     id="gallery_images"
@@ -389,51 +535,84 @@ export default function PropertyEditForm({ property, listingTypes, amenityTypes,
                                     name="gallery_images"
                                     accept={`image/png, image/gif, image/jpeg`}
                                     multiple={true}
-                                    onChange={(e: any) => setData('gallery_images', e.target.files)}
+                                    onChange={(e: any) =>
+                                        setData(
+                                            "gallery_images",
+                                            e.target.files
+                                        )
+                                    }
                                 />
 
-                                <InputError message={errors.gallery_images} className="mt-2"/>
+                                <InputError
+                                    message={errors.gallery_images}
+                                    className="mt-2"
+                                />
 
-                                <hr className={`my-4`}/>
+                                <hr className={`my-4`} />
 
-                                <div className={`my-4 grid grid-cols-5 items-center gap-3`}>
-                                    {property?.gallery_images?.map((galleryImg: any) => (
-                                        <div className={`relative`}>
-                                            <img
-                                                className="object-cover h-28 w-full rounded-lg shadow"
-                                                src={galleryImg} alt={galleryImg}
-                                            />
+                                <div
+                                    className={`my-4 grid grid-cols-5 items-center gap-3`}
+                                >
+                                    {property?.gallery_images?.map(
+                                        (galleryImg: any) => (
+                                            <div className={`relative`}>
+                                                <img
+                                                    className="object-cover h-28 w-full rounded-lg shadow"
+                                                    src={galleryImg}
+                                                    alt={galleryImg}
+                                                />
 
-                                            <Button variant={'destructive'} size={'icon'}
-                                                    className={`absolute right-3 top-3`}>
-                                                <XMarkIcon className={`w-5 h-5`}/>
-                                            </Button>
-                                        </div>
-                                    ))}
+                                                <Button
+                                                    variant={"destructive"}
+                                                    size={"icon"}
+                                                    className={`absolute right-3 top-3`}
+                                                >
+                                                    <XMarkIcon
+                                                        className={`w-5 h-5`}
+                                                    />
+                                                </Button>
+                                            </div>
+                                        )
+                                    )}
                                 </div>
                             </div>
                         </div>
 
                         <div className={`grid grid-cols-4 gap-4`}>
-
                             <div>
                                 <Label
                                     htmlFor="is_featured"
                                     className={`flex-grow cursor-pointer`}
-                                >Is Featured</Label>
+                                >
+                                    Is Featured
+                                </Label>
 
                                 <RadioGroup
-                                    defaultValue={property?.is_featured?.toString() || "0"}
+                                    defaultValue={
+                                        property?.is_featured?.toString() || "0"
+                                    }
                                     className={`flex items-center gap-5 mt-3`}
-                                    onValueChange={(value: any) => setData('is_featured', value)}
+                                    onValueChange={(value: any) =>
+                                        setData("is_featured", value)
+                                    }
                                 >
                                     <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value={"1"} id="is_featured-yes"/>
-                                        <Label htmlFor="is_featured-yes">Yes</Label>
+                                        <RadioGroupItem
+                                            value={"1"}
+                                            id="is_featured-yes"
+                                        />
+                                        <Label htmlFor="is_featured-yes">
+                                            Yes
+                                        </Label>
                                     </div>
                                     <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value={"0"} id="is_featured-no"/>
-                                        <Label htmlFor="is_featured-no">No</Label>
+                                        <RadioGroupItem
+                                            value={"0"}
+                                            id="is_featured-no"
+                                        />
+                                        <Label htmlFor="is_featured-no">
+                                            No
+                                        </Label>
                                     </div>
                                 </RadioGroup>
                             </div>
@@ -443,29 +622,47 @@ export default function PropertyEditForm({ property, listingTypes, amenityTypes,
                                 <Label
                                     htmlFor="is_published"
                                     className={`flex-grow cursor-pointer`}
-                                >Is Published</Label>
+                                >
+                                    Is Published
+                                </Label>
 
                                 <RadioGroup
-                                    defaultValue={property?.is_published?.toString() || "0"}
+                                    defaultValue={
+                                        property?.is_published?.toString() ||
+                                        "0"
+                                    }
                                     className={`flex items-center gap-5 mt-3`}
-                                    onValueChange={(value: any) => setData('is_published', value)}
+                                    onValueChange={(value: any) =>
+                                        setData("is_published", value)
+                                    }
                                 >
                                     <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value={"1"} id="is_published-yes"/>
-                                        <Label htmlFor="is_published-yes">Yes</Label>
+                                        <RadioGroupItem
+                                            value={"1"}
+                                            id="is_published-yes"
+                                        />
+                                        <Label htmlFor="is_published-yes">
+                                            Yes
+                                        </Label>
                                     </div>
                                     <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value={"0"} id="is_published-no"/>
-                                        <Label htmlFor="is_published-no">No</Label>
+                                        <RadioGroupItem
+                                            value={"0"}
+                                            id="is_published-no"
+                                        />
+                                        <Label htmlFor="is_published-no">
+                                            No
+                                        </Label>
                                     </div>
                                 </RadioGroup>
                             </div>
                         </div>
 
-
                         <div className="flex items-center mt-4">
                             <Button disabled={processing}>
-                                {processing ? "Updating Property ..." : "Update Property"}
+                                {processing
+                                    ? "Updating Property ..."
+                                    : "Update Property"}
                             </Button>
                         </div>
                     </form>
