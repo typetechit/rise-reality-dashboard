@@ -9,9 +9,10 @@ import {Button} from "@/Components/ui/button";
 import Select from "react-select";
 import {RadioGroup, RadioGroupItem} from "@/Components/ui/radio-group";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/Components/ui/table";
-import {TrashIcon} from "lucide-react";
+import {CrossIcon, TrashIcon} from "lucide-react";
 import VideoLinksInput from "@/Components/ui/VideoLinksInput";
 import Dump from "@/Components/Dump";
+import {XMarkIcon} from "@heroicons/react/24/outline";
 
 function CategoryAttributeModificationTable({
                                                 attributes,
@@ -111,14 +112,6 @@ export default function PropertyEditForm({ property, listingTypes, amenityTypes,
     return (
         <>
             <Card>
-
-                <div className={`shadow-2xl`}>
-                    <img
-                        src={property.featured_image}
-                        className="object-cover max-h-[400px] w-full"
-                        alt={property.title}
-                    />
-                </div>
 
                 <CardHeader>
                     <CardTitle>Edit Property</CardTitle>
@@ -377,6 +370,13 @@ export default function PropertyEditForm({ property, listingTypes, amenityTypes,
                                 />
 
                                 <InputError message={errors.title} className="mt-2"/>
+
+                                <hr className={`my-4`}/>
+
+                                <div className={`my-4`}>
+                                    <img className="object-cover h-48 w-72 rounded-lg shadow" src={property.featured_image}
+                                         alt={property.title}/>
+                                </div>
                             </div>
 
                             {/* Input: Gallery Images */}
@@ -393,6 +393,24 @@ export default function PropertyEditForm({ property, listingTypes, amenityTypes,
                                 />
 
                                 <InputError message={errors.gallery_images} className="mt-2"/>
+
+                                <hr className={`my-4`}/>
+
+                                <div className={`my-4 grid grid-cols-5 items-center gap-3`}>
+                                    {property?.gallery_images?.map((galleryImg: any) => (
+                                        <div className={`relative`}>
+                                            <img
+                                                className="object-cover h-28 w-full rounded-lg shadow"
+                                                src={galleryImg} alt={galleryImg}
+                                            />
+
+                                            <Button variant={'destructive'} size={'icon'}
+                                                    className={`absolute right-3 top-3`}>
+                                                <XMarkIcon className={`w-5 h-5`}/>
+                                            </Button>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
 
