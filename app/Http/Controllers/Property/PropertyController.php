@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Property;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Property\PropertyCreateRequest;
 use App\Http\Requests\Property\PropertyUpdateRequest;
-use App\Models\Category;
 use App\Models\Country;
 use App\Models\Property;
+use App\Models\Settings\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -146,6 +146,8 @@ class PropertyController extends Controller
      */
     public function edit(Property $property)
     {
+        $property->load('category:id,name');
+
         $availableListingTypes = ['Exclusive Listing', 'Lease', 'Rental', 'Sale'];
         $availableAmenities = Property\Amenity::query()
             ->select(['id', 'name'])
@@ -175,8 +177,7 @@ class PropertyController extends Controller
 
         try {
             $validatedData = $request->validationData();
-            dd($validatedData);
-
+//            dd($validatedData);
             $updatableData = [
                 'category_id' => $validatedData['category']['id'],
                 'title' => $validatedData['title'],

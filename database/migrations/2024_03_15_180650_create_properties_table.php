@@ -17,7 +17,7 @@ return new class extends Migration
 
             $table->foreignIdFor(\App\Models\User::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\Country::class)->nullable()->constrained();
-            $table->foreignIdFor(\App\Models\Category::class)->nullable()->constrained();
+            $table->foreignIdFor(\App\Models\Settings\Category::class)->nullable()->constrained();
 
             $table->string('title');
             $table->text('description')->nullable();

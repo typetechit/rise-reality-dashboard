@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('attribute_category', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignIdFor(\App\Models\Category::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\Settings\Category::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\Property\Attribute::class)->constrained()->cascadeOnDelete();
 
             $table->timestamps();

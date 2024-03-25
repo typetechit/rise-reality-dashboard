@@ -1,4 +1,4 @@
-import {FormEventHandler, useState} from 'react';
+import {FormEventHandler, useEffect, useState} from 'react';
 import InputError from '@/Components/InputError';
 import { useForm } from '@inertiajs/react';
 import {Card, CardContent, CardHeader, CardTitle} from "@/Components/ui/card";
@@ -38,7 +38,10 @@ function CategoryAttributeModificationTable({
                         <TableCell className="font-medium">{attribute.icon}</TableCell>
                         <TableCell>{attribute.name}</TableCell>
                         <TableCell>
-                            <Input onChange={(e) => onValueChange({...attribute, value: e.target.value}, indexId)} />
+                            <Input
+                                defaultValue={attribute?.value || ""}
+                                onChange={(e) => onValueChange({...attribute, value: e.target.value}, indexId)}
+                            />
                         </TableCell>
                         <TableCell className="text-right">
                             <Button size={'icon'} type={`button`} onClick={() => onRemoveItem(attribute, indexId)}>
@@ -69,21 +72,24 @@ export default function PropertyEditForm({ property, listingTypes, amenityTypes,
         is_featured: property?.is_featured || '',
         listing_type: property?.listing_type || '',
         amenities: property?.amenities || [],
-        category: null as any,
-        category_attributes: [] as any[],
+        category: property?.category || null,
+        category_attributes: property.category_attributes,
         video_links: property.video_links || [""],
         _method: 'PUT'
     });
 
     const [editorContent, setEditorContent] = useState("")
     const [categoryAttributes, setCategoryAttributes] = useState([])
-    const [selectedCategoryAttributes, setSelectedCategoryAttributes] = useState<any[]>([])
+    const [selectedCategoryAttributes, setSelectedCategoryAttributes] = useState<any[]>(property.category_attributes || [])
 
     const selectedListingType = listingTypes[listingTypes.findIndex(item => item.value === property.listing_type)]
+    const selectedCategory = categories[categories.findIndex(item => item.value === property.category.name)]
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        post(route('properties.update', {property: property.id}));
+        post(route('properties.update', {property: property.id}), {
+            preserveScroll: true
+        });
     };
 
     function handleCategoryAttributeValueChange(attribute: any, indexId: any) {
@@ -105,62 +111,35 @@ export default function PropertyEditForm({ property, listingTypes, amenityTypes,
     return (
         <>
             <Card>
+
+                <div className={`shadow-2xl`}>
+                    <img
+                        src={property.featured_image}
+                        className="object-cover max-h-[400px] w-full"
+                        alt={property.title}
+                    />
+                </div>
+
                 <CardHeader>
-                    <CardTitle>Add new Property</CardTitle>
+                    <CardTitle>Edit Property</CardTitle>
                 </CardHeader>
-
-
 
                 <CardContent>
 
                     <form onSubmit={submit} className={`flex flex-col gap-4`}>
-                        <div className={`grid grid-cols-3 gap-4`}>
-                            {/* Input: Title */}
-                            <div>
-                                <Label htmlFor="title">Title</Label>
+                        {/* Input: Title */}
+                        <div>
+                            <Label htmlFor="title">Title</Label>
 
-                                <Input
-                                    id="title"
-                                    name="title"
-                                    value={data.title}
-                                    onChange={(e) => setData('title', e.target.value)}
-                                />
+                            <Input
+                                id="title"
+                                name="title"
+                                value={data.title}
+                                onChange={(e) => setData('title', e.target.value)}
+                            />
 
-                                <InputError message={errors.title} className="mt-2"/>
-                            </div>
-
-                            {/* Input: Featured Image */}
-                            <div>
-                                <Label htmlFor="featured_image">Featured Image</Label>
-
-                                <Input
-                                    id="featured_image"
-                                    type="file"
-                                    name="featured_image"
-                                    accept={`image/png, image/gif, image/jpeg`}
-                                    onChange={(e: any) => setData('featured_image', e.target.files[0])}
-                                />
-
-                                <InputError message={errors.title} className="mt-2"/>
-                            </div>
-
-                            {/* Input: Gallery Images */}
-                            <div>
-                                <Label htmlFor="gallery_images">Gallery Images</Label>
-
-                                <Input
-                                    id="gallery_images"
-                                    type="file"
-                                    name="gallery_images"
-                                    accept={`image/png, image/gif, image/jpeg`}
-                                    multiple={true}
-                                    onChange={(e: any) => setData('gallery_images', e.target.files)}
-                                />
-
-                                <InputError message={errors.gallery_images} className="mt-2"/>
-                            </div>
+                            <InputError message={errors.title} className="mt-2"/>
                         </div>
-
 
                         {/* Input: Description */}
                         <div>
@@ -257,7 +236,7 @@ export default function PropertyEditForm({ property, listingTypes, amenityTypes,
                             </div>
                         </div>
 
-                        <div className={`grid grid-cols-3 gap-4`}>
+                        <div className={`grid grid-cols-4 gap-4`}>
                             {/* Input: build_year */}
                             <div>
                                 <Label htmlFor="build_year">Build Year</Label>
@@ -302,9 +281,6 @@ export default function PropertyEditForm({ property, listingTypes, amenityTypes,
 
                                 <InputError message={errors.listing_type} className="mt-2"/>
                             </div>
-                        </div>
-
-                        <div className={`grid grid-cols-3 gap-4`}>
 
                             {/* Input: Amenities */}
                             <div>
@@ -321,6 +297,106 @@ export default function PropertyEditForm({ property, listingTypes, amenityTypes,
 
                                 <InputError message={errors.amenities} className="mt-2"/>
                             </div>
+                        </div>
+
+                        <div className={`bg-gray-100 p-4`}>
+                            <div className={`grid grid-cols-2 gap-4 border-b`}>
+
+                                {/* Input: Categories */}
+                                <div>
+                                    <Label htmlFor="category">Category</Label>
+
+                                    <Select
+                                        id={`category`}
+                                        name={'category'}
+                                        options={categories}
+                                        defaultValue={selectedCategory}
+                                        onChange={(item: any) => {
+                                            setData('category', {id: item.id, name: item.name})
+                                            setCategoryAttributes(item.attributes.map((attr: any) => ({
+                                                id: attr.id,
+                                                name: attr.name,
+                                                icon: attr.icon,
+                                                value: attr.id,
+                                                label: attr.name
+                                            })))
+                                        }}
+                                    />
+
+                                    <InputError message={errors.amenities} className="mt-2"/>
+                                </div>
+
+                                {/* Input: Category Attributes */}
+                                <div>
+                                    <Label htmlFor="category_attributes">Category Attributes</Label>
+
+                                    <Select
+                                        id={`category_attributes`}
+                                        defaultValue={selectedCategoryAttributes}
+                                        options={categoryAttributes}
+                                        isMulti={true}
+                                        onChange={(data: any) => setSelectedCategoryAttributes(data)}
+                                    />
+
+                                    <InputError message={errors.category_attributes} className="mt-2"/>
+                                </div>
+                            </div>
+
+                            <CategoryAttributeModificationTable
+                                attributes={selectedCategoryAttributes}
+                                onValueChange={handleCategoryAttributeValueChange}
+                                onRemoveItem={handleCategoryAttributeRemove}
+                            />
+                        </div>
+
+
+                        {/* Input: Video Links */}
+                        <div>
+                            <Label htmlFor="video_links">Youtube Video Id</Label>
+
+                            <VideoLinksInput
+                                defaultLinks={data.video_links}
+                                onChange={(links) => setData('video_links', links)}
+                            />
+
+                        </div>
+
+                        <div className={`grid grid-cols-3 gap-4`}>
+
+
+                            {/* Input: Featured Image */}
+                            <div className={`col-span-1`}>
+                                <Label htmlFor="featured_image">Featured Image</Label>
+
+                                <Input
+                                    id="featured_image"
+                                    type="file"
+                                    name="featured_image"
+                                    accept={`image/png, image/gif, image/jpeg`}
+                                    onChange={(e: any) => setData('featured_image', e.target.files[0])}
+                                />
+
+                                <InputError message={errors.title} className="mt-2"/>
+                            </div>
+
+                            {/* Input: Gallery Images */}
+                            <div className={'col-span-2'}>
+                                <Label htmlFor="gallery_images">Gallery Images</Label>
+
+                                <Input
+                                    id="gallery_images"
+                                    type="file"
+                                    name="gallery_images"
+                                    accept={`image/png, image/gif, image/jpeg`}
+                                    multiple={true}
+                                    onChange={(e: any) => setData('gallery_images', e.target.files)}
+                                />
+
+                                <InputError message={errors.gallery_images} className="mt-2"/>
+                            </div>
+                        </div>
+
+                        <div className={`grid grid-cols-4 gap-4`}>
 
                             <div>
                                 <Label
@@ -368,66 +444,6 @@ export default function PropertyEditForm({ property, listingTypes, amenityTypes,
                             </div>
                         </div>
 
-
-                        <div className={`bg-gray-100 p-4`}>
-                            <div className={`grid grid-cols-2 gap-4 border-b`}>
-
-                                {/* Input: Categories */}
-                                <div>
-                                    <Label htmlFor="category">Category</Label>
-
-                                    <Select
-                                        id={`category`}
-                                        name={'category'}
-                                        options={categories}
-                                        onChange={(item: any) => {
-                                            setData('category', {id: item.id, name: item.name})
-                                            setCategoryAttributes(item.attributes.map((attr: any) => ({
-                                                id: attr.id,
-                                                name: attr.name,
-                                                icon: attr.icon,
-                                                value: attr.id,
-                                                label: attr.name
-                                            })))
-                                        }}
-                                    />
-
-                                    <InputError message={errors.amenities} className="mt-2"/>
-                                </div>
-
-                                {/* Input: Category Attributes */}
-                                <div>
-                                    <Label htmlFor="category_attributes">Category Attributes</Label>
-
-                                    <Select
-                                        id={`category_attributes`}
-                                        options={categoryAttributes}
-                                        isMulti={true}
-                                        onChange={(data: any) => setSelectedCategoryAttributes(data)}
-                                    />
-
-                                    <InputError message={errors.category_attributes} className="mt-2"/>
-                                </div>
-                            </div>
-
-                            <CategoryAttributeModificationTable
-                                attributes={selectedCategoryAttributes}
-                                onValueChange={handleCategoryAttributeValueChange}
-                                onRemoveItem={handleCategoryAttributeRemove}
-                            />
-                        </div>
-
-
-                        {/* Input: Video Links */}
-                        <div>
-                            <Label htmlFor="video_links">Youtube Video Id</Label>
-
-                            <VideoLinksInput
-                                defaultLinks={data.video_links}
-                                onChange={(links) => setData('video_links', links)}
-                            />
-
-                        </div>
 
                         <div className="flex items-center mt-4">
                             <Button disabled={processing}>
