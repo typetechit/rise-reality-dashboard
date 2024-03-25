@@ -1,4 +1,4 @@
-import DashboardLayout, {DashboardContainer, PageHeader} from "@/Layouts/DashboardLayout";
+import DashboardLayout, {PageHeader} from "@/Layouts/DashboardLayout";
 import {PageProps} from "@/types";
 import {Head} from "@inertiajs/react";
 import CategoryEditForm from "@/Components/Settings/Categories/CategoryEditForm";

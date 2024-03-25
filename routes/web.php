@@ -6,6 +6,8 @@ use App\Http\Controllers\Faq\FaqController;
 use App\Http\Controllers\Inbox\InboxController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Property\PropertyController;
+use App\Http\Controllers\Settings\AmenityController;
+use App\Http\Controllers\Settings\AttributeController;
 use App\Http\Controllers\Settings\CategoryController;
 use App\Http\Controllers\Testimonial\TestimonialController;
 use App\Http\Controllers\User\UserController;
@@ -39,6 +41,8 @@ Route::middleware('auth')->group(function () {
         ->name('settings.')
         ->group(function(){
             Route::resource('categories', CategoryController::class);
+            Route::resource('attributes', AttributeController::class);
+            Route::resource('amenities', AmenityController::class);
         });
 });
 

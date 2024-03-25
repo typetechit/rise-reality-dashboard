@@ -3,21 +3,22 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
+use App\Models\Property\Amenity;
 use App\Models\Settings\Attribute;
 use App\Models\Settings\Category;
 use Illuminate\Http\Request;
 
-class AttributeController extends Controller
+class AmenityController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $attributes = Attribute::query()->latest()->paginate(25);
+        $amenities = Amenity::query()->latest()->paginate(25);
 
-        return inertia('Settings/Attributes/Index', [
-            'attributes' => $attributes
+        return inertia('Settings/Amenities/Index', [
+            'amenities' => $amenities
         ]);
     }
 
@@ -26,7 +27,7 @@ class AttributeController extends Controller
      */
     public function create()
     {
-        return inertia('Settings/Attributes/Create');
+        return inertia('Settings/Amenities/Create');
     }
 
     /**
@@ -35,19 +36,18 @@ class AttributeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:attributes,name',
-            'icon' => 'nullable'
+            'name' => 'required|unique:amenities,name'
         ]);
 
-        $newAttribute = Attribute::create($request->all());
+        $newAmenity = Amenity::create($request->all());
 
-        return to_route('settings.attributes.index');
+        return to_route('settings.amenities.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Attribute $attribute)
+    public function show(Amenity $amenity)
     {
         //
     }
@@ -55,27 +55,26 @@ class AttributeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Attribute $attribute)
+    public function edit(Amenity $amenity)
     {
-        return inertia('Settings/Attributes/Edit', [
-            'attribute' => $attribute
+        return inertia('Settings/Amenities/Edit', [
+            'amenity' => $amenity
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Attribute $attribute)
+    public function update(Request $request, Amenity $amenity)
     {
         $request->validate([
-            'name' => 'required|unique:attributes,name',
-            'icon' => 'nullable'
+            'name' => 'required|unique:amenities,name'
         ]);
 
-        $attribute->update($request->all());
+        $amenity->update($request->all());
 
-        return to_route('settings.attributes.edit', [
-            'attribute' => $attribute
+        return to_route('settings.amenities.edit', [
+            'amenity' => $amenity
         ]);
     }
 

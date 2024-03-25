@@ -7,25 +7,23 @@ import {Card, CardContent, CardHeader, CardTitle} from "@/Components/ui/card";
 import {Label} from "@/Components/ui/label";
 import Select from "react-select";
 
-export default function CategoryEditForm({ category, categoryTypes }: { category: any, categoryTypes: any[] }) {
+export default function AttributeEditForm({ attribute }: { attribute: any }) {
     const { data, setData, patch, processing, progress, errors, reset } = useForm({
-        name: category?.name,
-        type: category?.type
+        name: attribute?.name || "",
+        icon: attribute?.icon || ""
     });
-
-    const selectedCategory = categoryTypes[categoryTypes.findIndex(item => item.value === category.type)]
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        patch(route('settings.categories.update', {category: category?.id}));
+        patch(route('settings.attributes.update', {attribute: attribute?.id}));
     };
 
     return (
         <Card>
 
             <CardHeader>
-                <CardTitle>Edit Category</CardTitle>
+                <CardTitle>Edit Attribute</CardTitle>
             </CardHeader>
 
             <CardContent>
@@ -46,27 +44,27 @@ export default function CategoryEditForm({ category, categoryTypes }: { category
                         <InputError message={errors.name} className="mt-2" />
                     </div>
 
-                    {/* Input: Type */}
+                    {/* Input: Icon */}
                     <div>
-                        <Label htmlFor="type">Type</Label>
+                        <Label htmlFor="icon">Icon</Label>
 
-                        <Select
-                            id={`type`}
-                            name={'type'}
-                            defaultValue={selectedCategory}
-                            options={categoryTypes}
-                            onChange={(item: any) => setData('type', item.value)}
+                        <Input
+                            id="name"
+                            type="text"
+                            name="icon"
+                            value={data.icon}
+                            onChange={(e) => setData("icon", e.target.value)}
                         />
 
                         <InputError
-                            message={errors.type}
+                            message={errors.icon}
                             className="mt-2"
                         />
                     </div>
 
                     <div className="flex items-center">
                         <Button disabled={processing}>
-                            {processing ? "Updating..." : "Update Category"}
+                            {processing ? "Updating..." : "Update Attribute"}
                         </Button>
                     </div>
                 </form>
