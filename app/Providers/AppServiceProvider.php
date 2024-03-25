@@ -21,7 +21,8 @@ class AppServiceProvider extends ServiceProvider
     {
         // inertia share data
         inertia()->share([
-            'urlPrevious' => url()->previous()
+            'urlPrevious' => url()->previous(),
+            'brandLogoUrl' => asset('img/RISE-REALITY-LOGO.png')
         ]);
     }
 }

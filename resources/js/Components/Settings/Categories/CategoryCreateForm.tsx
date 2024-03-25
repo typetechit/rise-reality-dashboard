@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Label } from "@/Components/ui/label";
 import Select from "react-select";
 
-export default function CategoryCreateForm({ categoryTypes }: { categoryTypes: any[] }) {
+export default function CategoryCreateForm({ categoryTypes, attributeTypes }: { categoryTypes: any[], attributeTypes: any[] }) {
     const {
         data,
         setData,
@@ -18,6 +18,7 @@ export default function CategoryCreateForm({ categoryTypes }: { categoryTypes: a
     } = useForm({
         name: "",
         type: "",
+        attributes: []
     });
 
     const submit: FormEventHandler = (e) => {
@@ -62,6 +63,25 @@ export default function CategoryCreateForm({ categoryTypes }: { categoryTypes: a
 
                         <InputError
                             message={errors.type}
+                            className="mt-2"
+                        />
+                    </div>
+
+                    {/* Input: Attributes */}
+                    <div>
+                        <Label htmlFor="Attributes">Attributes</Label>
+
+                        <Select
+                            id={`attributes`}
+                            name={'attributes'}
+                            isMulti={true}
+                            isClearable={true}
+                            options={attributeTypes}
+                            onChange={(item: any) => setData('attributes', item)}
+                        />
+
+                        <InputError
+                            message={errors.attributes}
                             className="mt-2"
                         />
                     </div>

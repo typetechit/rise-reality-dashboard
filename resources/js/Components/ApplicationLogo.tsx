@@ -1,11 +1,16 @@
-import { SVGAttributes } from 'react';
 import {cn} from "@/lib/utils";
+import {usePage} from "@inertiajs/react";
+import Dump from "@/Components/Dump";
+
+
+
 export default function ApplicationLogo({ className }: { className?: string}) {
+    const {props}: any = usePage()
     return (
         <div className={cn(
-            className || `w-24 h-24`
+            className || `w-24px h-24px`
         )}>
-            <img src={'img/RISE-REALITY-LOGO.png'}/>
+            <img src={props?.brandLogoUrl}/>
         </div>
     );
 }

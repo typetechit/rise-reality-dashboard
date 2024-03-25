@@ -43,9 +43,8 @@ const adminNavigations = [
         icon: SettingsIcon,
         current: false,
         children: [
-            { name: 'Categories', href: '/settings/categories' },
             { name: 'Attributes', href: '/settings/attributes' },
-            { name: 'Category Attributes', href: '/settings/category-attributes' },
+            { name: 'Categories', href: '/settings/categories' },
             { name: 'Amenities', href: '/settings/amenities' },
         ],
     },

@@ -5,14 +5,12 @@ import CategoriesDataTable from "@/Components/Settings/Categories/CategoriesData
 
 
 export default function CategoriesIndexPage({ auth, categories }: PageProps<{categories: any}>) {
-    const activeTab: any = route()?.params?.tab || ""
-
     return (
         <DashboardLayout
             user={auth.user}
-            header={<PageHeader title={'Settings'} />}
+            header={<PageHeader title={'Categories'} />}
         >
-            <Head title="Settings" />
+            <Head title="Categories" />
 
             <div className={`p-5`}>
                 <CategoriesDataTable categories={categories} />

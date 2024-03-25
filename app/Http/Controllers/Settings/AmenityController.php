@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
-use App\Models\Property\Amenity;
+use App\Models\Settings\Amenity;
 use App\Models\Settings\Attribute;
-use App\Models\Settings\Category;
 use Illuminate\Http\Request;
 
 class AmenityController extends Controller

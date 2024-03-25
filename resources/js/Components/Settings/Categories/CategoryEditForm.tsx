@@ -6,11 +6,13 @@ import {Button} from "@/Components/ui/button";
 import {Card, CardContent, CardHeader, CardTitle} from "@/Components/ui/card";
 import {Label} from "@/Components/ui/label";
 import Select from "react-select";
+import Dump from "@/Components/Dump";
 
-export default function CategoryEditForm({ category, categoryTypes }: { category: any, categoryTypes: any[] }) {
+export default function CategoryEditForm({ category, categoryTypes, attributeTypes }: { category: any, categoryTypes: any[], attributeTypes: any[] }) {
     const { data, setData, patch, processing, progress, errors, reset } = useForm({
         name: category?.name,
-        type: category?.type
+        type: category?.type,
+        attributes: category?.attributes || []
     });
 
     const selectedCategory = categoryTypes[categoryTypes.findIndex(item => item.value === category.type)]
@@ -60,6 +62,25 @@ export default function CategoryEditForm({ category, categoryTypes }: { category
 
                         <InputError
                             message={errors.type}
+                            className="mt-2"
+                        />
+                    </div>
+
+                    {/* Input: Attributes */}
+                    <div>
+                        <Label htmlFor="Attributes">Attributes</Label>
+                        <Select
+                            id={`attributes`}
+                            name={'attributes'}
+                            isMulti={true}
+                            isClearable={true}
+                            defaultValue={data.attributes?.map((item: any) => ({...item, value: item.id, label: item.name}))}
+                            options={attributeTypes}
+                            onChange={(item: any) => setData('attributes', item)}
+                        />
+
+                        <InputError
+                            message={errors.attributes}
                             className="mt-2"
                         />
                     </div>

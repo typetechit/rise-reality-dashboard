@@ -43,7 +43,8 @@ import Dump from "@/Components/Dump";
 export type Category = {
     id: number
     name: string
-    type: string
+    type: string,
+    attributes?: any[]
 }
 
 export const columns: ColumnDef<Category>[] = [
@@ -76,6 +77,25 @@ export const columns: ColumnDef<Category>[] = [
     {
         accessorKey: "type",
         header: 'Type',
+        cell: ({ row }) => {
+            return <Badge variant={'outline'}>{row.original.type.toUpperCase()}</Badge>
+        }
+    },
+    {
+        accessorKey: "attributes",
+        header: 'Assigned Attributes',
+        cell: ({ row }) => {
+            const category = row.original
+            const attributes = [...category?.attributes || []].map(attribute => ({id: attribute.id, name: attribute.name}))
+
+            return (
+                <div className={`flex items-center gap-3`}>
+                    {
+                        attributes.map(attribute => (<Badge variant={'outline'}>{attribute.name}</Badge>))
+                    }
+                </div>
+            )
+        }
     },
     {
         id: "actions",

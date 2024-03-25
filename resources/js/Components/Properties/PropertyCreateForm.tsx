@@ -112,53 +112,19 @@ export default function PropertyCreateForm({ listingTypes, amenityTypes, categor
                 <CardContent>
 
                     <form onSubmit={submit} className={`flex flex-col gap-4`}>
-                        <div className={`grid grid-cols-3 gap-4`}>
-                            {/* Input: Title */}
-                            <div>
-                                <Label htmlFor="title">Title</Label>
+                        {/* Input: Title */}
+                        <div>
+                            <Label htmlFor="title">Title</Label>
 
-                                <Input
-                                    id="title"
-                                    name="title"
-                                    value={data.title}
-                                    onChange={(e) => setData('title', e.target.value)}
-                                />
+                            <Input
+                                id="title"
+                                name="title"
+                                value={data.title}
+                                onChange={(e) => setData('title', e.target.value)}
+                            />
 
-                                <InputError message={errors.title} className="mt-2"/>
-                            </div>
-
-                            {/* Input: Featured Image */}
-                            <div>
-                                <Label htmlFor="featured_image">Featured Image</Label>
-
-                                <Input
-                                    id="featured_image"
-                                    type="file"
-                                    name="featured_image"
-                                    accept={`image/png, image/gif, image/jpeg`}
-                                    onChange={(e: any) => setData('featured_image', e.target.files[0])}
-                                />
-
-                                <InputError message={errors.title} className="mt-2"/>
-                            </div>
-
-                            {/* Input: Gallery Images */}
-                            <div>
-                                <Label htmlFor="gallery_images">Gallery Images</Label>
-
-                                <Input
-                                    id="gallery_images"
-                                    type="file"
-                                    name="gallery_images"
-                                    accept={`image/png, image/gif, image/jpeg`}
-                                    multiple={true}
-                                    onChange={(e: any) => setData('gallery_images', e.target.files)}
-                                />
-
-                                <InputError message={errors.gallery_images} className="mt-2"/>
-                            </div>
+                            <InputError message={errors.title} className="mt-2"/>
                         </div>
-
 
                         {/* Input: Description */}
                         <div>
@@ -194,7 +160,6 @@ export default function PropertyCreateForm({ listingTypes, amenityTypes, categor
 
                             <InputError message={errors.content} className="mt-2"/>
                         </div>
-
 
                         <div className={`grid grid-cols-4 gap-4`}>
                             {/* Input: Price */}
@@ -258,7 +223,7 @@ export default function PropertyCreateForm({ listingTypes, amenityTypes, categor
                             </div>
                         </div>
 
-                        <div className={`grid grid-cols-3 gap-4`}>
+                        <div className={`grid grid-cols-4 gap-4`}>
                             {/* Input: build_year */}
                             <div>
                                 <Label htmlFor="build_year">Build Year</Label>
@@ -302,9 +267,6 @@ export default function PropertyCreateForm({ listingTypes, amenityTypes, categor
 
                                 <InputError message={errors.listing_type} className="mt-2"/>
                             </div>
-                        </div>
-
-                        <div className={`grid grid-cols-3 gap-4`}>
 
                             {/* Input: Amenities */}
                             <div>
@@ -319,51 +281,6 @@ export default function PropertyCreateForm({ listingTypes, amenityTypes, categor
                                 />
 
                                 <InputError message={errors.amenities} className="mt-2"/>
-                            </div>
-
-                            <div>
-                                <Label
-                                    htmlFor="is_featured"
-                                    className={`flex-grow cursor-pointer`}
-                                >Is Featured</Label>
-
-                                <RadioGroup
-                                    defaultValue="option-one"
-                                    className={`flex items-center gap-5 mt-3`}
-                                    onValueChange={(value: any) => setData('is_featured', value)}
-                                >
-                                    <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value={"1"} id="is_featured-yes"/>
-                                        <Label htmlFor="is_featured-yes">Yes</Label>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value={"0"} id="is_featured-no"/>
-                                        <Label htmlFor="is_featured-no">No</Label>
-                                    </div>
-                                </RadioGroup>
-                            </div>
-
-                            {/* Input: Is Published */}
-                            <div>
-                                <Label
-                                    htmlFor="is_featured"
-                                    className={`flex-grow cursor-pointer`}
-                                >Is Published</Label>
-
-                                <RadioGroup
-                                    defaultValue="option-one"
-                                    className={`flex items-center gap-5 mt-3`}
-                                    onValueChange={(value: any) => setData('is_published', value)}
-                                >
-                                    <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value={"1"} id="is_published-yes"/>
-                                        <Label htmlFor="is_published-yes">Yes</Label>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value={"0"} id="is_published-no"/>
-                                        <Label htmlFor="is_published-no">No</Label>
-                                    </div>
-                                </RadioGroup>
                             </div>
                         </div>
 
@@ -415,6 +332,7 @@ export default function PropertyCreateForm({ listingTypes, amenityTypes, categor
                             />
                         </div>
 
+
                         {/* Input: Video Links */}
                         <div>
                             <Label htmlFor="video_links">Youtube Video Id</Label>
@@ -425,6 +343,91 @@ export default function PropertyCreateForm({ listingTypes, amenityTypes, categor
                             />
 
                         </div>
+
+
+                        <div className={`grid grid-cols-3 gap-4`}>
+
+
+                            {/* Input: Featured Image */}
+                            <div className={`col-span-1`}>
+                                <Label htmlFor="featured_image">Featured Image</Label>
+
+                                <Input
+                                    id="featured_image"
+                                    type="file"
+                                    name="featured_image"
+                                    accept={`image/png, image/gif, image/jpeg`}
+                                    onChange={(e: any) => setData('featured_image', e.target.files[0])}
+                                />
+
+                                <InputError message={errors.title} className="mt-2"/>
+                            </div>
+
+                            {/* Input: Gallery Images */}
+                            <div className={'col-span-2'}>
+                                <Label htmlFor="gallery_images">Gallery Images</Label>
+
+                                <Input
+                                    id="gallery_images"
+                                    type="file"
+                                    name="gallery_images"
+                                    accept={`image/png, image/gif, image/jpeg`}
+                                    multiple={true}
+                                    onChange={(e: any) => setData('gallery_images', e.target.files)}
+                                />
+
+                                <InputError message={errors.gallery_images} className="mt-2"/>
+                            </div>
+                        </div>
+
+
+                        <div className={`grid grid-cols-4 gap-4`}>
+                            <div>
+                                <Label
+                                    htmlFor="is_featured"
+                                    className={`flex-grow cursor-pointer`}
+                                >Is Featured</Label>
+
+                                <RadioGroup
+                                    defaultValue="option-one"
+                                    className={`flex items-center gap-5 mt-3`}
+                                    onValueChange={(value: any) => setData('is_featured', value)}
+                                >
+                                    <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value={"1"} id="is_featured-yes"/>
+                                        <Label htmlFor="is_featured-yes">Yes</Label>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value={"0"} id="is_featured-no"/>
+                                        <Label htmlFor="is_featured-no">No</Label>
+                                    </div>
+                                </RadioGroup>
+                            </div>
+
+                            {/* Input: Is Published */}
+                            <div>
+                                <Label
+                                    htmlFor="is_featured"
+                                    className={`flex-grow cursor-pointer`}
+                                >Is Published</Label>
+
+                                <RadioGroup
+                                    defaultValue="option-one"
+                                    className={`flex items-center gap-5 mt-3`}
+                                    onValueChange={(value: any) => setData('is_published', value)}
+                                >
+                                    <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value={"1"} id="is_published-yes"/>
+                                        <Label htmlFor="is_published-yes">Yes</Label>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value={"0"} id="is_published-no"/>
+                                        <Label htmlFor="is_published-no">No</Label>
+                                    </div>
+                                </RadioGroup>
+                            </div>
+                        </div>
+
 
                         <div className="flex items-center mt-4">
                             <Button disabled={processing}>

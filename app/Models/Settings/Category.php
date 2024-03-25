@@ -2,7 +2,6 @@
 
 namespace App\Models\Settings;
 
-use App\Models\Property\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
