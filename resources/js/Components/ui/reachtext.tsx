@@ -16,6 +16,7 @@ import {
     UndoRedo,
     imagePlugin,
     linkDialogPlugin,
+    linkPlugin,
     listsPlugin,
     markdownShortcutPlugin,
     quotePlugin,
@@ -80,6 +81,7 @@ export default function ReachText({
                             </>
                         ),
                     }),
+                    linkPlugin(),
                     tablePlugin(),
                     linkDialogPlugin(),
                     imagePlugin({ imageUploadHandler }),
