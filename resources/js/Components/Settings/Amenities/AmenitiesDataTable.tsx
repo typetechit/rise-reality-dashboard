@@ -40,20 +40,12 @@ import {Link} from "@inertiajs/react";
 import {PencilIcon} from "lucide-react";
 import Dump from "@/Components/Dump";
 
-export type Post = {
+export type Amenity = {
     id: number
-    title: string
-    slug: string
-    short_description: string
-    long_description: string
-    is_published: boolean
-    author: {
-        id: number,
-        name: string
-    }
+    name: string
 }
 
-export const columns: ColumnDef<Post>[] = [
+export const columns: ColumnDef<Amenity>[] = [
     {
         id: "select",
         header: ({ table }) => (
@@ -77,29 +69,18 @@ export const columns: ColumnDef<Post>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "is_published",
-        header: "Published",
-        cell: ({ row }) => (
-            <Badge className={`capitalize`}>{row.getValue("is_published") === true ? "Published" : "Draft"}</Badge>
-        ),
-    },
-    {
-        accessorKey: "title",
-        header: 'Title',
-    },
-    {
-        accessorKey: "user.name",
-        header: 'Author',
+        accessorKey: "name",
+        header: "Name"
     },
     {
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
-            const post = row.original
+            const amenity = row.original
 
             return (
                 <div className={`flex gap-4`}>
-                    <Link href={route('posts.edit', {'post': post.id})}>
+                    <Link href={route('settings.amenities.edit', {'amenity': amenity.id})}>
                         <PencilIcon className={`w-5 h-5`} />
                     </Link>
                 </div>
@@ -108,8 +89,8 @@ export const columns: ColumnDef<Post>[] = [
     },
 ]
 
-export default function PostsDataTable({ posts }: {posts: any}) {
-    const postsData = posts.data
+export default function AmenitiesDataTable({ amenities }: {amenities: any}) {
+    const amenitiesData = amenities.data
 
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -120,7 +101,7 @@ export default function PostsDataTable({ posts }: {posts: any}) {
     const [rowSelection, setRowSelection] = React.useState({})
 
     const table = useReactTable({
-        data: postsData,
+        data: amenitiesData,
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -143,10 +124,10 @@ export default function PostsDataTable({ posts }: {posts: any}) {
             <CardContent className={`p-5`}>
                 <div className="flex items-center gap-4 pb-4">
                     <Input
-                        placeholder="Filter posts..."
-                        value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+                        placeholder="Filter categories..."
+                        value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
                         onChange={(event) =>
-                            table.getColumn("title")?.setFilterValue(event.target.value)
+                            table.getColumn("name")?.setFilterValue(event.target.value)
                         }
                         className="max-w-sm"
                     />
@@ -179,7 +160,7 @@ export default function PostsDataTable({ posts }: {posts: any}) {
                     </DropdownMenu>
 
                     <Button>
-                        <Link href={route('posts.create')}>Add New Post</Link>
+                        <Link href={route('settings.amenities.create')}>Add New Amenity</Link>
                     </Button>
                 </div>
 

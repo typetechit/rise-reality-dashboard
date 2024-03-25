@@ -6,6 +6,9 @@ use App\Http\Controllers\Faq\FaqController;
 use App\Http\Controllers\Inbox\InboxController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Property\PropertyController;
+use App\Http\Controllers\Settings\AmenityController;
+use App\Http\Controllers\Settings\AttributeController;
+use App\Http\Controllers\Settings\CategoryController;
 use App\Http\Controllers\Testimonial\TestimonialController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
@@ -28,10 +31,19 @@ Route::middleware('auth')->group(function () {
     Route::resource('faqs', FaqController::class);
     Route::resource('testimonials', TestimonialController::class);
     Route::resource('contact-messages', ContactMessageController::class);
+
     Route::get('inbox', [InboxController::class, 'index'])->name('inbox.index');
 
     Route::post('editor-file-upload', [\App\Http\Controllers\EditorFileUploadController::class, 'upload'])
         ->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class);
+
+    Route::prefix('settings')
+        ->name('settings.')
+        ->group(function(){
+            Route::resource('categories', CategoryController::class);
+            Route::resource('attributes', AttributeController::class);
+            Route::resource('amenities', AmenityController::class);
+        });
 });
 
 require __DIR__.'/auth.php';

@@ -11,13 +11,22 @@ import {cn} from "@/lib/utils";
 import {User} from "@/types";
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import {Link} from "@inertiajs/react";
-import {BuildingIcon, LogOutIcon, MessageCircleIcon, Terminal} from "lucide-react";
+import {BuildingIcon, ChevronDown, LogOutIcon, MessageCircleIcon, SettingsIcon, Terminal} from "lucide-react";
 import {Card, CardContent, CardHeader, CardTitle} from "@/Components/ui/card";
 import GoBack from "@/Components/GoBack";
 import {animeAtom, authUser, sidebarOpenState} from "@/store/DashboardLayoutState";
 import {useAtom, useAtomValue, useSetAtom} from 'jotai'
 import Dump from "@/Components/Dump";
-import {NewspaperIcon} from "@heroicons/react/24/solid";
+import {ChevronRightIcon, NewspaperIcon} from "@heroicons/react/24/solid";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/Components/ui/dropdown-menu"
+
 
 const adminNavigations = [
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, current: true },
@@ -28,6 +37,17 @@ const adminNavigations = [
     { name: "Contacts Messages", href: "/contact-messages", icon: MessageCircleIcon, current: false },
     { name: "Inbox", href: "/inbox", icon: InboxIcon, current: false },
     { name: "Users", href: "/users", icon: UsersIcon, current: false },
+    {
+        name: "Settings",
+        href: "#",
+        icon: SettingsIcon,
+        current: false,
+        children: [
+            { name: 'Attributes', href: '/settings/attributes' },
+            { name: 'Categories', href: '/settings/categories' },
+            { name: 'Amenities', href: '/settings/amenities' },
+        ],
+    },
 ]
 
 const propertyAgentNavigations = [
@@ -255,24 +275,59 @@ export function SidebarNavigations({navigations}: { navigations: any[] }) {
                     <ul role="list" className="-mx-2 space-y-1">
                         {navigations.map((item) => (
                             <li key={item.name}>
-                                <Link
-                                    href={item.href}
-                                    className={cn(
-                                        item.current
-                                            ? 'bg-gray-50 text-indigo-600'
-                                            : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
-                                        'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
-                                    )}
-                                >
-                                    <item.icon
-                                        className={cn(
-                                            item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600',
-                                            'h-6 w-6 shrink-0'
-                                        )}
-                                        aria-hidden="true"
-                                    />
-                                    {item.name}
-                                </Link>
+
+                                {
+                                    item?.children ? (
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger className={`w-full`}>
+                                                <div className={`group flex items-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold text-gray-700 hover:text-indigo-600 hover:bg-gray-50`}>
+                                                    <item.icon
+                                                        className={cn(
+                                                            item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600',
+                                                            'h-6 w-6 shrink-0'
+                                                        )}
+                                                        aria-hidden="true"
+                                                    />
+
+                                                    {item.name}
+                                                </div>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent align={'start'} className={`min-w-[255px]`}  >
+                                                {item.children.map((childItem: any) => (
+                                                    <DropdownMenuItem key={`child-item-${childItem.name}`}>
+                                                        <Link
+                                                            className={'cursor-pointer w-full'}
+                                                            href={childItem.href}>{childItem.name}</Link>
+                                                    </DropdownMenuItem>)
+                                                )}
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+
+                                    ) : (
+                                        <Link
+                                            href={item.href}
+                                            className={cn(
+                                                item.current
+                                                    ? 'bg-gray-50 text-indigo-600'
+                                                    : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
+                                                'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
+                                            )}
+                                        >
+                                            <item.icon
+                                                className={cn(
+                                                    item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600',
+                                                    'h-6 w-6 shrink-0'
+                                                )}
+                                                aria-hidden="true"
+                                            />
+                                            {item.name}
+
+                                        </Link>
+                                    )
+                                }
+
+
+
                             </li>
                         ))}
                     </ul>

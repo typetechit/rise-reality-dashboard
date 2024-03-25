@@ -21,9 +21,6 @@ import ReachText from "../ui/reachtext";
 import { MDXEditorMethods } from "@mdxeditor/editor";
 
 export default function PostCreateForm() {
-    const markdown = `
-Start Typing Here \n sdfsdf
-`;
     const editorRef = useRef<MDXEditorMethods | null>(null);
     const {
         data,

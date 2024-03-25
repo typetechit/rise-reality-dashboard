@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\City;
-use Illuminate\Http\Request;
+use App\Models\Settings\Category;
 
 class APIWebsiteController extends Controller
 {
