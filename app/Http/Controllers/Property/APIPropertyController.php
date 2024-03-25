@@ -16,7 +16,7 @@ class APIPropertyController extends Controller
         $properties = Property::query()
             ->with(['user:id,name,email,image,description,social_links', 'category:id,name'])
             ->latest()
-            ->paginate(25);
+            ->paginate(10);
 
         return response()->json($properties);
     }

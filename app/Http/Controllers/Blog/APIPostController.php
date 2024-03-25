@@ -17,7 +17,7 @@ class APIPostController extends Controller
         $posts = Post::query()
             ->with(['user:id,name,image'])
             ->latest()
-            ->paginate(25);
+            ->paginate(10);
 
         return response()->json($posts);
     }

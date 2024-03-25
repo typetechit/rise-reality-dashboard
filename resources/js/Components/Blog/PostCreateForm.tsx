@@ -99,7 +99,7 @@ export default function PostCreateForm() {
                             id="featured_image"
                             type="file"
                             name="featured_image"
-                            accept={`image/png, image/gif, image/jpeg`}
+                            accept={`image/png, image/gif, image/jpeg,  image/webp`}
                             onChange={(e: any) =>
                                 setData("featured_image", e.target.files[0])
                             }
