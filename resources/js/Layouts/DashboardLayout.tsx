@@ -10,22 +10,20 @@ import {
 import {cn} from "@/lib/utils";
 import {User} from "@/types";
 import ApplicationLogo from "@/Components/ApplicationLogo";
-import {Link} from "@inertiajs/react";
-import {BuildingIcon, ChevronDown, LogOutIcon, MessageCircleIcon, SettingsIcon, Terminal} from "lucide-react";
-import {Card, CardContent, CardHeader, CardTitle} from "@/Components/ui/card";
+import {Link, usePage} from "@inertiajs/react";
+import {BuildingIcon, LogOutIcon, MessageCircleIcon, SettingsIcon, Terminal} from "lucide-react";
+import {Card, CardHeader, CardTitle} from "@/Components/ui/card";
 import GoBack from "@/Components/GoBack";
 import {animeAtom, authUser, sidebarOpenState} from "@/store/DashboardLayoutState";
 import {useAtom, useAtomValue, useSetAtom} from 'jotai'
-import Dump from "@/Components/Dump";
-import {ChevronRightIcon, NewspaperIcon} from "@heroicons/react/24/solid";
+import {NewspaperIcon} from "@heroicons/react/24/solid";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu"
+import { Alert, AlertDescription, AlertTitle } from "@/Components/ui/alert"
 
 
 const adminNavigations = [
@@ -61,6 +59,25 @@ const editorNavigations = [
     { name: 'Blog Posts', href: '/posts', icon: NewspaperIcon, current: false },
 ]
 
+function FlashMessage() {
+    const pageProps = usePage().props
+    const flash: any = pageProps?.flash || null
+
+    if(!flash?.message){
+        return null
+    }
+
+    return (
+        <Alert>
+            <Terminal className="h-4 w-4" />
+            <AlertTitle>Alert!</AlertTitle>
+            <AlertDescription>
+                {flash?.message}
+            </AlertDescription>
+        </Alert>
+    );
+}
+
 export default function DashboardLayout({ user, header, children }: PropsWithChildren<{ user: User, header?: ReactNode }>) {
     const [anime, setAnime] = useAtom(animeAtom)
     const [open, setOpen] = useAtom(sidebarOpenState)
@@ -86,6 +103,9 @@ export default function DashboardLayout({ user, header, children }: PropsWithChi
             <main className="lg:pl-72 lg:pt-0">
                 <div className="">
                     {header || null}
+
+                    <FlashMessage />
+
                     {children}
                 </div>
             </main>

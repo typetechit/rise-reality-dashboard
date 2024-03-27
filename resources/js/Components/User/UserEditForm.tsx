@@ -9,6 +9,7 @@ import { Label } from "@/Components/ui/label";
 import Select from "react-select";
 import Dump from "@/Components/Dump";
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
+import UserPasswordUpdateForm from "@/Components/User/UserPasswordUpdateForm";
 
 export default function UserEditForm({
     user,

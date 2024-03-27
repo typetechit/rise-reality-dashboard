@@ -9,6 +9,7 @@ use App\Models\Country;
 use App\Models\Property;
 use App\Models\Settings\Amenity;
 use App\Models\Settings\Category;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -71,6 +72,7 @@ class PropertyController extends Controller
         DB::beginTransaction();
         try {
             $validatedData = $request->validationData();
+            $postPublishedDate = Carbon::make($request->get('published_at', now()));
 
             $newPropertyData = [
                 'user_id' => auth()->id(),
@@ -91,6 +93,7 @@ class PropertyController extends Controller
                 'listing_type' => $validatedData['listing_type'],
                 'amenities' => $validatedData['amenities'],
                 'category_attributes' => $validatedData['category_attributes'],
+                'created_at' => $postPublishedDate
             ];
 
             $newProperty = $request->user()->properties()
@@ -220,6 +223,10 @@ class PropertyController extends Controller
 
             if(count($request->video_links) > 0){
                 $updatableData["video_links"] = $request->video_links;
+            }
+
+            if($request->get('published_at')){
+                $updatableData['created_at'] = Carbon::make($request->get('published_at'));
             }
 
             $property->update($updatableData);
