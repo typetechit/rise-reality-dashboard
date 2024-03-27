@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Abbasudo\Purity\Traits\Filterable;
 use App\Models\Settings\Category;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 class Property extends Model
 {
     use HasFactory;
+    use Filterable;
 
     protected $fillable = [
         'user_id',

@@ -14,6 +14,7 @@ class APIPropertyController extends Controller
     public function index(Request $request)
     {
         $properties = Property::query()
+            ->filter()
             ->with(['user:id,name,email,image,description,social_links', 'category:id,name'])
             ->latest()
             ->paginate(10);
