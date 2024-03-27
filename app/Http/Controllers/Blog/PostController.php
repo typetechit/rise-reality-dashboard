@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Blog\PostCreateRequest;
 use App\Http\Requests\Blog\PostUpdateRequest;
 use App\Models\Post;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -40,11 +41,13 @@ class PostController extends Controller
     public function store(PostCreateRequest $request)
     {
         $postData = $request->validationData();
+        $postPublishedDate = Carbon::make($request->get('published_at', now()));
 
         $newPost = $request->user()->posts()->create([
             'title' => $postData['title'],
             'description' => $postData['description'],
             'is_published' => $postData['is_published'],
+            'created_at' => $postPublishedDate
         ]);
 
         $updatableData = [];
@@ -85,7 +88,7 @@ class PostController extends Controller
      */
     public function update(PostUpdateRequest $request, Post $post)
     {
-        $updatableData = $request->only('title', 'description', 'is_published');;
+        $updatableData = $request->only('title', 'description', 'is_published', 'published_at');
 
         if($request->hasFile('featured_image')){
             $featuredImagePath = $request
@@ -93,6 +96,10 @@ class PostController extends Controller
                 ->store('post_images', 'public');
 
             $updatableData["featured_image"] = $featuredImagePath;
+        }
+
+        if($request->get('published_at')){
+            $updatableData['created_at'] = Carbon::make($request->get('published_at'));
         }
 
         $post->update($updatableData);

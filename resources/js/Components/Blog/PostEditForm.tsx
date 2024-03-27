@@ -11,6 +11,7 @@ import Dump from "@/Components/Dump";
 import VideoLinksInput from "@/Components/ui/VideoLinksInput";
 import { MDXEditorMethods } from "@mdxeditor/editor";
 import ReachText from "@/Components/ui/reachtext";
+import InputDate from "@/Components/ui/InputDate";
 
 export default function PostEditForm({ post: PostData }: { post: any }) {
     const editorRef = useRef<MDXEditorMethods | null>(null);
@@ -20,6 +21,7 @@ export default function PostEditForm({ post: PostData }: { post: any }) {
             description: PostData?.description,
             featured_image: null,
             is_published: PostData?.is_published,
+            published_at: PostData?.created_at,
             _method: "PUT",
         });
 
@@ -64,14 +66,6 @@ export default function PostEditForm({ post: PostData }: { post: any }) {
                     <div>
                         <Label htmlFor="description">Description</Label>
 
-                        {/* <Textarea
-                            id="description"
-                            name="description"
-                            value={data.description}
-                            onChange={(e: any) =>
-                                setData("description", e.target.value)
-                            }
-                        /> */}
                         <ReachText
                             markdown={data.description}
                             editorRef={editorRef}
@@ -124,6 +118,28 @@ export default function PostEditForm({ post: PostData }: { post: any }) {
                                 onCheckedChange={(value) =>
                                     setData("is_published", value)
                                 }
+                            />
+                        </div>
+                    </div>
+
+                    {/* Input: Published At */}
+                    <div>
+                        <div className="flex flex-col gap-4">
+                            <Label
+                                htmlFor="published_at"
+                                className={`flex-grow cursor-pointer`}
+                            >
+                                Published Date
+                            </Label>
+
+                            <InputDate
+                                defaultValue={PostData?.created_at}
+                                onChange={(date) => setData('published_at', date)}
+                            />
+
+                            <InputError
+                                message={errors.published_at}
+                                className="mt-2"
                             />
                         </div>
                     </div>

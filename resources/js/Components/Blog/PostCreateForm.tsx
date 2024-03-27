@@ -19,6 +19,7 @@ import { MinusCircle, PlusCircle } from "lucide-react";
 import VideoLinksInput from "@/Components/ui/VideoLinksInput";
 import ReachText from "../ui/reachtext";
 import { MDXEditorMethods } from "@mdxeditor/editor";
+import InputDate from "@/Components/ui/InputDate";
 
 export default function PostCreateForm() {
     const editorRef = useRef<MDXEditorMethods | null>(null);
@@ -36,6 +37,7 @@ export default function PostCreateForm() {
         description: "",
         featured_image: null,
         is_published: false,
+        published_at: "",
     });
 
     const submit: FormEventHandler = (e) => {
@@ -125,6 +127,28 @@ export default function PostCreateForm() {
                                 onCheckedChange={(value) =>
                                     setData("is_published", value)
                                 }
+                            />
+                        </div>
+                    </div>
+
+                    {/* Input: Published At */}
+                    <div>
+                        <div className="flex flex-col gap-4">
+                            <Label
+                                htmlFor="published_at"
+                                className={`flex-grow cursor-pointer`}
+                            >
+                                Published Date
+                            </Label>
+
+                            <InputDate
+                                defaultValue={new Date()}
+                                onChange={(date) => setData('published_at', date)}
+                            />
+
+                            <InputError
+                                message={errors.published_at}
+                                className="mt-2"
                             />
                         </div>
                     </div>

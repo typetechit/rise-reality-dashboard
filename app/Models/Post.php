@@ -16,7 +16,8 @@ class Post extends Model
         'title',
         'description',
         'featured_image',
-        'is_published'
+        'is_published',
+        'created_at',
     ];
 
     protected function casts(): array
