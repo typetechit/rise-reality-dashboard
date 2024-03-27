@@ -22,8 +22,6 @@ class APIContactMessageController extends Controller
 
         $newContactMessage = ContactMessage::create($request->all());
 
-        if($request->wantsJson()){
-            return response()->json($newContactMessage);
-        }
+        return response()->json($newContactMessage);
     }
 }
