@@ -92,6 +92,12 @@ export default function TestimonialEditForm({
                     <div>
                         <Label htmlFor="img">Image</Label>
 
+                        <div className="py-2">
+                            <img
+                                src={testimonial.image}
+                                className="object-cover h-24 w-24 rounded-full ..."/>
+                        </div>
+
                         <Input
                             id="image"
                             type="file"
@@ -102,12 +108,12 @@ export default function TestimonialEditForm({
                             }
                         />
 
-                        <InputError message={errors.image} className="mt-2" />
+                        <InputError message={errors.image} className="mt-2"/>
                     </div>
 
                     {/* Input: Comment */}
                     <div>
-                        <Label htmlFor="comment">Comment</Label>
+                    <Label htmlFor="comment">Comment</Label>
 
                         <Textarea
                             id="comment"

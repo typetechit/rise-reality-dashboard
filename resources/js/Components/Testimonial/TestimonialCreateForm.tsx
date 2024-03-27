@@ -1,4 +1,4 @@
-import { FormEventHandler } from "react";
+import {FormEventHandler, useState} from "react";
 import InputError from "@/Components/InputError";
 import { useForm } from "@inertiajs/react";
 import { Input } from "@/Components/ui/input";
@@ -17,10 +17,22 @@ export default function TestimonialCreateForm() {
             comment: "",
         });
 
+    // State to hold the URL of the uploaded image
+    const [imageUrl, setImageUrl] = useState<string>("");
+
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
         post(route("testimonials.store"));
+    };
+
+    // Function to handle image file change
+    const handleImageChange = (e: any) => {
+        const file = e.target.files[0];
+        setData("image", file);
+
+        // Create a URL for the uploaded image
+        setImageUrl(URL.createObjectURL(file));
     };
 
     return (
@@ -86,14 +98,22 @@ export default function TestimonialCreateForm() {
                     <div>
                         <Label htmlFor="img">Image</Label>
 
+                        {/* Display uploaded image */}
+                        {imageUrl && (
+                            <div className="py-2">
+                                <img
+                                    src={imageUrl}
+                                    className="object-cover h-24 w-24 rounded-full ..."/>
+                            </div>
+                        )}
+
+
                         <Input
                             id="image"
                             type="file"
                             name="image"
                             accept={`image/png, image/gif, image/jpeg,  image/webp`}
-                            onChange={(e: any) =>
-                                setData("image", e.target.files[0])
-                            }
+                            onChange={handleImageChange}
                         />
 
                         <InputError message={errors.image} className="mt-2" />
