@@ -153,7 +153,7 @@ export default function PropertyEditForm({
     }
 
     function handleGalleryImageRemove(propertyId: any, indexId: any) {
-        router.post(route('properties.'))
+        // router.post(route('properties.'))
     }
 
     return (
