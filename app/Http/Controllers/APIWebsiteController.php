@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\City;
+use App\Models\Property;
 use App\Models\Settings\Category;
 
 class APIWebsiteController extends Controller
@@ -28,7 +29,13 @@ class APIWebsiteController extends Controller
             ->orderBy('name')
             ->get();
 
+        $propertyPriceRange = [
+            Property::min('price'),
+            Property::max('price'),
+        ];
+
         return response()->json([
+            'price_range' => $propertyPriceRange,
             'listingTypes' => $listingTypes,
             'categories' => $categories,
             'CitiesWithAreas' => $cities,
