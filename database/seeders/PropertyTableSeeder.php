@@ -31,7 +31,7 @@ class PropertyTableSeeder extends Seeder
                 'mls_code' => Str::random(4),
                 'build_year' => now()->year,
                 'property_size' => mt_rand(1000, 5000),
-                'listing_type' => collect(['Exclusive Listing', 'Lease', 'Rental', 'Sale'])->random(),
+                'listing_type' => collect(['Lease', 'Rental', 'Sale'])->random(),
                 'amenities' => json_encode([
                     "Air Conditioning",
                     "Gym",

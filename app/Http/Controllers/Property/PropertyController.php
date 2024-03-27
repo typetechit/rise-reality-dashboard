@@ -44,7 +44,7 @@ class PropertyController extends Controller
      */
     public function create()
     {
-        $availableListingTypes = ['Exclusive Listing', 'Lease', 'Rental', 'Sale'];
+        $availableListingTypes = ['Lease', 'Rental', 'Sale'];
         $availableAmenities = Amenity::query()
             ->select(['id', 'name'])
             ->latest()
@@ -149,7 +149,7 @@ class PropertyController extends Controller
     {
         $property->load('category:id,name');
 
-        $availableListingTypes = ['Exclusive Listing', 'Lease', 'Rental', 'Sale'];
+        $availableListingTypes = config('property.listingsTypes');
         $availableAmenities = Amenity::query()
             ->select(['id', 'name'])
             ->latest()
@@ -236,8 +236,25 @@ class PropertyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Property $property)
     {
-        //
+        if($property->user_id === auth()->id()){
+            $property->delete();
+        }
+
+        return to_route('properties.index');
+    }
+
+    public function removeGalleryImage(Request $request)
+    {
+        $request->validate([
+            'property_id' => 'required|exists:properties,id',
+        ]);
+
+        if($request->get('itemIndex')){
+
+        }
+
+        return back();
     }
 }

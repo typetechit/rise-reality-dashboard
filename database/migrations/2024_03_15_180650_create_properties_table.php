@@ -33,7 +33,7 @@ return new class extends Migration
             $table->string('build_year')->nullable();
             $table->integer('property_size')->nullable();
             $table->boolean('is_featured')->default(false);
-            $table->enum('listing_type', ['Exclusive Listing', 'Lease', 'Rental', 'Sale'])->nullable();
+            $table->enum('listing_type', config('property.listingsTypes'))->nullable();
             $table->json('amenities')->nullable();
             $table->json('category_attributes')->nullable();
 

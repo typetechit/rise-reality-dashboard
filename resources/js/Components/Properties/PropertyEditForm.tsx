@@ -1,6 +1,6 @@
 import { FormEventHandler, useEffect, useRef, useState } from "react";
 import InputError from "@/Components/InputError";
-import { useForm } from "@inertiajs/react";
+import {router, useForm} from "@inertiajs/react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
@@ -150,6 +150,10 @@ export default function PropertyEditForm({
 
     function handleCategoryAttributeRemove(attribute: any, indexId: any) {
         alert("Coming soon.");
+    }
+
+    function handleGalleryImageRemove(propertyId: any, indexId: any) {
+        router.post(route('properties.'))
     }
 
     return (
@@ -552,7 +556,7 @@ export default function PropertyEditForm({
                                     className={`my-4 grid grid-cols-5 items-center gap-3`}
                                 >
                                     {property?.gallery_images?.map(
-                                        (galleryImg: any) => (
+                                        (galleryImg: any, indexId: any) => (
                                             <div className={`relative`}>
                                                 <img
                                                     className="object-cover h-28 w-full rounded-lg shadow"
@@ -564,6 +568,7 @@ export default function PropertyEditForm({
                                                     variant={"destructive"}
                                                     size={"icon"}
                                                     className={`absolute right-3 top-3`}
+                                                    onClick={() => handleGalleryImageRemove(property.id, indexId) }
                                                 >
                                                     <XMarkIcon
                                                         className={`w-5 h-5`}

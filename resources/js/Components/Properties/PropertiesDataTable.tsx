@@ -37,7 +37,7 @@ import {
 import {Badge} from "@/Components/ui/badge";
 import {Card, CardContent} from "@/Components/ui/card";
 import {Link, router} from "@inertiajs/react";
-import {PencilIcon} from "lucide-react";
+import {PencilIcon, TrashIcon} from "lucide-react";
 import Dump from "@/Components/Dump";
 
 export type Property = {
@@ -114,6 +114,14 @@ export const columns: ColumnDef<Property>[] = [
                 <div className={`flex gap-4`}>
                     <Link href={route('properties.edit', {'property': property.id})}>
                         <PencilIcon className={`w-5 h-5`} />
+                    </Link>
+
+                    <Link
+                        href={route('properties.destroy', {'property': property.id})}
+                        method={"delete"}
+                        as={'button'}
+                    >
+                        <TrashIcon className={`w-5 h-5`} />
                     </Link>
                 </div>
             )

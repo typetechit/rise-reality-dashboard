@@ -10,7 +10,7 @@ class APIWebsiteController extends Controller
 {
     public function getFilterOptions(): \Illuminate\Http\JsonResponse
     {
-        $listingTypes = collect(['Exclusive Listing', 'Lease', 'Rental', 'Sale'])
+        $listingTypes = collect(config('property.listingsTypes'))
             ->map(function($item){
                 return [
                     'value' => $item,

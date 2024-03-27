@@ -21,7 +21,7 @@ class PropertyCreateRequest extends FormRequest
      */
     public function rules(): array
     {
-        $availableListingTypes = collect(['Exclusive Listing', 'Lease', 'Rental', 'Sale'])->implode(',');
+        $availableListingTypes = collect(config('property.listingsTypes'))->implode(',');
 
         return [
             'title' => 'required',
