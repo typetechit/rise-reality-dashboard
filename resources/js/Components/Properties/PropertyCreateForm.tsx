@@ -187,9 +187,10 @@ export default function PropertyCreateForm({
                                 onChange={() =>
                                     setData(
                                         "content",
-                                        JSON.stringify(
-                                            editorRef.current?.getMarkdown()
-                                        )
+
+                                        editorRef.current
+                                            ? editorRef.current.getMarkdown()
+                                            : ""
                                     )
                                 }
                             />
