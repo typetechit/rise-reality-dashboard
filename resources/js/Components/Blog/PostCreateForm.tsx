@@ -42,10 +42,6 @@ export default function PostCreateForm() {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        setData(
-            "description",
-            JSON.stringify(editorRef.current?.getMarkdown())
-        );
         post(route("posts.store"));
     };
 
@@ -80,9 +76,10 @@ export default function PostCreateForm() {
                             onChange={() =>
                                 setData(
                                     "description",
-                                    JSON.stringify(
-                                        editorRef.current?.getMarkdown()
-                                    )
+
+                                    editorRef.current
+                                        ? editorRef.current.getMarkdown()
+                                        : ""
                                 )
                             }
                         />
@@ -143,7 +140,9 @@ export default function PostCreateForm() {
 
                             <InputDate
                                 defaultValue={new Date()}
-                                onChange={(date) => setData('published_at', date)}
+                                onChange={(date) =>
+                                    setData("published_at", date)
+                                }
                             />
 
                             <InputError
