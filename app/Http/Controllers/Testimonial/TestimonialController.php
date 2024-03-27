@@ -81,7 +81,6 @@ class TestimonialController extends Controller
     public function update(TestimonialCreateRequest $request, Testimonial $testimonial)
     {
         $updatableData = $request->validationData();
-        dd($updatableData);
         if($request->hasFile('image')){
             $featuredImagePath = $request
                 ->file('image')

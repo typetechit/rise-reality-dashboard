@@ -1,37 +1,45 @@
-import { useEffect, FormEventHandler } from 'react';
-import InputError from '@/Components/InputError';
-import { Head, Link, useForm } from '@inertiajs/react';
-import {Input} from "@/Components/ui/input";
-import {Button} from "@/Components/ui/button";
-import {Textarea} from "@/Components/ui/textarea";
-import {Card, CardContent, CardHeader, CardTitle} from "@/Components/ui/card";
-import {Label} from "@/Components/ui/label";
+import { useEffect, FormEventHandler } from "react";
+import InputError from "@/Components/InputError";
+import { Head, Link, useForm } from "@inertiajs/react";
+import { Input } from "@/Components/ui/input";
+import { Button } from "@/Components/ui/button";
+import { Textarea } from "@/Components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Label } from "@/Components/ui/label";
 import Select from "react-select";
 import Dump from "@/Components/Dump";
-import {Avatar, AvatarFallback, AvatarImage} from "@/Components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
 
-export default function UserEditForm({ user, roles }: { user: any, roles: string[] }) {
-
-    const roleOptions = roles.map(role => ({label: role, value: role}));
-    const defaultRole = roleOptions.filter(role => role.value === user.role)[0]
-    const { data, setData, post, processing, progress, errors, reset } = useForm({
-        name: user?.name || "",
-        email: user?.email || "",
-        image: "",
-        role: user?.role || "",
-        designation: user?.designation || "",
-        description: user?.description || "",
-        experience: user?.experience || "",
-        location: user?.location || "",
-        practice_area: user?.practice_area || "",
-        phone: user?.phone || "",
-        _method: 'put'
-    });
+export default function UserEditForm({
+    user,
+    roles,
+}: {
+    user: any;
+    roles: string[];
+}) {
+    const roleOptions = roles.map((role) => ({ label: role, value: role }));
+    const defaultRole = roleOptions.filter(
+        (role) => role.value === user.role
+    )[0];
+    const { data, setData, post, processing, progress, errors, reset } =
+        useForm({
+            name: user?.name || "",
+            email: user?.email || "",
+            image: "",
+            role: user?.role || "",
+            designation: user?.designation || "",
+            description: user?.description || "",
+            experience: user?.experience || "",
+            location: user?.location || "",
+            practice_area: user?.practice_area || "",
+            phone: user?.phone || "",
+            _method: "put",
+        });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(route('users.update', {user: user?.id}));
+        post(route("users.update", { user: user?.id }));
     };
 
     return (
@@ -42,7 +50,6 @@ export default function UserEditForm({ user, roles }: { user: any, roles: string
 
             <CardContent>
                 <form onSubmit={submit} className={`flex flex-col gap-5`}>
-
                     <div className={`grid grid-cols-3 gap-4`}>
                         {/* Input: Name */}
                         <div>
@@ -53,10 +60,15 @@ export default function UserEditForm({ user, roles }: { user: any, roles: string
                                 type="text"
                                 name="name"
                                 value={data.name}
-                                onChange={(e) => setData('name', e.target.value)}
+                                onChange={(e) =>
+                                    setData("name", e.target.value)
+                                }
                             />
 
-                            <InputError message={errors.name} className="mt-2"/>
+                            <InputError
+                                message={errors.name}
+                                className="mt-2"
+                            />
                         </div>
 
                         {/* Input: Email */}
@@ -68,10 +80,15 @@ export default function UserEditForm({ user, roles }: { user: any, roles: string
                                 type="email"
                                 name="email"
                                 value={data.email}
-                                onChange={(e) => setData('email', e.target.value)}
+                                onChange={(e) =>
+                                    setData("email", e.target.value)
+                                }
                             />
 
-                            <InputError message={errors.email} className="mt-2"/>
+                            <InputError
+                                message={errors.email}
+                                className="mt-2"
+                            />
                         </div>
 
                         {/* Input: Role */}
@@ -79,15 +96,19 @@ export default function UserEditForm({ user, roles }: { user: any, roles: string
                             <Label htmlFor="role">Role</Label>
                             <Select
                                 id={`role`}
-                                name={'role'}
+                                name={"role"}
                                 defaultValue={defaultRole}
                                 options={roleOptions}
-                                onChange={(item: any) => setData('role', item.value)}
+                                onChange={(item: any) =>
+                                    setData("role", item.value)
+                                }
                             />
 
-                            <InputError message={errors.role} className="mt-2"/>
+                            <InputError
+                                message={errors.role}
+                                className="mt-2"
+                            />
                         </div>
-
                     </div>
 
                     <div className={`grid grid-cols-3 gap-4`}>
@@ -95,11 +116,18 @@ export default function UserEditForm({ user, roles }: { user: any, roles: string
                         <div>
                             <div className={`flex items-center gap-4`}>
                                 <Avatar className={`w-12 h-12`}>
-                                    <AvatarImage src={user?.image || 'https://github.com/shadcn.png'} />
+                                    <AvatarImage
+                                        src={
+                                            user?.image ||
+                                            "https://github.com/shadcn.png"
+                                        }
+                                    />
                                     <AvatarFallback>{user.name}</AvatarFallback>
                                 </Avatar>
 
-                                <div className={'flex-grow flex flex-col gap-3'}>
+                                <div
+                                    className={"flex-grow flex flex-col gap-3"}
+                                >
                                     <Label htmlFor="image">Image</Label>
 
                                     <Input
@@ -107,13 +135,17 @@ export default function UserEditForm({ user, roles }: { user: any, roles: string
                                         type="file"
                                         name="image"
                                         multiple={false}
-                                        accept={`image/png, image/gif, image/jpeg`}
-                                        onChange={(e: any) => setData('image', e.target.files[0])}
+                                        accept={`image/png, image/gif, image/jpeg,  image/webp`}
+                                        onChange={(e: any) =>
+                                            setData("image", e.target.files[0])
+                                        }
                                     />
                                 </div>
 
-                                <InputError message={errors.image} className="mt-2"/>
-
+                                <InputError
+                                    message={errors.image}
+                                    className="mt-2"
+                                />
                             </div>
                         </div>
 
@@ -126,10 +158,15 @@ export default function UserEditForm({ user, roles }: { user: any, roles: string
                                 type="tel"
                                 name="phone"
                                 value={data.phone}
-                                onChange={(e) => setData('phone', e.target.value)}
+                                onChange={(e) =>
+                                    setData("phone", e.target.value)
+                                }
                             />
 
-                            <InputError message={errors.phone} className="mt-2"/>
+                            <InputError
+                                message={errors.phone}
+                                className="mt-2"
+                            />
                         </div>
 
                         {/* Input: Designation */}
@@ -141,16 +178,19 @@ export default function UserEditForm({ user, roles }: { user: any, roles: string
                                 type="text"
                                 name="designation"
                                 value={data.designation}
-                                onChange={(e) => setData('designation', e.target.value)}
+                                onChange={(e) =>
+                                    setData("designation", e.target.value)
+                                }
                             />
 
-                            <InputError message={errors.designation} className="mt-2"/>
+                            <InputError
+                                message={errors.designation}
+                                className="mt-2"
+                            />
                         </div>
                     </div>
 
-
                     <div className={`grid grid-cols-3 gap-4`}>
-
                         {/* Input: Experience */}
                         <div>
                             <Label htmlFor="experience">Experience</Label>
@@ -160,10 +200,15 @@ export default function UserEditForm({ user, roles }: { user: any, roles: string
                                 type="text"
                                 name="experience"
                                 value={data.experience}
-                                onChange={(e) => setData('experience', e.target.value)}
+                                onChange={(e) =>
+                                    setData("experience", e.target.value)
+                                }
                             />
 
-                            <InputError message={errors.experience} className="mt-2"/>
+                            <InputError
+                                message={errors.experience}
+                                className="mt-2"
+                            />
                         </div>
 
                         {/* Input: Location */}
@@ -175,10 +220,15 @@ export default function UserEditForm({ user, roles }: { user: any, roles: string
                                 type="text"
                                 name="location"
                                 value={data.location}
-                                onChange={(e) => setData('location', e.target.value)}
+                                onChange={(e) =>
+                                    setData("location", e.target.value)
+                                }
                             />
 
-                            <InputError message={errors.location} className="mt-2"/>
+                            <InputError
+                                message={errors.location}
+                                className="mt-2"
+                            />
                         </div>
 
                         {/* Input: Practice Area */}
@@ -190,10 +240,15 @@ export default function UserEditForm({ user, roles }: { user: any, roles: string
                                 type="text"
                                 name="practice_area"
                                 value={data.practice_area}
-                                onChange={(e) => setData('practice_area', e.target.value)}
+                                onChange={(e) =>
+                                    setData("practice_area", e.target.value)
+                                }
                             />
 
-                            <InputError message={errors.practice_area} className="mt-2"/>
+                            <InputError
+                                message={errors.practice_area}
+                                className="mt-2"
+                            />
                         </div>
                     </div>
 
@@ -205,10 +260,15 @@ export default function UserEditForm({ user, roles }: { user: any, roles: string
                             id="description"
                             name="description"
                             value={data.description}
-                            onChange={(e: any) => setData('description', e.target.value)}
+                            onChange={(e: any) =>
+                                setData("description", e.target.value)
+                            }
                         />
 
-                        <InputError message={errors.description} className="mt-2"/>
+                        <InputError
+                            message={errors.description}
+                            className="mt-2"
+                        />
                     </div>
 
                     {progress && (
@@ -219,7 +279,7 @@ export default function UserEditForm({ user, roles }: { user: any, roles: string
 
                     <div className="flex items-center">
                         <Button disabled={processing}>
-                            { processing ? "Updating..." : "Update User"}
+                            {processing ? "Updating..." : "Update User"}
                         </Button>
                     </div>
                 </form>

@@ -19,7 +19,7 @@ class PostController extends Controller
         $posts = Post::query()
             ->with('user')
             ->latest()
-            ->paginate(25);
+            ->paginate(10);
 
         return inertia('Blog/Posts/Index', [
             'posts' => $posts
