@@ -218,9 +218,9 @@ class PropertyController extends Controller
 
                 $filesPathLinks = collect($filesPathLinks)->map(function($link) {
                     return asset('storage/'.$link);
-                });
+                })->toArray();
 
-                $updatableData['gallery_images'] = $filesPathLinks;
+                $updatableData['gallery_images'] = array_merge($property->gallery_images, $filesPathLinks);
             }
 
             if(count($request->video_links) > 0){

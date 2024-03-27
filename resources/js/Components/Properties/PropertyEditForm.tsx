@@ -160,7 +160,9 @@ export default function PropertyEditForm({
                 onSuccess: (res) => {
                     console.log('success response')
                     console.log(res)
-                }
+                },
+                preserveScroll: true,
+                preserveState: true
             })
     }
 
