@@ -14,6 +14,7 @@ class APIPropertyController extends Controller
      */
     public function index(Request $request)
     {
+
         $propertiesQuery = Property::query()
             ->with(['user:id,name,email,image,description,social_links', 'category:id,name']);
 
@@ -47,9 +48,15 @@ class APIPropertyController extends Controller
             $propertiesQuery->whereBetween('price', $priceRange);
         }
 
+        if($request->exists('is_featured')){
+            $propertiesQuery->where('is_featured', $request->get('is_featured'));
+        }
+
+        $paginate = $request->get('paginate', 20);
+
         $properties = $propertiesQuery
             ->latest()
-            ->paginate(10);
+            ->paginate($paginate);
 
         return response()->json($properties);
     }
