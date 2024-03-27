@@ -1,6 +1,6 @@
 import { FormEventHandler, useEffect, useRef, useState } from "react";
 import InputError from "@/Components/InputError";
-import {router, useForm} from "@inertiajs/react";
+import { router, useForm } from "@inertiajs/react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
@@ -568,7 +568,12 @@ export default function PropertyEditForm({
                                                     variant={"destructive"}
                                                     size={"icon"}
                                                     className={`absolute right-3 top-3`}
-                                                    onClick={() => handleGalleryImageRemove(property.id, indexId) }
+                                                    onClick={() =>
+                                                        handleGalleryImageRemove(
+                                                            property.id,
+                                                            indexId
+                                                        )
+                                                    }
                                                 >
                                                     <XMarkIcon
                                                         className={`w-5 h-5`}
