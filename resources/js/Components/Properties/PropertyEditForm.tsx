@@ -22,6 +22,7 @@ import Dump from "@/Components/Dump";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import ReachText from "@/Components/ui/reachtext";
 import { MDXEditorMethods } from "@mdxeditor/editor";
+import InputDate from "@/Components/ui/InputDate";
 
 function CategoryAttributeModificationTable({
     attributes,
@@ -93,19 +94,20 @@ export default function PropertyEditForm({
         content: property?.content || "",
         featured_image: null,
         gallery_images: null,
-        is_published: property?.is_published || "",
+        is_published: property?.is_published || 0,
         price: property?.price || 0,
         location: property?.location || "",
         map_url: property?.map_url || "",
         mls_code: property?.mls_code || "",
         build_year: property?.build_year || "",
         property_size: property?.property_size || "",
-        is_featured: property?.is_featured || "",
+        is_featured: property?.is_featured || 0 as number,
         listing_type: property?.listing_type || "",
         amenities: property?.amenities || [],
         category: property?.category || null,
         category_attributes: property.category_attributes,
         video_links: property.video_links || [""],
+        published_at: property?.created_at,
         _method: "PUT",
     });
     const editorRef = useRef<MDXEditorMethods | null>(null);
@@ -153,7 +155,13 @@ export default function PropertyEditForm({
     }
 
     function handleGalleryImageRemove(propertyId: any, indexId: any) {
-        // router.post(route('properties.'))
+        router
+            .post(route('properties.removeGalleryImage', { property: propertyId }), {indexId: indexId}, {
+                onSuccess: (res) => {
+                    console.log('success response')
+                    console.log(res)
+                }
+            })
     }
 
     return (
@@ -209,14 +217,6 @@ export default function PropertyEditForm({
                         <div>
                             <Label htmlFor="content">Content</Label>
 
-                            {/* <Textarea
-                                id="content"
-                                name="content"
-                                value={data.content}
-                                className="mt-1 block w-full"
-                                autoComplete="current-password"
-                                onChange={(e) => setData('content', e.target.value)}
-                            /> */}
                             <ReachText
                                 markdown={data.content}
                                 editorRef={editorRef}
@@ -372,9 +372,9 @@ export default function PropertyEditForm({
                                     name={"listing_type"}
                                     options={listingTypes}
                                     defaultValue={selectedListingType}
-                                    onChange={(item) =>
+                                    onChange={(item: any) => {
                                         setData("listing_type", item.value)
-                                    }
+                                    }}
                                 />
 
                                 <InputError
@@ -557,7 +557,7 @@ export default function PropertyEditForm({
                                 >
                                     {property?.gallery_images?.map(
                                         (galleryImg: any, indexId: any) => (
-                                            <div className={`relative`}>
+                                            <div className={`relative`} key={indexId}>
                                                 <img
                                                     className="object-cover h-28 w-full rounded-lg shadow"
                                                     src={galleryImg}
@@ -565,10 +565,11 @@ export default function PropertyEditForm({
                                                 />
 
                                                 <Button
+                                                    type={'button'}
                                                     variant={"destructive"}
                                                     size={"icon"}
-                                                    className={`absolute right-3 top-3`}
-                                                    onClick={() =>
+                                                    className={`absolute right-3 top-3 bg-red-900/60`}
+                                                    onClick={(e) =>
                                                         handleGalleryImageRemove(
                                                             property.id,
                                                             indexId
@@ -663,6 +664,29 @@ export default function PropertyEditForm({
                                         </Label>
                                     </div>
                                 </RadioGroup>
+                            </div>
+
+                            {/* Input: Published At */}
+                            <div>
+                                <div className="flex flex-col gap-4">
+                                    <Label
+                                        htmlFor="published_at"
+                                        className={`flex-grow cursor-pointer`}
+                                    >
+                                        Published Date
+                                    </Label>
+                                    <InputDate
+                                        defaultValue={property?.created_at}
+                                        onChange={(date) =>
+                                            setData("published_at", date)
+                                        }
+                                    />
+
+                                    <InputError
+                                        message={errors.published_at}
+                                        className="mt-2"
+                                    />
+                                </div>
                             </div>
                         </div>
 

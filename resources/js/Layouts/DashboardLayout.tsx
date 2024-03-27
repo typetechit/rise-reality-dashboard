@@ -24,6 +24,17 @@ import {
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu"
 import { Alert, AlertDescription, AlertTitle } from "@/Components/ui/alert"
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/Components/ui/alert-dialog"
 
 
 const adminNavigations = [
@@ -63,18 +74,26 @@ function FlashMessage() {
     const pageProps = usePage().props
     const flash: any = pageProps?.flash || null
 
+    const [open, setOpen] = useState<boolean>(!!flash?.message);
+
     if(!flash?.message){
         return null
     }
 
     return (
-        <Alert>
-            <Terminal className="h-4 w-4" />
-            <AlertTitle>Alert!</AlertTitle>
-            <AlertDescription>
-                {flash?.message}
-            </AlertDescription>
-        </Alert>
+        <AlertDialog open={open} onOpenChange={setOpen}>
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>Alert Message</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        {flash?.message}
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <AlertDialogCancel onClick={() => setOpen(false)}>Okay</AlertDialogCancel>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
     );
 }
 
@@ -103,10 +122,8 @@ export default function DashboardLayout({ user, header, children }: PropsWithChi
             <main className="lg:pl-72 lg:pt-0">
                 <div className="">
                     {header || null}
-
-                    <FlashMessage />
-
                     {children}
+                    <FlashMessage />
                 </div>
             </main>
         </div>
