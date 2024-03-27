@@ -25,5 +25,5 @@ Route::resource('posts', APIPostController::class);
 Route::resource('faqs', APIFaqController::class);
 Route::resource('testimonials', APITestimonialController::class);
 Route::get('website/filter_options', [APIWebsiteController::class, 'getFilterOptions'])->name('website.getFilterOptions');
-Route::get('contact-messages', [APIContactMessageController::class, 'store']);
+Route::post('contact-messages', [APIContactMessageController::class, 'store']);
 Route::resource('users', APIUserController::class);

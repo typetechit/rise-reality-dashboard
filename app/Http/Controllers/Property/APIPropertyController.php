@@ -11,7 +11,7 @@ class APIPropertyController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $properties = Property::query()
             ->with(['user:id,name,email,image,description,social_links', 'category:id,name'])
