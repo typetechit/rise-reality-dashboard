@@ -13,7 +13,7 @@ export default function TestimonialsIndexPage({ auth, testimonials }: PageProps<
             <Head title={'Testimonials'} />
 
             <div className={`p-5`}>
-                <TestimonialsDataTable faqs={testimonials}/>
+                <TestimonialsDataTable testimonials={testimonials}/>
             </div>
         </DashboardLayout>
     )

@@ -39,6 +39,7 @@ import {Card, CardContent} from "@/Components/ui/card";
 import {Link} from "@inertiajs/react";
 import {PencilIcon} from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar"
+import Pagination from "@/Components/ui/Pagination";
 
 export type User = {
     id: number,
@@ -265,24 +266,8 @@ export default function UsersDataTable({ users }: {users: any}) {
                         {table.getFilteredSelectedRowModel().rows.length} of{" "}
                         {table.getFilteredRowModel().rows.length} row(s) selected.
                     </div>
-                    <div className="space-x-2">
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => table.previousPage()}
-                            disabled={!table.getCanPreviousPage()}
-                        >
-                            Previous
-                        </Button>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => table.nextPage()}
-                            disabled={!table.getCanNextPage()}
-                        >
-                            Next
-                        </Button>
-                    </div>
+
+                    <Pagination links={users.links} />
                 </div>
             </CardContent>
         </Card>

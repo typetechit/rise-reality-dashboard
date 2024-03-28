@@ -12,12 +12,18 @@ class APIPostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::query()
-            ->with(['user:id,name,image'])
+        $postQuery = Post::query()->with(['user:id,name,image']);
+
+        if($request->get('search')){
+            $postQuery->where('title', 'like', '%' . $request->get('search') . '%')
+                ->orWhere('description', 'like', '%' . $request->get('search') . '%');
+        }
+
+        $posts = $postQuery
             ->latest()
-            ->paginate(10);
+            ->paginate($this->paginationCount);
 
         return response()->json($posts);
     }

@@ -16,7 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::query()->latest()->paginate(25);
+        $users = User::query()->latest()->paginate($this->paginationCount);
 
         return inertia('Users/Index', [
             'users' => $users

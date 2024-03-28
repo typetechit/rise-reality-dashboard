@@ -28,13 +28,13 @@ class PropertyController extends Controller
             $properties = Property::query()
                 ->with(['user:id,name,email,phone', 'category:id,name'])
                 ->latest()
-                ->paginate(25);
+                ->paginate($this->paginationCount);
         }else if($request->user()->role === 'PROPERTY_AGENT'){
             $properties = Property::query()
+                ->where('user_id', auth()->id())
                 ->with(['user:id,name,email,phone', 'category:id,name'])
-//                ->where('user_id', auth()->id())
                 ->latest()
-                ->paginate(25);
+                ->paginate($this->paginationCount);
         }
 
         return inertia('Properties/Index', [

@@ -13,7 +13,7 @@ class TestimonialController extends Controller
      */
     public function index()
     {
-        $testimonials = Testimonial::query()->latest()->get();
+        $testimonials = Testimonial::query()->latest()->paginate($this->paginationCount);
 
         return inertia('Testimonials/Index', [
             'testimonials' => $testimonials

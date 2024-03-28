@@ -40,6 +40,7 @@ import {Link} from "@inertiajs/react";
 import {PencilIcon, TrashIcon} from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar"
+import Pagination from "@/Components/ui/Pagination";
 
 export type Testimonial = {
     id: number
@@ -124,7 +125,7 @@ export const columns: ColumnDef<Testimonial>[] = [
     },
 ]
 
-export default function TestimonialsDataTable({ faqs }: {faqs: any}) {
+export default function TestimonialsDataTable({ testimonials }: {testimonials: any}) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         []
@@ -134,7 +135,7 @@ export default function TestimonialsDataTable({ faqs }: {faqs: any}) {
     const [rowSelection, setRowSelection] = React.useState({})
 
     const table = useReactTable({
-        data: faqs,
+        data: testimonials.data,
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -252,24 +253,8 @@ export default function TestimonialsDataTable({ faqs }: {faqs: any}) {
                         {table.getFilteredSelectedRowModel().rows.length} of{" "}
                         {table.getFilteredRowModel().rows.length} row(s) selected.
                     </div>
-                    <div className="space-x-2">
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => table.previousPage()}
-                            disabled={!table.getCanPreviousPage()}
-                        >
-                            Previous
-                        </Button>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => table.nextPage()}
-                            disabled={!table.getCanNextPage()}
-                        >
-                            Next
-                        </Button>
-                    </div>
+
+                    <Pagination links={testimonials?.links} />
                 </div>
             </CardContent>
         </Card>
