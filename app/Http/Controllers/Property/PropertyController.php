@@ -9,6 +9,7 @@ use App\Models\Country;
 use App\Models\Property;
 use App\Models\Settings\Amenity;
 use App\Models\Settings\Category;
+use App\Models\User\Agent;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -47,7 +48,8 @@ class PropertyController extends Controller
      */
     public function create()
     {
-        $availableListingTypes = ['Lease', 'Rental', 'Sale'];
+        $availableListingTypes = config('property.listingTypes');
+
         $availableAmenities = Amenity::query()
             ->select(['id', 'name'])
             ->latest()
@@ -59,10 +61,13 @@ class PropertyController extends Controller
             ->orderBy('name')
             ->get();
 
+        $agents = Agent::query()->select(['id', 'name', 'role'])->get();
+
         return inertia('Properties/Create', [
             'listingTypes' => $availableListingTypes,
             'amenities' => $availableAmenities,
-            'categories' => $availableCategories
+            'categories' => $availableCategories,
+            'agents' => $agents
         ]);
     }
 
@@ -77,7 +82,7 @@ class PropertyController extends Controller
             $postPublishedDate = Carbon::make($request->get('published_at', now()));
 
             $newPropertyData = [
-                'user_id' => auth()->id(),
+                'user_id' => $validatedData['agent_id'] || auth()->id(),
                 'country_id' => optional(Country::first())->id,
                 'category_id' => $validatedData['category']['id'],
                 'title' => $validatedData['title'],
@@ -166,11 +171,14 @@ class PropertyController extends Controller
             ->orderBy('name')
             ->get();
 
+        $agents = Agent::query()->select(['id', 'name', 'role'])->get();
+
         return inertia('Properties/Edit', [
             'property' => $property,
             'listingTypes' => $availableListingTypes,
             'amenities' => $availableAmenities,
-            'categories' => $availableCategories
+            'categories' => $availableCategories,
+            'agents' => $agents,
         ]);
     }
 
@@ -199,8 +207,12 @@ class PropertyController extends Controller
                 'is_featured' => $validatedData['is_featured'],
                 'listing_type' => $validatedData['listing_type'],
                 'amenities' => $validatedData['amenities'],
-                'category_attributes' => $validatedData['category_attributes'],
+                'category_attributes' => $validatedData['category_attributes']
             ];
+
+            if($validatedData['agent_id'] !== $property->user_id){
+                $updatableData['user_id'] = $validatedData['agent_id'];
+            }
 
             if($request->hasFile('featured_image')){
                 $featuredImagePath = $request->file('featured_image')->store('property_images', 'public');

@@ -51,11 +51,11 @@ class APIPropertyController extends Controller
             $propertiesQuery->where('is_featured', $request->get('is_featured'));
         }
 
-        $paginate = $request->get('paginate', 20);
+        $paginate = $request->get('paginate', $this->paginationCount);
 
         $properties = $propertiesQuery
             ->latest()
-            ->paginate($this->paginationCount);
+            ->paginate($paginate);
 
         return response()->json($properties);
     }

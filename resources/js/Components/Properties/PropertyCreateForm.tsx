@@ -1,5 +1,5 @@
 import InputError from "@/Components/InputError";
-import { useForm } from "@inertiajs/react";
+import {useForm, usePage} from "@inertiajs/react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
@@ -21,6 +21,7 @@ import { useEffect, FormEventHandler, useState, useRef } from "react";
 import { MDXEditorMethods } from "@mdxeditor/editor";
 import ReachText from "../ui/reachtext";
 import InputDate from "@/Components/ui/InputDate";
+import Dump from "@/Components/Dump";
 function CategoryAttributeModificationTable({
     attributes,
     onValueChange,
@@ -77,10 +78,12 @@ export default function PropertyCreateForm({
     listingTypes,
     amenityTypes,
     categories,
+    agents
 }: {
     listingTypes: any[];
     amenityTypes: any[];
     categories: any[];
+    agents: any[];
 }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         title: "",
@@ -102,6 +105,7 @@ export default function PropertyCreateForm({
         category_attributes: [] as any[],
         video_links: [""],
         published_at: "",
+        agent_id: null
     });
     const editorRef = useRef<MDXEditorMethods | null>(null);
     const [editorContent, setEditorContent] = useState("");
@@ -602,6 +606,27 @@ export default function PropertyCreateForm({
                                         className="mt-2"
                                     />
                                 </div>
+                            </div>
+
+                            {/* Input: Agent */}
+                            <div>
+                                <Label htmlFor="agent_id">
+                                    Select Agent
+                                </Label>
+
+                                <Select
+                                    id={`agent_id`}
+                                    name={"agent_id"}
+                                    options={agents}
+                                    onChange={(item) =>
+                                        setData("agent_id", item.value)
+                                    }
+                                />
+
+                                <InputError
+                                    message={errors.agent_id}
+                                    className="mt-2"
+                                />
                             </div>
                         </div>
 

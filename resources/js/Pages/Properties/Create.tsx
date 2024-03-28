@@ -8,8 +8,15 @@ export default function PropertyCreatePage({
                                                auth,
                                                listingTypes,
                                                amenities,
-                                               categories
-}: PageProps<{properties: any, listingTypes: any[], amenities: any[], categories: any[]}>) {
+                                               categories,
+                                               agents
+}: PageProps<{
+    properties: any,
+    listingTypes: any[],
+    amenities: any[],
+    categories: any[],
+    agents: any[]
+}>) {
     return (
         <DashboardLayout
             user={auth.user}
@@ -19,9 +26,10 @@ export default function PropertyCreatePage({
 
             <div className={`p-5`}>
                 <PropertyCreateForm
-                    listingTypes={listingTypes.map(item => ({...item, value: item, label: item}))}
-                    amenityTypes={amenities.map(item => ({...item, value: item.name, label: item.name}))}
-                    categories={categories.map(item => ({...item, value: item.name, label: item.name}))}
+                    listingTypes={listingTypes?.map(item => ({...item, value: item, label: item}))}
+                    amenityTypes={amenities?.map(item => ({...item, value: item.name, label: item.name}))}
+                    categories={categories?.map(item => ({...item, value: item.name, label: item.name}))}
+                    agents={agents?.map(item => ({...item, value: item.id, label: item.name}))}
                 />
             </div>
         </DashboardLayout>

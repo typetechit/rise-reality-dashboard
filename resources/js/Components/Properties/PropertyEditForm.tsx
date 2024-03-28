@@ -82,11 +82,13 @@ export default function PropertyEditForm({
     listingTypes,
     amenityTypes,
     categories,
+    agents
 }: {
     property: any;
     listingTypes: any[];
     amenityTypes: any[];
     categories: any[];
+    agents: any[];
 }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         title: property?.title || "",
@@ -108,6 +110,7 @@ export default function PropertyEditForm({
         category_attributes: property.category_attributes,
         video_links: property.video_links || [""],
         published_at: property?.created_at,
+        agent_id: property?.user_id,
         _method: "PUT",
     });
     const editorRef = useRef<MDXEditorMethods | null>(null);
@@ -116,6 +119,7 @@ export default function PropertyEditForm({
     const [categoryAttributes, setCategoryAttributes] = useState([]);
     const [selectedCategoryAttributes, setSelectedCategoryAttributes] =
         useState<any[]>(property.category_attributes || []);
+    const selectedAgent = agents[agents.findIndex((item) => item.value === property.user_id)];
 
     const selectedListingType =
         listingTypes[
@@ -694,6 +698,28 @@ export default function PropertyEditForm({
                                         className="mt-2"
                                     />
                                 </div>
+                            </div>
+
+                            {/* Input: Agent */}
+                            <div>
+                                <Label htmlFor="agent_id">
+                                    Select Agent
+                                </Label>
+
+                                <Select
+                                    id={`agent_id`}
+                                    name={"agent_id"}
+                                    options={agents}
+                                    defaultValue={selectedAgent}
+                                    onChange={(item) =>
+                                        setData("agent_id", item.value)
+                                    }
+                                />
+
+                                <InputError
+                                    message={errors.agent_id}
+                                    className="mt-2"
+                                />
                             </div>
                         </div>
 

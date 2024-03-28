@@ -39,6 +39,7 @@ class PropertyCreateRequest extends FormRequest
             'amenities' => ["nullable", 'array'],
             'category' => ["nullable"],
             'category_attributes' => ["nullable", "array"],
+            'agent_id' => ["required", "exists:users,id"],
         ];
     }
 }
