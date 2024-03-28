@@ -44,7 +44,7 @@ function CategoryAttributeModificationTable({
             </TableHeader>
             <TableBody>
                 {attributes.map((attribute, indexId) => (
-                    <TableRow key={`attribute.id.${attribute.id}`}>
+                    <TableRow key={`attribute.id.${attribute.id}${indexId}`}>
                         <TableCell className="font-medium">
                             {attribute.icon}
                         </TableCell>
@@ -220,12 +220,17 @@ export default function PropertyEditForm({
                             <ReachText
                                 markdown={data.content}
                                 editorRef={editorRef}
-                                onChange={() =>
+                                onChange={() => {
+                                    console.log(
+                                        editorRef.current?.getMarkdown()
+                                    );
                                     setData(
                                         "content",
-                                        editorRef.current?.getMarkdown()
-                                    )
-                                }
+                                        editorRef.current
+                                            ? editorRef.current?.getMarkdown()
+                                            : ""
+                                    );
+                                }}
                             />
                             <InputError
                                 message={errors.content}

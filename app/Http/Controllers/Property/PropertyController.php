@@ -238,9 +238,9 @@ class PropertyController extends Controller
      */
     public function destroy(Property $property)
     {
-        if($property->user_id === auth()->id()){
+        // if($property->user_id === auth()->id()){
             $property->delete();
-        }
+        // }
 
         return to_route('properties.index');
     }
