@@ -9,8 +9,11 @@ use App\Models\Country;
 use App\Models\Property;
 use App\Models\Settings\Amenity;
 use App\Models\Settings\Category;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class PropertyController extends Controller
 {
@@ -71,6 +74,7 @@ class PropertyController extends Controller
         DB::beginTransaction();
         try {
             $validatedData = $request->validationData();
+            $postPublishedDate = Carbon::make($request->get('published_at', now()));
 
             $newPropertyData = [
                 'user_id' => auth()->id(),
@@ -91,6 +95,7 @@ class PropertyController extends Controller
                 'listing_type' => $validatedData['listing_type'],
                 'amenities' => $validatedData['amenities'],
                 'category_attributes' => $validatedData['category_attributes'],
+                'created_at' => $postPublishedDate
             ];
 
             $newProperty = $request->user()->properties()
@@ -213,20 +218,28 @@ class PropertyController extends Controller
 
                 $filesPathLinks = collect($filesPathLinks)->map(function($link) {
                     return asset('storage/'.$link);
-                });
+                })->toArray();
 
-                $updatableData['gallery_images'] = $filesPathLinks;
+                $updatableData['gallery_images'] = array_merge($property->gallery_images, $filesPathLinks);
             }
 
             if(count($request->video_links) > 0){
                 $updatableData["video_links"] = $request->video_links;
             }
 
+            if($request->get('published_at')){
+                $updatableData['created_at'] = Carbon::make($request->get('published_at'));
+            }
+
             $property->update($updatableData);
 
             DB::commit();
 
-            return to_route('properties.edit', ['property' => $property]);
+            return to_route('properties.edit', ['property' => $property])
+                ->with([
+                    'message' => 'Property Information updated.'
+                ]);
+
         }catch (\Exception $e){
             DB::rollBack();
             dd($e);
@@ -245,14 +258,41 @@ class PropertyController extends Controller
         return to_route('properties.index');
     }
 
-    public function removeGalleryImage(Request $request)
+    public function removeGalleryImage(Request $request, Property $property)
     {
-        $request->validate([
-            'property_id' => 'required|exists:properties,id',
-        ]);
 
-        if($request->get('itemIndex')){
+        if ($request->has('indexId')) {
+            $propertyGalleryImages = $property->gallery_images;
+            $propertyItemIndexToRemove = $request->input('indexId');
 
+            if (isset($propertyGalleryImages[$propertyItemIndexToRemove])) {
+                // Get the full URL of the image
+                $imageUrl = $propertyGalleryImages[$propertyItemIndexToRemove];
+
+                // Extract the path from the URL
+                $imagePath = Str::after($imageUrl, '/storage/');
+
+                // Check if the image exists in storage
+                if (Storage::disk('public')->exists($imagePath)) {
+                    // Delete the image from storage
+                    Storage::disk('public')->delete($imagePath);
+                }
+
+                // Remove the image from the gallery_images array
+                unset($propertyGalleryImages[$propertyItemIndexToRemove]);
+
+                // Reindex the array
+                $updatedGalleryImages = array_values($propertyGalleryImages);
+
+                // Update the property with the updated gallery_images
+                $property->update([
+                    'gallery_images' => $updatedGalleryImages
+                ]);
+
+                return back()->with([
+                    'galleryImages' => $property->gallery_images
+                ]);
+            }
         }
 
         return back();

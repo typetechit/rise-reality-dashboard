@@ -10,22 +10,31 @@ import {
 import {cn} from "@/lib/utils";
 import {User} from "@/types";
 import ApplicationLogo from "@/Components/ApplicationLogo";
-import {Link} from "@inertiajs/react";
-import {BuildingIcon, ChevronDown, LogOutIcon, MessageCircleIcon, SettingsIcon, Terminal} from "lucide-react";
-import {Card, CardContent, CardHeader, CardTitle} from "@/Components/ui/card";
+import {Link, usePage} from "@inertiajs/react";
+import {BuildingIcon, LogOutIcon, MessageCircleIcon, SettingsIcon, Terminal} from "lucide-react";
+import {Card, CardHeader, CardTitle} from "@/Components/ui/card";
 import GoBack from "@/Components/GoBack";
 import {animeAtom, authUser, sidebarOpenState} from "@/store/DashboardLayoutState";
 import {useAtom, useAtomValue, useSetAtom} from 'jotai'
-import Dump from "@/Components/Dump";
-import {ChevronRightIcon, NewspaperIcon} from "@heroicons/react/24/solid";
+import {NewspaperIcon} from "@heroicons/react/24/solid";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu"
+import { Alert, AlertDescription, AlertTitle } from "@/Components/ui/alert"
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/Components/ui/alert-dialog"
 
 
 const adminNavigations = [
@@ -61,6 +70,33 @@ const editorNavigations = [
     { name: 'Blog Posts', href: '/posts', icon: NewspaperIcon, current: false },
 ]
 
+function FlashMessage() {
+    const pageProps = usePage().props
+    const flash: any = pageProps?.flash || null
+
+    const [open, setOpen] = useState<boolean>(!!flash?.message);
+
+    if(!flash?.message){
+        return null
+    }
+
+    return (
+        <AlertDialog open={open} onOpenChange={setOpen}>
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>Alert Message</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        {flash?.message}
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <AlertDialogCancel onClick={() => setOpen(false)}>Okay</AlertDialogCancel>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
+    );
+}
+
 export default function DashboardLayout({ user, header, children }: PropsWithChildren<{ user: User, header?: ReactNode }>) {
     const [anime, setAnime] = useAtom(animeAtom)
     const [open, setOpen] = useAtom(sidebarOpenState)
@@ -87,6 +123,7 @@ export default function DashboardLayout({ user, header, children }: PropsWithChi
                 <div className="">
                     {header || null}
                     {children}
+                    <FlashMessage />
                 </div>
             </main>
         </div>

@@ -20,6 +20,7 @@ import VideoLinksInput from "@/Components/ui/VideoLinksInput";
 import { useEffect, FormEventHandler, useState, useRef } from "react";
 import { MDXEditorMethods } from "@mdxeditor/editor";
 import ReachText from "../ui/reachtext";
+import InputDate from "@/Components/ui/InputDate";
 function CategoryAttributeModificationTable({
     attributes,
     onValueChange,
@@ -100,6 +101,7 @@ export default function PropertyCreateForm({
         category: null as any,
         category_attributes: [] as any[],
         video_links: [""],
+        published_at: "",
     });
     const editorRef = useRef<MDXEditorMethods | null>(null);
     const [editorContent, setEditorContent] = useState("");
@@ -576,6 +578,30 @@ export default function PropertyCreateForm({
                                         </Label>
                                     </div>
                                 </RadioGroup>
+                            </div>
+
+                            {/* Input: Published At */}
+                            <div>
+                                <div className="flex flex-col gap-4">
+                                    <Label
+                                        htmlFor="published_at"
+                                        className={`flex-grow cursor-pointer`}
+                                    >
+                                        Published Date
+                                    </Label>
+
+                                    <InputDate
+                                        defaultValue={new Date()}
+                                        onChange={(date) =>
+                                            setData("published_at", date)
+                                        }
+                                    />
+
+                                    <InputError
+                                        message={errors.published_at}
+                                        className="mt-2"
+                                    />
+                                </div>
                             </div>
                         </div>
 

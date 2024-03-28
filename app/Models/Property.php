@@ -35,6 +35,7 @@ class Property extends Model
         'listing_type',
         'amenities',
         'category_attributes',
+        'created_at',
     ];
 
     /**

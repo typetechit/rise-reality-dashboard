@@ -116,4 +116,21 @@ class UserController extends Controller
     {
         //
     }
+
+    public function updatePassword(Request $request, User $user)
+    {
+        $request->validate([
+            'new_password' => 'required|confirmed|min:6',
+        ]);
+
+        $updatedPassword = bcrypt($request->get('new_password'));
+
+        $user->update([
+            'password' => $updatedPassword
+        ]);
+
+        return back()->with([
+            'message' => "Password Updated"
+        ]);
+    }
 }

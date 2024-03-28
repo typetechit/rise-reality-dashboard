@@ -2,6 +2,7 @@ import DashboardLayout, {DashboardContainer, PageHeader} from "@/Layouts/Dashboa
 import {PageProps} from "@/types";
 import {Head} from "@inertiajs/react";
 import UserEditForm from "@/Components/User/UserEditForm";
+import UserPasswordUpdateForm from "@/Components/User/UserPasswordUpdateForm";
 
 export default function UserEditPage({ auth, user, roles }: PageProps<{user: any, roles: string []}>){
     return (
@@ -10,6 +11,8 @@ export default function UserEditPage({ auth, user, roles }: PageProps<{user: any
 
             <div className={`p-5`}>
                 <UserEditForm user={user} roles={roles}/>
+
+                <UserPasswordUpdateForm user={user} />
             </div>
         </DashboardLayout>
     );

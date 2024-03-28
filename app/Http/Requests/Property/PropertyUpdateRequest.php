@@ -31,7 +31,7 @@ class PropertyUpdateRequest extends FormRequest
             'is_published' => 'required|boolean',
             'location' => 'required',
             'map_url' => 'required',
-            'mls_code' => 'required',
+            'mls_code' => 'nullable',
             'build_year' => 'required|numeric|gte:1',
             'property_size' => 'required|numeric|gte:1',
             'is_featured' => 'required|boolean',
